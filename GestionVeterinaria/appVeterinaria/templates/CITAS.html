@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Agropecuaria Animalagro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="css/wickedpicker.css" rel="stylesheet" type='text/css' media="all" />
+{% load static %}
+<link rel="stylesheet" href="{%static '../static/css/style.css'%}">
+
+</head>
+<body>
+<h1>Reservas De Cita</h1>
+    <div class="bg-agile">
+	<div class="book-appointment">
+	<h2>Hacer una cita</h2>
+				
+			<form action="#" method="post" name="appointment" id="appointment">
+			<div id="resultados_ajax" class="gaps"></div>
+			<div class="left-agileits-w3layouts same">
+			
+			<div class="gaps">
+				<p>Nombre del amo</p>
+					<input type="text" name="name" placeholder="" required=""/>
+			</div>	
+				<div class="gaps">	
+				<p>Número de teléfono</p>
+					<input type="text" name="number" placeholder="" required=""/>
+				</div>
+				<div class="gaps">
+				<p>E-mail</p>
+						<input type="email" name="email" placeholder="" required="" />
+				</div>
+							<div class="gaps">
+				<p>Nombre de la mascota </p>
+					<input type="text" name="name" placeholder="" required=""/>
+			</div>	
+			</div>
+			<div class="right-agileinfo same">
+			<div class="gaps">
+				<p>Seleccionar fecha</p>		
+						<input  id="datepicker1" name="datepicker1" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'mm/dd/yyyy';}" required="">
+			</div>
+			<div class="gaps">
+				<p>Sexo</p>	
+					<select class="form-control" name="gender" required>
+						<option></option>
+						<option value="M">Macho</option>
+						<option value="F">Hembra</option>
+					</select>
+			</div>
+			<div class="gaps">
+				<p>Hora</p>		
+					<input type="text" id="timepicker" name="time" class="timepicker form-control" value="">	
+			</div>
+			<div class="gaps">
+				<p>Síntomas de la mascota</p>
+						<textarea name="symptoms" placeholder="" required="" ></textarea>
+				</div>
+			</div>
+			<div class="clear"></div>
+						  <input type="submit" value="Realizar cita">
+			</form>
+		</div>
+   </div>
+   	
+		<script type="text/javascript" src="{%static 'js/jquery-2.1.4.min.js' %}"></script>
+		<script type="text/javascript" src="{%static 'js/wickedpicker.js' %}"></script>
+			<script type="text/javascript">
+				$('.timepicker').wickedpicker({twentyFour: false});
+			</script>
+		<!-- Calendar -->
+				<link rel="stylesheet" href="{%static 'css/jquery-ui.css'%}" />
+				<script src="js/jquery-ui.js"></script>
+				  <script>
+						  $(function() {
+							$( "#datepicker,#datepicker1,#datepicker2,#datepicker3" ).datepicker();
+						  });
+						  
+				  </script>
+			<!-- //Calendar -->
+			<script>
+				$( "#appointment" ).submit(function( event ) {
+				  var parametros = $(this).serialize();
+				  $.ajax({
+						type: "POST",
+						url: "enviar-mail.php",
+						data: parametros,
+						 beforeSend: function(objeto){
+							$("#resultados_ajax").html("Enviando...");
+						  },
+						success: function(datos){
+							$("#resultados_ajax").html(datos);
+						}
+				});
+			
+				  event.preventDefault();
+				});
+			</script>	
+
+</body>
+</html>
