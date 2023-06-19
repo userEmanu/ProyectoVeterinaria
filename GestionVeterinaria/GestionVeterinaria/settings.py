@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'GestionVeterinaria.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Veterinaria',
+        'NAME': 'VeterinariaAnimalagro',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
