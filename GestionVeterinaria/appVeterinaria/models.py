@@ -85,8 +85,8 @@ class FormaDePago(models.Model):
     
 class User(AbstractUser):
     userTipoDoc = models.CharField(max_length=8, choices=tipoDocumento, null=False, db_comment="Tipo de Documento")
-    userNoDoc = models.IntegerField( null=False, unique=True, db_comment="Numero de documento")
-    userTelefono = models.IntegerField( null=False, db_comment="Telefono del usuario")
+    userNoDoc = models.IntegerField( null=True, unique=True, db_comment="Numero de documento")
+    userTelefono = models.IntegerField( null=True, db_comment="Telefono del usuario")
     userFoto = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del Usuario")
     userTipo = models.CharField(max_length=15,choices=tiposUsuarios,db_comment="Nombre Tipo de usuario")
     userEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT,null=True,db_comment ="id del empleado, solo si el empleado tiene un usuario")
