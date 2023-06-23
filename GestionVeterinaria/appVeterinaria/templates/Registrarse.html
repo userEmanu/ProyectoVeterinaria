@@ -16,6 +16,7 @@
   {% load static %}
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
 
   
@@ -40,7 +41,8 @@
                     <p class="text-center small">Crea tu cuenta para una mejor navegacion</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" action="/registrarseUser/" method="post" >
+                    {% csrf_token %}
                     <div class="">
                       <label for="txtNombre" class="form-label">Nombres</label>
                       <input type="text" name="txtNombre" class="form-control" id="txtNombre" required>
@@ -63,13 +65,13 @@
 
                     <div class="">
                       <label for="txtContraseña" class="form-label">Contraseña</label>
-                      <input type="text" name="password" class="form-control" id="txtContraseña" required>
+                      <input type="text" name="txtContraseña" class="form-control" id="txtContraseña" required>
                       <div class="invalid-feedback">Ingrese Contraseña</div>
                     </div>
                     <div>
                       <label for="cbIdentificacioon" class="form-label">Tipo de Documento y Numero</label>
                       <div class="input-group ">                      
-                      <select class="form-select" id="cbIdentificacioon" >
+                      <select class="form-select" id="cbIdentificacioon" name ="cbIdentificacioon">
                         <option value= "">Selecionar</option>
                         <option value= "TI">Tarjeta Identidad</option>
                         <option value= "CC">Cedula Ciudadania</option>
@@ -80,13 +82,12 @@
                     </div>
                     </div>
                     <div class="">
-                      <input type="text" name="number" class="form-control" id="txtTelefono" req
+                      <input type="number" name="txtTelefono" class="form-control" id="txtTelefono" req
                       uired placeholder="Numero Telefonico">
                       <div class="invalid-feedback">Ingrese Numero Telefonico</div>
                     </div>
                     <div class="form-group">
-                      <textarea class="form-control" id="txtDireccion" rows="2" required placeholder="Ingresa Tu Direccion"></textarea>
-                      <div class="invalid-feedback">Ingrese Direccion</div>
+                      <textarea class="form-control" id="txtDireccion" name="txtDireccion" rows="2" required placeholder="Ingresa Tu Direccion"> </textarea>
                     </div>
                     <div class="">
                       <div class="form-check">
@@ -96,10 +97,10 @@
                       </div>
                     </div>
                     <div class="">
-                      <button class="btn btn-primary w-100" type="submit" >Crear Cuenta</button>
+                      <button class="btn btn-primary w-100" type="submit">Crear Cuenta</button>
                     </div>
                     <div class="">
-                      <p class="small mb-0">Ya tienes cuenta? <a href="index.html">Iniciar Sesion</a></p>
+                      <p class="small mb-0">Ya tienes cuenta? <a href="/inicio/">Iniciar Sesion</a></p>
                     </div>
                   </form>
 
@@ -120,7 +121,7 @@
   <!-- Vendor JS Files -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src=" {% static '../static/js/registrarUser.js' %}"></script>
 
 
 

@@ -74,31 +74,40 @@ def registrarseUsuario(request):
     try: 
         estado = False
         mensaje = ""
-        datos = json.loads(request.body)
+        tipoDoc = request.POST.get('cbIdentificacioon')
+        identificacion = request.POST.get('txtIdentificacion')
+        telefono = request.POST.get('txtTelefono')
+        nombre = request.POST.get('txtNombre')
+        apellido = request.POST.get('txtApellido')
+        email =  request.POST.get('txtCorreo')
+        contraseña = request.POST.get('txtContraseña')
         with transaction.atomic():
-            usuario = User(userTipoDoc = datos["tipoIde"],  userNoDoc = datos["identificacion"], userTelefono = datos["Telefono"],
-                        userTipo = "Usuario", first_name = datos["nombre"], last_name = datos["apellido"], email = datos["correo"],
-                        username = datos["correo"])
+            usuario = User(userTipoDoc = tipoDoc,  userNoDoc = identificacion, userTelefono = telefono,
+                        userTipo = "Usuario", first_name = nombre, last_name = apellido , email = email,
+                        username = email)
             usuario.save()
             rol = Group.objects.get(pk=1)
             usuario.groups.add(rol)
             if(rol.name=="Administrador"):usuario.is_staff = True
             usuario.save()
-            print(datos["contraseña"])
-            usuario.set_password(datos["contraseña"])
+            print(contraseña)
+            usuario.set_password(contraseña)
             usuario.save()
             
             mensaje = "Felicitaciones, eres un nuevo usuario, Bienvenido a nuestra"
             retorno = {"mensaje": mensaje}
             asunto='Registro Sistema Veterinaria Animalagro'
-            mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos.\
+            mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos,\
                 informarle que usted ha sido registrado en el Sistema de nuestra veterinaria Animalagro \
                 ubicada en campoalegre, Huila, ubicada Ca 12 calle 18.\
                 Nos permitimos enviarle las credenciales de Ingreso a nuestro sistema.<br>\
                 <br><b>Username: </b> {usuario.username}\
-                <br><b>Password: </b> {datos["contraseña"]}\
-                '
+                <br><b>Password: </b> {contraseña}'
             thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, usuario.email) )
             thread.start()
+            estado = True
     except Error as error:
+        transaction.rollback()
         print(error)
+    retorno = {"mensaje": mensaje, "estado": estado}  
+    return JsonResponse(retorno)

@@ -13,7 +13,7 @@
     {% load static %}
     <!-- custom css file link  -->
     <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
-    
+
 </head>
 <body>
     
@@ -39,15 +39,12 @@
         <center><h3>Inicio Sesión</h3>
         <input type="email" name="" placeholder="Usuario o Email" id="" class="box">
         <input type="password" name="" placeholder="Contraseña o Codigo" id="" class="box">
-        <div class="remember">
-            <input type="checkbox" name="" id="remember-me">
-            <label for="remember-me">Recordar Contraseña</label>
-        </div>
+        
         </center>
         <a href="Administrador/index.html" class="btn">Iniciar Sesion</a>
         <div class="links">
             <a href="RecuperarContraseña.html">Olvide Mi Contraseña</a>
-            <a href="Registrarse.html">Registrarser</a>
+            <a href="/vistaRegistrarse/">Registrarser</a>
         </div>
     </form>
 

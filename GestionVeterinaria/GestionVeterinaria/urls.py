@@ -23,13 +23,15 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.vistaInicio),
+    path('inicio/',views.vistaInicio),
     path('citas/', views.vistaCitas),
     path('codigo/', views.vistaCodigo),
     path('administrador/',views.vistaAdministrador),
     path('usuario/',views.vistaPerfilUsuario),
     path('usuarios/',views.vistaUsuario),
     path('RecuperarContra/', views.vistaRecuperarContra),
-    path('Registrarse/',views.vistaRegistrarse)
+    path('vistaRegistrarse/',views.vistaRegistrarse),
+    path('registrarseUser/', views.registrarseUsuario)
 ]
 
 
