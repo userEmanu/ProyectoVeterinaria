@@ -6,8 +6,6 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Agropecuaria Animalagro</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
 
   <!-- Favicons -->
   
@@ -44,54 +42,52 @@
 
                   <form class="row g-3 needs-validation" novalidate>
                     <div class="">
-                      <label for="yourName" class="form-label">Nombres</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
+                      <label for="txtNombre" class="form-label">Nombres</label>
+                      <input type="text" name="txtNombre" class="form-control" id="txtNombre" required>
                       <div class="invalid-feedback">Ingrese Nombres</div>
                     </div>
 
                     <div class="">
-                      <label for="yourEmail" class="form-label">Apellidos</label>
-                      <input type="text" name="email" class="form-control" id="yourEmail" required>
+                      <label for="txtApellido" class="form-label">Apellidos</label>
+                      <input type="text" name="txtApellido" class="form-control" id="txtApellido" required>
                       <div class="invalid-feedback">Ingrese Apellidos</div>
                     </div>
 
                     <div class="">
-                      <label for="yourUsername" class="form-label">Correo Electronico</label>
                       <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <span class="input-group-text" id="">@</span>
+                        <input type="text" name="txtCorreo" class="form-control" id="txtCorreo" required placeholder="Correo Electronico">
                         <div class="invalid-feedback">Ingrese Correo Electronico</div>
                       </div>
                     </div>
 
                     <div class="">
-                      <label for="yourPassword" class="form-label">Contraseña</label>
-                      <input type="text" name="password" class="form-control" id="yourPassword" required>
+                      <label for="txtContraseña" class="form-label">Contraseña</label>
+                      <input type="text" name="password" class="form-control" id="txtContraseña" required>
                       <div class="invalid-feedback">Ingrese Contraseña</div>
                     </div>
                     <div>
-                      <label for="yourPassword" class="form-label">Tipo de Documento y Numero</label>
+                      <label for="cbIdentificacioon" class="form-label">Tipo de Documento y Numero</label>
                       <div class="input-group ">                      
-                      <select class="form-select" >
-                        <option>Selecionar</option>
-                        <option>T.I</option>
-                        <option>C.C</option>
+                      <select class="form-select" id="cbIdentificacioon" >
+                        <option value= "">Selecionar</option>
+                        <option value= "TI">Tarjeta Identidad</option>
+                        <option value= "CC">Cedula Ciudadania</option>
+                        <option value= "CCE">Cedula Extranjera</option>
                       </select>
-                      <input type="number" class="form-control" placeholder="Numero De Documento">
+                      <input type="number" class="form-control" placeholder="Numero De Documento" name="txtIdentificacion" id="txtIdentificacion">
                       <div class="invalid-feedback">Ingrese Documento</div>
                     </div>
                     </div>
                     <div class="">
-                      <label for="yourPassword" class="form-label">Numero Telefonico</label>
-                      <input type="text" name="password" class="form-control" id="yourPassword" required>
+                      <input type="text" name="number" class="form-control" id="txtTelefono" req
+                      uired placeholder="Numero Telefonico">
                       <div class="invalid-feedback">Ingrese Numero Telefonico</div>
                     </div>
-                    <div class="">
-                      <label for="yourPassword" class="form-label">Direccion</label>
-                      <input type="text" name="password" class="form-control" id="yourPassword" required>
+                    <div class="form-group">
+                      <textarea class="form-control" id="txtDireccion" rows="2" required placeholder="Ingresa Tu Direccion"></textarea>
                       <div class="invalid-feedback">Ingrese Direccion</div>
                     </div>
-
                     <div class="">
                       <div class="form-check">
                         <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
@@ -100,7 +96,7 @@
                       </div>
                     </div>
                     <div class="">
-                      <button class="btn btn-primary w-100" type="submit">Crear Cuenta</button>
+                      <button class="btn btn-primary w-100" type="submit" >Crear Cuenta</button>
                     </div>
                     <div class="">
                       <p class="small mb-0">Ya tienes cuenta? <a href="index.html">Iniciar Sesion</a></p>
@@ -119,7 +115,7 @@
     </div>
   </main><!-- End #main -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
 
   <!-- Vendor JS Files -->
 
