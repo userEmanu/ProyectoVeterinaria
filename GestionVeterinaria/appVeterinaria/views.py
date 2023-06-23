@@ -89,5 +89,16 @@ def registrarseUsuario(request):
             usuario.save()
             
             mensaje = "Felicitaciones, eres un nuevo usuario, Bienvenido a nuestra"
+            retorno = {"mensaje": mensaje}
+            asunto='Registro Sistema Veterinaria Animalagro'
+            mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos.\
+                informarle que usted ha sido registrado en el Sistema de nuestra veterinaria Animalagro \
+                ubicada en campoalegre, Huila, ubicada Ca 12 calle 18.\
+                Nos permitimos enviarle las credenciales de Ingreso a nuestro sistema.<br>\
+                <br><b>Username: </b> {usuario.username}\
+                <br><b>Password: </b> {datos["contraseña"]}\
+                '
+            thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, usuario.email) )
+            thread.start()
     except Error as error:
         print(error)
