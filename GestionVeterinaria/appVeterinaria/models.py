@@ -90,6 +90,7 @@ class User(AbstractUser):
     userFoto = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del Usuario")
     userTipo = models.CharField(max_length=15,choices=tiposUsuarios,db_comment="Nombre Tipo de usuario")
     userEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT,null=True,db_comment ="id del empleado, solo si el empleado tiene un usuario")
+    userCodigo = models.IntegerField(null=True, db_comment="Codigo Recuperacion")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     

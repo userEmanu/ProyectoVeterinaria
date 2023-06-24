@@ -128,4 +128,5 @@ def IniciarSesion(request):
         mensaje = "Usuario o Contraseña Incorrectas"
         return render(request, "index.html",{"mensaje":mensaje})
     
+    
 # Aqui las funciones que retornan JSON
