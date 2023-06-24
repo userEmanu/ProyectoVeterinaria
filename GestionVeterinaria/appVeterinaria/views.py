@@ -68,8 +68,6 @@ def enviarCorreo (asunto=None, mensaje=None, destinatario=None):
         print(error)
 
 
-# Aqui las funciones que retornan JSON
-
 def registrarseUsuario(request):
     try: 
         estado = False
@@ -110,4 +108,24 @@ def registrarseUsuario(request):
         transaction.rollback()
         print(error)
     retorno = {"mensaje": mensaje, "estado": estado}  
-    return JsonResponse(retorno)
+    return render(request,"Registrarse.html",retorno)
+
+def IniciarSesion(request):
+    usernamee= request.POST["txtUsuario"] 
+    passworde = request.POST["txtContraseña"]
+    user = authenticate(username=usernamee, password=passworde)
+    print (user)
+    if user is not None:
+        #registrar la variable de sesión
+        auth.login(request, user)
+        if user.groups.filter(name='Usuario').exists():
+            return redirect('/vistaIndexUsuario/')
+        elif user.groups.filter(name='Asistente').exists():
+            return redirect('/inicio/')
+        else:
+            return redirect('/inicio/')
+    else:
+        mensaje = "Usuario o Contraseña Incorrectas"
+        return render(request, "index.html",{"mensaje":mensaje})
+    
+# Aqui las funciones que retornan JSON

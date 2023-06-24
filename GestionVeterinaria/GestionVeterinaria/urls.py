@@ -24,14 +24,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.vistaInicio),
     path('inicio/',views.vistaInicio),
-    path('citas/', views.vistaCitas),
-    path('codigo/', views.vistaCodigo),
-    path('administrador/',views.vistaAdministrador),
-    path('usuario/',views.vistaPerfilUsuario),
-    path('usuarios/',views.vistaUsuario),
-    path('RecuperarContra/', views.vistaRecuperarContra),
+    path('vistaCitas/', views.vistaCitas),
+    path('vistaCodigo/', views.vistaCodigo),
+    path('vistaAdministrador/',views.vistaAdministrador),
+    path('vistaPerfilusuario/',views.vistaPerfilUsuario),
+    path('vistaIndexUsuario/',views.vistaUsuario),
+    path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
-    path('registrarseUser/', views.registrarseUsuario)
+    path('registrarseUser/', views.registrarseUsuario),
+    path('iniciarSesion/',views.IniciarSesion)
 ]
 
 

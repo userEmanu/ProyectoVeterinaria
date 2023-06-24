@@ -117,12 +117,27 @@
   </main><!-- End #main -->
 
   
-
+  <script>
+    {% if mensaje %}
+    Swal.fire({
+        title: 'Bienvenido, ya puedes Iniciar Sesion',
+        text: '{{mensaje}}',
+        icon: 'Succes',               
+        confirmButtonColor: '#3085d6',             
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+        if (result.isConfirmed) {           
+            location.href="/inicio/"
+        }
+    });
+    {% endif %}
+</script>
   <!-- Vendor JS Files -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src=" {% static '../static/js/registrarUser.js' %}"></script>
 
+  
 
 
 </body>
