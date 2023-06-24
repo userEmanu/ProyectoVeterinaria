@@ -10,6 +10,7 @@ from django.contrib import auth
 from django.conf import settings
 import urllib
 import json
+import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 import threading
@@ -110,23 +111,53 @@ def registrarseUsuario(request):
     retorno = {"mensaje": mensaje, "estado": estado}  
     return render(request,"Registrarse.html",retorno)
 
+
 def IniciarSesion(request):
-    usernamee= request.POST["txtUsuario"] 
-    passworde = request.POST["txtContraseña"]
-    user = authenticate(username=usernamee, password=passworde)
-    print (user)
-    if user is not None:
-        #registrar la variable de sesión
-        auth.login(request, user)
-        if user.groups.filter(name='Usuario').exists():
-            return redirect('/vistaIndexUsuario/')
-        elif user.groups.filter(name='Asistente').exists():
-            return redirect('/inicio/')
-        else:
-            return redirect('/inicio/')
-    else:
-        mensaje = "Usuario o Contraseña Incorrectas"
-        return render(request, "index.html",{"mensaje":mensaje})
+    try:
+        with transaction.atomic():
+            usernamee= request.POST["txtUsuario"] 
+            passworde = request.POST["txtContraseña"]
+            user = authenticate(username=usernamee, password=passworde)
+            print (user)
+            if user is not None:
+                #registrar la variable de sesión
+                auth.login(request, user)
+                if user.groups.filter(name='Usuario').exists():
+                    return redirect('/vistaIndexUsuario/')
+                elif user.groups.filter(name='Asistente').exists():
+                    return redirect('/inicio/')
+                else:
+                    return redirect('/inicio/')
+            else:
+                mensaje = "Usuario o Contraseña Incorrectas"
+                return render(request, "index.html",{"mensaje":mensaje})
+    except Error as erro:
+        transaction.rollback()
+        print(erro)
+    
+
+def VerificarCorreo(request):
+    try:
+        with transaction.atomic():
+            correo =  request.POST.get('txtCorreo')
+            Usuario = None
+            Usuario = User.objects.get(email = correo)
+            if Usuario != None:
+                codigo = random.randint(0, 99999)
+                Usuario.userCodigo = codigo
+                Usuario.save()
+                asunto='Recuperar Cuenta Sistema Veterinaria Animalagro'
+                mensaje=f'Cordial saludo, <b>{Usuario.first_name} {Usuario.last_name}</b>, nos permitimos,\
+                    informarle que este es el codigo de recuperacion de su cuenta.\
+                    Porfavor No responder este mensaje, este Codigo es unico, No lo comparta.<br>\
+                    <br><b>Codigo: </b> {codigo}'
+                thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, Usuario.email) )
+                thread.start()
+            
+    except Error as erro:
+        transaction.rollback()
+        print(erro)
+        
     
     
 # Aqui las funciones que retornan JSON
