@@ -29,7 +29,7 @@ def vistaCodigo(request):
     return render(request, "codigoRecuperar.html")
 
 def vistaAdministrador(request):
-    return render(request, "indexe.html")
+    return render(request, "Administrador/index.html")
 
 def vistaUsuario(request):
     return render(request, "indexUsuario.html")

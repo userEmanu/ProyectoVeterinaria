@@ -8,11 +8,12 @@
     <title>Agropecuaria Animalagro</title>
 
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     
     {% load static %}
     <!-- custom css file link  -->
     <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -24,7 +25,7 @@
     <a href="#" class="logo"> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
 
     <nav class="navbar">
-        <a href="#home">Inicio</a>
+        <a href="/vistaAdministrador/">Inicio</a>
         <a href="#about">Promociones</a>
         <a href="">Productos</a>
         <a href="#services">Servicios</a>
