@@ -43,13 +43,13 @@
                     <p class="text-center small">Recupera tu cuenta con el correo Electronico</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" validate>                                        
+                  <form class="row g-3 needs-validation" action ="/verificarCorreo/" method="post" >      
+                    {% csrf_token %}                                  
                     <div class="">
-                      <label for="yourUsername" class="form-label">Correo Electronico</label>
+                      <label for="txtCorreo" class="form-label">Correo Electronico</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="txtCorreo" class="form-control" id="txtCorreo" required>
-                        <div class="invalid-feedback">Ingrese Correo Electronico</div>
+                        <input type="email" name="txtCorreo" class="form-control" id="txtCorreo" required>
                       </div>
                     </div>
                     <div class="">
@@ -70,7 +70,20 @@
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div class="text-center">
+    <script>
+  {% if mensaje %}
+  Swal.fire({
+    title: '{{titulo}}',
+    text: '{{mensaje}}',
+    icon: '{{error}}',               
+    confirmButtonColor: '#3085d6',             
+    confirmButtonText: 'Aceptar'
+  });
 
+  {% endif %}
+</script>
+</div> 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

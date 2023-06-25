@@ -38,12 +38,14 @@ def vistaPerfilUsuario(request):
     return render(request, "perfilUsuario.html")
 
 def vistaRecuperarContra(request):
-    return render(request, "recuperarContraseña.html")
+    return render(request, "RecuperarContraseña.html")
 
 def vistaRegistrarse(request):
     retorno = {"identificacion": tipoDocumento}
     return render(request, "Registrarse.html", retorno)
 
+def vistConNueva(request):
+    return render(request, "DigitarContraseñaNueva.html")
 
 # Aqui las vistas Gestion, son las que se cargan con datos o tienen Tablas 
 
@@ -93,7 +95,7 @@ def registrarseUsuario(request):
             usuario.set_password(contraseña)
             usuario.save()
             
-            mensaje = "Felicitaciones, eres un nuevo usuario, Bienvenido a nuestra"
+            mensajes = "Felicitaciones, Eres un nuevo usuario, Ya puedes Iniciar Sesion"
             retorno = {"mensaje": mensaje}
             asunto='Registro Sistema Veterinaria Animalagro'
             mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos,\
@@ -108,7 +110,7 @@ def registrarseUsuario(request):
     except Error as error:
         transaction.rollback()
         print(error)
-    retorno = {"mensaje": mensaje, "estado": estado}  
+    retorno = {"mensaje": mensajes, "estado": estado}  
     return render(request,"Registrarse.html",retorno)
 
 
@@ -138,9 +140,9 @@ def IniciarSesion(request):
 
 def VerificarCorreo(request):
     try:
+        correo =  request.POST['txtCorreo']
+        Usuario = None
         with transaction.atomic():
-            correo =  request.POST.get('txtCorreo')
-            Usuario = None
             Usuario = User.objects.get(email = correo)
             if Usuario != None:
                 codigo = random.randint(0, 99999)
@@ -153,11 +155,87 @@ def VerificarCorreo(request):
                     <br><b>Codigo: </b> {codigo}'
                 thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, Usuario.email) )
                 thread.start()
-            
+                print(Usuario.pk)
+                retorno = {"id": Usuario.pk}
+                return render(request,'codigoRecuperar.html', retorno )               
+            else:
+                mensaje = "Correo Incorrecto"
+                error = "error"
+                titulo ="ERROR"
+                return render(request, "RecuperarContraseña.html",{"mensaje":mensaje},{"error":error, "titulo":titulo} )
     except Error as erro:
         transaction.rollback()
         print(erro)
         
-    
+    mensaje = "Correo Incorrecto"
+    error = "error"
+    return render(request, "RecuperarContraseña.html",{"mensaje":mensaje},{"error":error} )
+        
+def verificarCodigo(request, id):
+    try:
+        with transaction.atomic():            
+            Usuario = None
+            codigo = None
+            codigo =  int(request.POST.get('txtCodigo'))
+            Usuario = User.objects.get(pk = id)
+            if Usuario != None:
+                if codigo != None:
+                    cod = int(Usuario.userCodigo)
+                    if codigo == cod:
+                        return render(request,'DigitarContraseñaNueva.html', {'id': Usuario.pk})
+                    else: 
+                        mensaje = "Codigo Incorrecto"
+                        error = "error"
+                        titulo = "Faltan Datos"
+                        return render(request, 'codigoRecuperar.html', {'id': Usuario.pk, 'mensaje': mensaje, 'error': error, 'titulo':titulo} )                        
+                else:
+                    mensaje="Digita todos los datos"
+                    error = "error"
+                    titulo = "Faltan Datos"
+                    return render(request,'codigoRecuperar.html', {'id': Usuario.pk, 'mensajes': mensaje, 'error': error, 'titulo':titulo} )                        
+            else:
+                mensaje = "Correo Usuario No Existe"
+                error = "error"
+                titulo = "Erro Al Verfificar"
+                return redirect('/vistaRecuperarContra/',{"mensaje":mensaje},{"error":error} )
+            
+    except Error as erro:
+        transaction.rollback()
+        print(erro)
+
+def RegistrarNuevaContraseña(request, id):
+    try:
+        with transaction.atomic():
+            usuario = None
+            contraseña = None
+            contraseña =  request.POST['txtContraseña']
+            usuario = User.objects.get(pk = id)
+            if usuario != None:
+                if contraseña != None:
+                    
+                    usuario.set_password(contraseña)
+                    usuario.userCodigo = None
+                    usuario.save()
+                    asunto='Recuperacion De CuentaSistema Veterinaria Animalagro'
+                    mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos,\
+                        informarle que usted ha hecho el proceso de recuperacion de su cuenta de forma \
+                        exitosa, ya puedes volver Iniciar Sesion\
+                        Nos permitimos enviarle las credenciales actualizada de Ingreso a nuestro sistema.<br>\
+                        <br><b>Username: </b> {usuario.username}\
+                        <br><b>Password: </b> {contraseña}'
+                    thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, usuario.email) )
+                    thread.start()
+                    mensaje = "Recuperaste Tu contraseña Con Exito"
+                    tema = "success"
+                    titulo = "Felicitaciones"
+                    return redirect('/inicio/', {'mensaje': mensaje}, {'tema': tema}, {'titulo':titulo} )                 
+                else:
+                    mensaje = "Digita La Contraseña"
+                    error = "error"
+                    titulo = "Faltan Datos"
+                    return redirect('/vistaConNueva/', {'id': usuario.pk}, {'mensaje': mensaje}, {'error': error}, {'titulo':titulo} )        
+        
+    except Error as erro:
+         transaction.rollback()
     
 # Aqui las funciones que retornan JSON

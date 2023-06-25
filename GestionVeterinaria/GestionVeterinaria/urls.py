@@ -31,8 +31,12 @@ urlpatterns = [
     path('vistaIndexUsuario/',views.vistaUsuario),
     path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
+    path('vistaConNueva/',views.vistConNueva),
     path('registrarseUser/', views.registrarseUsuario),
-    path('iniciarSesion/',views.IniciarSesion)
+    path('iniciarSesion/',views.IniciarSesion),
+    path('verificarCorreo/', views.VerificarCorreo),
+    path('verificarCodigo/<int:id>', views.verificarCodigo),
+    path('contraseñaNueva/<int:id>', views.RegistrarNuevaContraseña)
 ]
 
 

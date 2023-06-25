@@ -265,6 +265,17 @@
 
 <!-- custom js file link  -->
 <script src=" {% static '../static/js/script.js' %}"></script>
-
+<script>
+    {% if mensaje %}
+    Swal.fire({
+      title: '{{titulo}}',
+      text: '{{mensaje}}',
+      icon: '{{tema}}',               
+      confirmButtonColor: '#3085d6',             
+      confirmButtonText: 'Aceptar'
+    });
+  
+    {% endif %}
+  </script>
 </body>
 </html>

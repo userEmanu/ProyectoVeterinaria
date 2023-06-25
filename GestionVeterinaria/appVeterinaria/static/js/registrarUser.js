@@ -6,11 +6,10 @@
 //     correo = document.getElementById("txtCorreo").value
 //     contraseña = document.getElementById("txtContraseña").value
 //     telefono = document.getElementById("txtTelefono").value
-//     direccion = document.getElementById("txtDireccion").value
 //     op =document.getElementById("cbIdentificacioon").value
 //     tipo = op.options[op.selectedIndex].value
 //     estado = true
-//     if ((nombre == "") && (apellido == "") && (identificacion == "")  && (correo== "") && (contraseña == "") && (telefono == "") && (direccion == "") && (tipo == "")) {
+//     if ((nombre == "") && (apellido == "") && (identificacion == "")  && (correo== "") && (contraseña == "") &&  (tipo == "")) {
 //         return false
 //     }
 // }
@@ -28,7 +27,6 @@
 //             "correo": document.getElementById("txtCorreo").value,
 //             "contraseña": document.getElementById("txtContraseña").value,
 //             "Telefono": parseInt(document.getElementById("txtTelefono").value),
-//             "Dirrecion": document.getElementById("txtDireccion").value,
 //             "tipoIde": tipo
 //         }
 //         let options = {
@@ -44,11 +42,16 @@
 //             data => {
 //                 if(data.estado == True){
 //                     Swal.fire({
-//                         title: 'Bienvenido',
-//                         text: 'Felicitaciones Fuiste Agregado A Nuestro Sistema',
-//                         icon: 'success',                          
+//                         title: 'Eres Un Nuevo Usuario',
+//                         text: data.mensaje,
+//                         icon: 'Succes',               
+//                         confirmButtonColor: '#3085d6',             
 //                         confirmButtonText: 'Aceptar'
-//                     })
+//                     }).then((result) => {
+//                         if (result.isConfirmed) {           
+//                             location.href="/inicio/"
+//                         }
+//                     });
 //                 }
 //             }
 //         )
@@ -62,3 +65,16 @@
 //     }
 // }
 
+// function getCookie(name) {
+//     let cookieValue = null
+//     if (document.cookie && document.cookie !== '') {
+//         const cookies = document.cookie.split(';')
+//         for (let i = 0; i < cookies.length; i++) {
+//             const cookie = cookies[i].trim()
+//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+//                 return cookieValue;
+//             }
+//         }
+//     }
+// }

@@ -38,11 +38,14 @@
                     <p class="text-center small">Ingrese el codigo que se envio a su correo para verificar su cuenta, se reenviara a su correo la nueva contraseña</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" validate action="/verificarCodigo/{{id}}"  method="post" >  
-                    {% csrf_token %}                                        
-                    <input type="number" name="txtCodigo" class="form-control" id="txtCodigo" required placeholder="Codigo">                    
+                  <form class="row g-3 needs-validation" validate action="/contraseñaNueva/{{id}}"  method="post">     
+                    {% csrf_token %}                                     
+                    <div class="">
+                        <label for="txtCodigo" class="form-label">Codigo La Nueva Contraseña</label>
+                        <input type="text" name="txtContraseña" class="form-control" id="txtContraseña" required>
+                      </div>
                     <div class="text-center">
-                      <button class="btn btn-success w-100 " type="submit">Validar</button>
+                      <button class="btn btn-success w-100 " type="submit">Cambiar</button>
                     </div>                   
                   </form>
 
@@ -60,18 +63,7 @@
   
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    {% if mensaje %}
-    Swal.fire({
-      title: '{{titulo}}',
-      text: '{{mensaje}}',
-      icon: '{{error}}',               
-      confirmButtonColor: '#3085d6',             
-      confirmButtonText: 'Aceptar'
-    });
-  
-    {% endif %}
-  </script>
+
 </body>
 
 </html>

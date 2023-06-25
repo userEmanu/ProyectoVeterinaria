@@ -86,9 +86,6 @@
                       uired placeholder="Numero Telefonico">
                       <div class="invalid-feedback">Ingrese Numero Telefonico</div>
                     </div>
-                    <div class="form-group">
-                      <textarea class="form-control" id="txtDireccion" name="txtDireccion" rows="2" required placeholder="Ingresa Tu Direccion"> </textarea>
-                    </div>
                     <div class="">
                       <div class="form-check">
                         <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
@@ -96,8 +93,8 @@
                         <div class="invalid-feedback">Acepte los terminos y Condiciones</div>
                       </div>
                     </div>
-                    <div class="">
-                      <button class="btn btn-primary w-100" type="submit">Crear Cuenta</button>
+                    <div class="text-center">
+                      <button class="btn btn-primary w-80" type="submit">Crear Cuenta</button>
                     </div>
                     <div class="">
                       <p class="small mb-0">Ya tienes cuenta? <a href="/inicio/">Iniciar Sesion</a></p>
@@ -120,7 +117,7 @@
   <script>
     {% if mensaje %}
     Swal.fire({
-        title: 'Bienvenido, ya puedes Iniciar Sesion',
+        title: 'Bienvenido, Eres Nuevo usuario',
         text: '{{mensaje}}',
         icon: 'Succes',               
         confirmButtonColor: '#3085d6',             
