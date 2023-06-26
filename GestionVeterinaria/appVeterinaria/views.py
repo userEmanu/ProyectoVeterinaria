@@ -17,6 +17,7 @@ import threading
 from datetime import date, datetime
 from smtplib import SMTPException
 from django.http import JsonResponse
+from appVeterinaria.carrito import *
 
 # Aqui las vistas
 def vistaInicio(request):
@@ -46,6 +47,8 @@ def vistaRegistrarse(request):
 
 def vistConNueva(request):
     return render(request, "DigitarContraseñaNueva.html")
+
+
 
 # Aqui las vistas Gestion, son las que se cargan con datos o tienen Tablas 
 
@@ -237,6 +240,33 @@ def RegistrarNuevaContraseña(request, id):
         
     except Error as erro:
          transaction.rollback()
+    
+def vistaProductos(request):
+    productos = Producto.objects.all()
+    return render(request, "productos.html", {'productos':productos})
+
+def agregar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.agregar(producto)
+    return redirect("productos")
+
+def eliminar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.eliminar(producto)
+    return redirect("productos")
+
+def restar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.restar(producto)
+    return redirect("productos")
+
+def limpiar_carrito(request):
+    carrito = Carrito(request)
+    carrito.limpiar()
+    return redirect("productos")
 
 
     
