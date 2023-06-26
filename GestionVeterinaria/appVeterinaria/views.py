@@ -237,5 +237,8 @@ def RegistrarNuevaContraseña(request, id):
         
     except Error as erro:
          transaction.rollback()
+
+def agregarEmpleado(request):
+    
     
 # Aqui las funciones que retornan JSON
