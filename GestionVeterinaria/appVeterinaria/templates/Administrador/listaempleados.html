@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Administrador</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+
+
+    <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <h1 style="text-align: center;">Listar Empleados</h1>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-striped table-bordered table-hover" id="tablaempleados">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Telefono</th>
+                            <th>Direccion</th>
+                            <th>Numero De Documento</th>
+                            <th>Cargo</th>
+                            <th>Correo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lista in listarEmpleados %}
+                            <tr>
+                                <td>{{lista.Empleado.emNombre}}</td>
+                                <td>{{lista.Empleado.emApellido}}</td>
+                                <td>{{lista.Empleado.emTelefono}}</td>
+                                <td>{{lista.Empleado.emDireccion}}</td>
+                                <td>{{lista.Empleado.emNumeroDoc}}</td>
+                                <td>{{lista.Empleado.emCargo}}</td>
+                                <td>{{lista.Empleado.emCorreo}}</td>
+                            </tr>
+                      {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+        <button type="button" class="btn btn-primary"><a href="/perfiladmin/" style="color: white;">Regresar</a></button>
+        
+</body>
+
+</html>

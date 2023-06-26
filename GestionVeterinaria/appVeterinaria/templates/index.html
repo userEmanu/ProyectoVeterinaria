@@ -8,15 +8,13 @@
     <title>Agropecuaria Animalagro</title>
 
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     
     {% load static %}
     <!-- custom css file link  -->
-   
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     
@@ -29,7 +27,7 @@
     <nav class="navbar">
         <a href="/vistaAdministrador/">Inicio</a>
         <a href="#about">Promociones</a>
-        <a href="/vistaProductos/">Productos</a>
+        <a href="">Productos</a>
         <a href="#services">Servicios</a>
         <a href="#contact">Contacto</a>
     </nav>
@@ -51,6 +49,7 @@
             <a href="/vistaRegistrarse/">Registrarser</a>
         </div>
     </form>
+
 </header>
 
 <!-- header section ends -->
@@ -233,12 +232,13 @@
             <img src="{% static '../static/image/contact_img.png' %}" alt="">
         </div>
     
-        <form action="">
+        <form action="/registrarContactos/". method="post">
+            {% csrf_token%}
             <h3>Contactanos</h3>
-            <input type="text" placeholder="Nombre" class="box">
-            <input type="email" placeholder="Email" class="box">
-            <input type="tumber" placeholder="Numero Telefonico" class="box">
-            <textarea name="" placeholder="Mensaje" id="" cols="30" rows="10"></textarea>
+            <input type="text" placeholder="Nombre" id="txtNombreCon" name="txtNombreCon" class="box" requiered>
+            <input type="email" placeholder="Email" id="txtEmailCon" name="txtEmailCon" class="box" requiered>
+            <input type="number" placeholder="Numero Telefonico" id="txtNumeroCon" name="txtNumeroCon" class="box" requiered>
+            <input type="text" placeholder="Mensaje" id="txtMensajeCon" name="txtMensajeCon" class="box" requiered>
             <input type="submit" value="Enviar Mensaje" class="btn">
         </form>
     
@@ -259,16 +259,8 @@
     </section>
 </main>
 
-
-
-
-
-
-<script src="{% static '../static/js/script.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- custom js file link  -->
-
-
+<script src=" {% static '../static/js/script.js' %}"></script>
 <script>
     {% if mensaje %}
     Swal.fire({

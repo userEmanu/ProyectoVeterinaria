@@ -17,7 +17,7 @@ import threading
 from datetime import date, datetime
 from smtplib import SMTPException
 from django.http import JsonResponse
-from appVeterinaria.carrito import *
+from .models import Empleado
 
 # Aqui las vistas
 def vistaInicio(request):
@@ -48,6 +48,14 @@ def vistaRegistrarse(request):
 def vistConNueva(request):
     return render(request, "DigitarContraseñaNueva.html")
 
+def vistaAdministrador(request):
+    return render(request, "Administrador/index.html")
+
+def perfiladmin(request):
+    return render(request, "Administrador/perfiladmin.html")
+
+def VistaAgregarEmpleado(request):
+    return render(request, "Administrador/frmagregarempleado.html")
 
 
 # Aqui las vistas Gestion, son las que se cargan con datos o tienen Tablas 
@@ -241,33 +249,169 @@ def RegistrarNuevaContraseña(request, id):
     except Error as erro:
          transaction.rollback()
     
-def vistaProductos(request):
-    productos = Producto.objects.all()
-    return render(request, "productos.html", {'productos':productos})
-
-def agregar_producto(request, id):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
-    carrito.agregar(producto)
-    return redirect("productos")
-
-def eliminar_producto(request, id):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
-    carrito.eliminar(producto)
-    return redirect("productos")
-
-def restar_producto(request, id):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
-    carrito.restar(producto)
-    return redirect("productos")
-
-def limpiar_carrito(request):
-    carrito = Carrito(request)
-    carrito.limpiar()
-    return redirect("productos")
-
-
-    
 # Aqui las funciones que retornan JSON
+
+################################################################
+#Bloque De Codigo para El Apartado De Contactos
+
+def registrarContactos(request):
+    nombreCon = request.POST["txtNombreCon"]
+    emailCon = request.POST["txtEmailCon"]
+    numeroCon = int(request.POST["txtNumeroCon"])
+    mensajeCon = request.POST["txtMensajeCon"]
+    try:
+        #Creamos el Contactos
+        contac = Contactanos(conNombre = nombreCon, conEmail = emailCon, conNumeroTe = numeroCon,
+                           conMensaje =mensajeCon)
+        contac.save()
+        mensaje="Solicitud De Contacto Enviado Correctamente"
+    
+    except Error as error:
+        mensaje =f"Problemas Al Enviar La Solicitud De Contacto. {error}"
+
+    retorno = {"mensaje": mensaje, "contac": contac}
+    return render(request,"index.html", retorno)
+
+################################################################
+#Bloque de codigo para agregar un empleado 
+def vistaAgregarEmpleado(request):
+    if request.method == 'POST':
+        nombreE = request.POST["txtNombreEm"]
+        apellidoE = request.POST["txtApellidoEm"]
+        telefonoE = int(request.POST["txtTelefonoEm"])
+        direccionE = request.POST["txtDireccionEm"]
+        tipoDocE = request.POST["txtTipoDocEm"]
+        numeroDocE = int(request.POST["txtNumeroDocEm"])
+        cargoE = request.POST["txtCargoEm"]
+        correoE = request.POST["txtCorreoEm"]
+
+    try:
+        empleado = Empleado(emNombre = nombreE, emApellido =apellidoE, emTelefono=telefonoE, 
+                            emDireccion=direccionE,emTipoDoc=tipoDocE,
+                            emNumeroDoc=numeroDocE, emCargo=cargoE, emCorreo=correoE)
+        empleado.save()
+        mensaje ="Empleado agregado correctamente"
+        return redirect("/listarEmpleados/")
+    except Error as error:
+        mensaje=f"Problemas al agregar empleado. {error}"
+
+    retorno = {"mensaje":mensaje, "empleado":empleado}
+    return render(request,"Administrador/frmagregarempleado.html", retorno)
+
+
+
+def listarEmpleados(request):
+    try: 
+        empleados = Empleado.objects.all()
+        mensaje=""
+        print(empleados)
+    except:
+        mensaje="Problemas al obtener los empleados"
+    retorno = {"mensaje":mensaje, "listarEmpleados":empleados}
+    return render(request,"Administrador/listaempleados.html", retorno)
+
+########################################################################
+#Bloque De Codigo Para Agregar Proveedor
+
+def VistaRegistrarProveedor(request):
+    if request.method == 'POST':
+        try:
+            # Traemos los datos del formulario de proveedor
+            NombreP = request.POST.get("txtNombrePro")
+            NombreRepresentante = request.POST.get("txtNombreRepre")
+            DireccionEmpresa = request.POST.get("txtDireccionPro")
+            TelefonoProveedor = int(request.POST.get("txtTelefonoPro"))
+            NitEmpresa = int(request.POST.get("txtNitPro"))
+            
+            # Creamos un proveedor
+            proveedor = Proveedor(
+                proNombre=NombreP,
+                proRepresentante=NombreRepresentante,
+                proDireccion=DireccionEmpresa,
+                proTelefono=TelefonoProveedor,
+                proNit=NitEmpresa
+            )
+            # Guardamos el proveedor en la base de datos
+            proveedor.save()
+            mensaje = "Proveedor agregado correctamente"
+        except Exception as error:
+            mensaje = f"Error: {str(error)}"
+    else:
+        mensaje = ""
+        proveedor = None
+    
+    retorno = {"mensaje": mensaje, "provedor": proveedor}
+    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+
+##########################################################
+#Bloque de codigo para guardar la categoria
+def VistaRegistrarCategoria(request):
+    if request.method == 'POST':
+        try:
+            NombreCategoria = request.POST.get("txtNombreCat")
+            #Creamos una categoria
+            categoria = Categoria(catNombre=NombreCategoria)
+            # Guardamos el proveedor en la base de datos
+            categoria.save()
+            mensaje = "Categoria agregada correctamente"
+        
+        except Exception as error:
+            mensaje = f"Error: {str(error)}"
+    else:
+        mensaje = ""
+        categoria= None
+    
+    retorno = {"mensaje": mensaje}
+    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+
+#####################################################################
+#Bloque De Codigo Para Guardar Los Productos
+
+
+def VistaProductos(request):
+    proveedores = Proveedor.objects.all()
+    categorias = Categoria.objects.all()
+    es = estadoProducto
+    retorno = {"proveedores": proveedores, "categorias": categorias, "estados": es}
+    print(retorno)
+    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+
+
+def RegistrarProducto(request):
+    if request.method == 'POST':
+        estado = False
+        try:
+            with transaction.atomic():
+                # Traemos los datos del formulario de productos
+                nombre_producto = request.POST.get("txtNombreP")
+                estado_pro = request.POST.get("cbEstado")
+                precio_producto = int(request.POST.get("txtPrecioP"))
+                archivo = request.FILES.get("fileFoto")
+                descripcion_producto = request.POST.get("txtDescripcionP")
+                id_proveedor = int(request.POST.get('cbProvedor'))
+                id_categoria = int(request.POST.get('cbCategoria'))
+                cat_recibe = Categoria.objects.get(pk=id_categoria)
+                pro_recibe = Proveedor.objects.get(pk=id_proveedor)
+
+                # Creamos un producto
+                producto = Producto(
+                    proNombre=nombre_producto,
+                    proEstado=estado_pro,
+                    proPrecio=precio_producto,
+                    proDescripcion=descripcion_producto,
+                    proFoto=archivo,
+                    proProveedor=pro_recibe,
+                    proCategoria=cat_recibe
+                )
+                producto.save()
+                estado = True
+                titulo = "Agregado Correctamente"
+                mensaje = "Se ha registrado el producto correctamente"
+                tema = "success"
+
+        except Error as error:
+            transaction.rollback()
+            mensaje = str(error)
+
+        retorno = {"estado": estado, "mensaje": mensaje, "titulo": titulo, "tema": tema}
+        return render(request, "Administrador/frmAgregarProveedor.html", retorno)

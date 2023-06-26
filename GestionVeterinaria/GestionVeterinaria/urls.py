@@ -26,22 +26,30 @@ urlpatterns = [
     path('inicio/',views.vistaInicio),
     path('vistaCitas/', views.vistaCitas),
     path('vistaCodigo/', views.vistaCodigo),
+
     path('vistaAdministrador/',views.vistaAdministrador),
+    path('perfiladmin/',views.perfiladmin),
+
+    path('AgregarEmpleado/',views.vistaAgregarEmpleado),
+    path('VistaAgregarEmpleado/',views.VistaAgregarEmpleado),
+    path('listarEmpleados/',views.listarEmpleados),
+    path('RegistrarProveedor/', views.VistaRegistrarProveedor),
+    path('RegistrarCategoria/', views.VistaRegistrarCategoria),
+    path('VistaProductos/', views.VistaProductos),
+    path('RegistrarProducto/', views.RegistrarProducto),
+
+
     path('vistaPerfilusuario/',views.vistaPerfilUsuario),
     path('vistaIndexUsuario/',views.vistaUsuario),
     path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
     path('vistaConNueva/',views.vistConNueva),
-    path('vistaProductos/', views.vistaProductos, name="productos"),
     path('registrarseUser/', views.registrarseUsuario),
     path('iniciarSesion/',views.IniciarSesion),
     path('verificarCorreo/', views.VerificarCorreo),
     path('verificarCodigo/<int:id>', views.verificarCodigo),
     path('contraseñaNueva/<int:id>', views.RegistrarNuevaContraseña),
-    path('agregar/<int:id>/', views.agregar_producto, name="Add"),
-    path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
-    path('restar/<int:id>/', views.restar_producto, name="Sub"),
-    path('limpiar/', views.limpiar_carrito, name="CLS"),
+    path('registrarContactos/', views.registrarContactos),
 ]
 
 

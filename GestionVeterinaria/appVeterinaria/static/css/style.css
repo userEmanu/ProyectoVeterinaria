@@ -17,7 +17,7 @@ html {
   font-size: 62.5%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  scroll-padding-top: 4rem; 
+  scroll-padding-top: 4rem;
 }
 
 html::-webkit-scrollbar {
@@ -132,36 +132,7 @@ section {
           transform: translateY(0rem);
 }
 
-.header .logo {
-  font-size: 2.5rem;
-  color: #130f40;
-  font-weight: bolder;
-}
 
-
-
-.header .navbar a {
-  margin: 0 1rem;
-  font-size: 1.7rem;
-  color: #666;
-}
-
-.header .navbar a:hover {
-  color: #148a38;
-}
-
-.header .icons a,
-.header .icons div {
-  font-size: 2.5rem;
-  margin-left: 1.5rem;
-  color: #130f40;
-  cursor: pointer;
-}
-
-.header .icons a:hover,
-.header .icons div:hover {
-  color: #14863a;
-}
 
 .header .login-form {
   position: absolute;

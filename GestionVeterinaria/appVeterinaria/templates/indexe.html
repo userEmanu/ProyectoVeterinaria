@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="estilo.css">
+    <script src="app.js" async></script>
+    <title>Agropecuaria Animalagro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styleProductos.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+
+        <a href="#" class="logo"> <i class=""><img src="image/logo.jpg" alt="" width="25" height="25"></i> Animalagro </a>
+    
+        <nav class="navbar">
+            <a href="#">Inicio</a>
+            <a href="#">Promociones</a>
+            <a href="#">Productos</a>
+            <a href="#">Servicios</a>
+            <a href="#">Contacto</a>
+        </nav>
+        <div class="icons">
+            <div class="fas fa-bars" id="menu-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+    
+        <form action="" class="login-form">
+            <center><h3>Inicio Sesión</h3>
+            <input type="email" name="" placeholder="Usuario o Email" id="" class="box">
+            <input type="password" name="" placeholder="Contraseña o Codigo" id="" class="box">
+            <div class="remember">
+                <input type="checkbox" name="" id="remember-me">
+                <label for="remember-me">Recordar Contraseña</label>
+            </div>
+            </center>
+            <input type="submit" value="Iniciar Sesion" class="btn">
+            <div class="links">
+                <a href="RecuperarContraseña.html">Olvide Mi Contraseñaaa</a>
+                <a href="Registrarse.html">Registrarser</a>
+            </div>
+        </form>
+    
+    </header>
+    <section class="contenedor">
+        <!-- Contenedor de elementos -->
+        <div class="contenedor-items">
+            <div class="item">
+                <span class="titulo-item">Box Engasse</span>
+                <img src="../static/image/product_01.jpg" alt="" class="img-item">
+                <span class="precio-item">$15.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">English Horse</span>
+                <img src="../static/image/product_02.jpg" alt="" class="img-item">
+                <span class="precio-item">$25.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Knock Nap</span>
+                <img src="../static/image/product_03.jpg" alt="" class="img-item">
+                <span class="precio-item">$35.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">La Night</span>
+                <img src="../static/image/product_04.jpg" alt="" class="img-item">
+                <span class="precio-item">$18.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Silver All</span>
+                <img src="../static/image/product_05.jpg" alt="" class="img-item">
+                <span class="precio-item">$32.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+            <div class="item">
+                <span class="titulo-item">Skin Glam</span>
+                <img src="../static/image/product_06.jpg" alt="" class="img-item">
+                <span class="precio-item">$18.000</span>
+                <button class="boton-item">Agregar al Carrito</button>
+            </div>
+        </div>
+        <!-- Carrito de Compras -->
+        <div class="carrito" id="carrito">
+            <div class="header-carrito">
+                <h2>Carrito de compra</h2>
+            </div>
+
+            <div class="carrito-items">
+                
+                
+            </div>
+            <div class="carrito-total">
+                <div class="fila">
+                    <strong>Tu Total</strong>
+                    <span class="carrito-precio-total">
+                        $000
+                    </span>
+                </div>
+                <button class="btn-pagar"><i class="fa-solid fa-bag-shopping"></i>Finalizar compra</button>
+            </div>
+        </div>
+    </section>
+    <section class="footer">
+        <img src="../static/image/top_wave.png" alt="" srcset="">
+    
+        <div class="share">
+            <a href="#" class="btn"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#" class="btn"> <i class="fab fa-twitter"></i> twitter </a>
+            <a href="#" class="btn"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#" class="btn"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#" class="btn"> <i class="fab fa-pinterest"></i> pinterest </a>
+        </div>
+    
+    </section>
+    <script src="{% static 'js/script.js'%}"></script
+</body>
+</html>

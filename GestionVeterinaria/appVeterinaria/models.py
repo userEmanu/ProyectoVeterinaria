@@ -155,3 +155,11 @@ class Pedido(models.Model):
     peFormaPago = models.ForeignKey(FormaDePago, on_delete=models.PROTECT, db_comment="Forma de pago")
     peDetEnvio = models.ForeignKey(DetellaEnvio, on_delete=models.PROTECT, db_comment="Detalle ENVIO")
     peDetPedido = models.ForeignKey(DetallePedido, on_delete=models.PROTECT, db_comment="Detalle envio")
+
+
+class Contactanos(models.Model):
+    conNombre = models.CharField(max_length=50, null=False, db_comment=" Nombre De La Persona Que Se Va Contactar")
+    conEmail = models.CharField(max_length= 30, null=False, unique=True, db_comment="Direccion del correo electronico")
+    conNumeroTe = models.IntegerField( null=True, db_comment="Telefono del usuario Que Se Contacta")
+    conMensaje = models.CharField(max_length=150, null=True, db_comment="Mensaje Que El Usuario enviar para contartacnos")
+    
