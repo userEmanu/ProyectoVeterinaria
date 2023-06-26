@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('a/',views.vistaInicio),
+    path('',views.vistaInicio),
     path('inicio/',views.vistaInicio),
     path('vistaCitas/', views.vistaCitas),
     path('vistaCodigo/', views.vistaCodigo),
@@ -32,7 +32,7 @@ urlpatterns = [
     path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
     path('vistaConNueva/',views.vistConNueva),
-    path('', views.vistaProductos, name="productos"),
+    path('vistaProductos/', views.vistaProductos, name="productos"),
     path('registrarseUser/', views.registrarseUsuario),
     path('iniciarSesion/',views.IniciarSesion),
     path('verificarCorreo/', views.VerificarCorreo),
