@@ -140,7 +140,7 @@ def IniciarSesion(request):
                 elif user.groups.filter(name='Asistente').exists():
                     return redirect('/inicio/')
                 else:
-                    return redirect('/inicio/')
+                    return redirect('/vistaAdministrador/')
             else:
                 mensaje = "Usuario o Contraseña Incorrectas"
                 return render(request, "index.html",{"mensaje":mensaje})
@@ -464,15 +464,16 @@ def vistaEmpleadoUsuario(request, id):
 
 def CrearUsuarioEmpleado(request, id):
     try:
+        tipoUser = request.POST.get('cbTipo')
+        rol = request.POST.get('cbRol')
         with transaction.atomic():
-            tipoUser = request.POST.get('cbTipo')
-            rol = request.POST.get('cbRol')
-            empleado = None
-            if empleado != None:
-                em = Empleado.objects.get(pk = id)
+            
+            em= None
+            em = Empleado.objects.get(pk = id)
+            if em != None:                
                 user = User(userTipoDoc = em.emTipoDoc,  userNoDoc = em.emNumeroDoc, userTelefono = em.emTelefono,
                         userTipo = tipoUser, first_name = em.emNombre, last_name = em.emApellido, email = em.emCorreo,
-                        username = em.emCorreo)
+                        username = em.emCorreo, userEmpleado = em)
                 user.save()
                 rol = Group.objects.get(pk=rol)
                 user.groups.add(rol)
@@ -490,9 +491,15 @@ def CrearUsuarioEmpleado(request, id):
                     <br><b>Username: </b> {user.username}\
                     <br><b>Password: </b> {contraseña}'
                 thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, user.email) )
-                thread.start()                
+                thread.start()  
+                titulo = "Agregado Correctamente"
+                mensaje = "Se ha registrado el producto correctamente"
+                tema = "success"    
+                return redirect('/listarEmpleados/')                                                                      
     except Error as e:
         transaction.rollback()
+    
+    
         
 def generarPassword():
     longitud = 6

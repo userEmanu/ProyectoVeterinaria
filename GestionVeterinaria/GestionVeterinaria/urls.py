@@ -36,8 +36,10 @@ urlpatterns = [
     path('RegistrarCategoria/', views.VistaRegistrarCategoria),
     path('VistaProductos/', views.VistaProductos),
     path('RegistrarProducto/', views.RegistrarProducto),
+    
     path('vistaPerfilusuario/',views.vistaPerfilUsuario),
     path('vistaIndexUsuario/',views.vistaUsuario),
+    
     path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
     path('vistaConNueva/',views.vistConNueva),
@@ -51,7 +53,8 @@ urlpatterns = [
     path('agregar/<int:id>/', views.agregar_producto, name="Add"),
     path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
     path('restar/<int:id>/', views.restar_producto, name="Sub"),
-    path('limpiar/', views.limpiar_carrito, name="CLS")
+    path('limpiar/', views.limpiar_carrito, name="CLS"),
+    path('registrarEmpleadoUser/<int:id>/', views.CrearUsuarioEmpleado)
 ]
 
 

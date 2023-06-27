@@ -41,11 +41,11 @@
                     <p class="text-center small">Vas a crear un usurio a {{empleado.emNombre}} {{empleado.emApellido}}, El usuario por defecto es {{empleado.emCorreo}}, la contraseña la genera el sistema.</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" action="/registrarseUser/{{empleado.id}}" method="post" >
+                  <form class="row g-3 needs-validation" action="/registrarEmpleadoUser/{{empleado.id}}/" method="post" >
                     {% csrf_token %}
                     
                     <div>
-                      <label for="cbIdentificacioon" class="form-label">Tipo Usuario</label>
+                      <label for="cbTipo" class="form-label">Tipo Usuario</label>
                       <div class="input-group ">                      
                       <select class="form-select" id="cbTipo" name ="cbTipo">
                         <option>Tipo Usuario</option>
@@ -55,7 +55,7 @@
                       </select>
                     </div>
                     <div>
-                        <label for="cbIdentificacioon" class="form-label">Rol Usuario</label>
+                        <label for="cbRol" class="form-label">Rol Usuario</label>
                         <div class="input-group ">                      
                         <select class="form-select" id="cbRol" name ="cbRol">
                           <option>Seleccione el rol</option>
@@ -63,7 +63,6 @@
                               <option value="{{rol.id}}">{{rol.name}}</option>
                           {% endfor %}
                         </select>
-                    </div>
                     </div>
                     <br>
                     <div class="text-center">
