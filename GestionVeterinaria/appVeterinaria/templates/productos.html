@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Agropecuaria Animalagro</title>
+   
+      
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '../static/css/styleProductos.css' %}">
+</head>
+
+<body>
+    <header class="header">
+
+        <a href="#" class="logo"> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
+    
+        <nav class="navbar">
+            <a href="/vistaAdministrador/">Inicio</a>
+            <a href="#about">Promociones</a>
+            <a href="/vistaProductos/">Productos</a>
+            <a href="#services">Servicios</a>
+            <a href="#contact">Contacto</a>
+        </nav>
+        <div class="icons">
+            <div class="fas fa-bars" id="menu-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+    
+        <form action="/iniciarSesion/" class="login-form"  method="post">
+            <center><h3>Inicio Sesión</h3>
+            {% csrf_token %}
+            <input type="email" name="txtUsuario" placeholder="Usuario o Email" id="txtUsuario" class="box">
+            <input type="password" name="txtContraseña" placeholder="Contraseña o Codigo" id="txtContraseña" class="box">
+            
+            </center>
+            <button class="btn">Iniciar Sesion</button>
+            <div class="links">
+                <a href="/vistaRecuperarContra/">Olvide Mi Contraseña</a>
+                <a href="/vistaRegistrarse/">Registrarser</a>
+            </div>
+        </form>
+    
+    </header>
+
+    <br>
+    <br>
+    <main>
+        <section class="container-xl">
+            <!-- Contenedor de elementos -->
+            <div class="container -xl">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row" style="padding: 10px 0;">
+                            <div class="col-12">
+                                <div class="row text-center">
+                                    {% for producto in productos %}
+                                    <div class="col-6">
+                                        <div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded" >
+                                           
+                                            <img class="card-img-top" src="../media/{{producto.proFoto}}" alt="Card image cap">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{producto.proNombre}}</h5> 
+                                                <hr>
+                                                <p class="card-text"> Description: {{producto.proDescripcion}}.</p>
+                                                <p class="card-text"> Precio: $ {{producto.proPrecio}} COL.</p>
+                                                <p class="card-text"> Categoria: {{producto.proCategoria}}.</p>
+                                                <div>
+                                                    <a href="{% url 'Add' producto.id %}" class="btn btn-success">Agregar al carrito</a>
+                                                    <a href="/verProducto/{{producto.id}}" class="btn btn-primary">Ver</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-4 shadow p-3 mb-5 bg-body-tertiary rounded">
+                        {% include "carrito.html" %}
+                    </div>
+                </div>
+            </div>
+
+    </main>
+    <section class="footer">
+    
+        <img src="{% static '../static/image/top_wave.png' %}" alt="">
+    
+        <div class="share">
+            <a href="#" class="btn"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#" class="btn"> <i class="fab fa-twitter"></i> twitter </a>
+            <a href="#" class="btn"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#" class="btn"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#" class="btn"> <i class="fab fa-pinterest"></i> pinterest </a>
+        </div>
+    
+    </section>
+    <script src=" {% static '../static/js/script.js' %}"></script>
+    <!-- custom js file link  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+
+</html>

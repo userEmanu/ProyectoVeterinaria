@@ -17,7 +17,7 @@ import threading
 from datetime import date, datetime
 from smtplib import SMTPException
 from django.http import JsonResponse
-from .models import Empleado
+from appVeterinaria.carrito import *
 
 # Aqui las vistas
 def vistaInicio(request):
@@ -264,6 +264,13 @@ def registrarContactos(request):
         contac = Contactanos(conNombre = nombreCon, conEmail = emailCon, conNumeroTe = numeroCon,
                            conMensaje =mensajeCon)
         contac.save()
+        asunto='Contactanos Sistema Veterinaria Animalagro'
+        mensaje=f'Cordial saludo, <b>{nombreCon} </b>, nos permitimos,\
+            informarle que usted se ha comunicado con nosotros en el apartado de <b>contactanos </b>\
+            pronto nos comuniremos con usted.\
+            No responder este mensaje, Nos comunicaremo contigo. <br>'
+        thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, emailCon) )
+        thread.start()
         mensaje="Solicitud De Contacto Enviado Correctamente"
     
     except Error as error:
@@ -341,7 +348,7 @@ def VistaRegistrarProveedor(request):
         proveedor = None
     
     retorno = {"mensaje": mensaje, "provedor": proveedor}
-    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+    return redirect("/VistaProductos/", retorno)
 
 ##########################################################
 #Bloque de codigo para guardar la categoria
@@ -362,7 +369,7 @@ def VistaRegistrarCategoria(request):
         categoria= None
     
     retorno = {"mensaje": mensaje}
-    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+    return redirect("/VistaProductos/", retorno)
 
 #####################################################################
 #Bloque De Codigo Para Guardar Los Productos
@@ -414,4 +421,53 @@ def RegistrarProducto(request):
             mensaje = str(error)
 
         retorno = {"estado": estado, "mensaje": mensaje, "titulo": titulo, "tema": tema}
-        return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+        return redirect("/VistaProductos/", retorno)
+
+def vistaproductos(request):
+    productos = Producto.objects.all()
+    carrito = Carrito(request)
+    total = carrito.total_carrito()
+    return render(request, "productos.html", {'productos':productos, 'total': total})
+
+def agregar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.agregar(producto)
+    return redirect("productos")
+
+def eliminar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.eliminar(producto)
+    return redirect("productos")
+
+def restar_producto(request, id):
+    carrito = Carrito(request)
+    producto = Producto.objects.get(id=id)
+    carrito.restar(producto)
+    return redirect("productos")
+
+def limpiar_carrito(request):
+    carrito = Carrito(request)
+    carrito.limpiar()
+    return redirect("productos")
+
+def vistaEmpleadoUsuario(request, id):
+    try:
+        empleado = Empleado.objects.get(pk = id)
+        rol = Group.objects.all()
+        retorno = {"empleado": empleado, "rol": rol, "tipo": tiposUsuarios}        
+    except Error as e:
+        print(e)    
+        
+    return render(request, "Administrador/registrarUsuarioEmpleado.html", retorno)
+
+def CrearUsuarioEmpleado(request, id):
+    try:
+        with transaction.atomic():
+            tipoDoc = request.POST.get('cbTipo')
+            tipoDoc = request.POST.get('cbTipo')
+            
+    except Error as e:
+        transaction.rollback()
+    

@@ -42,7 +42,7 @@ class Empleado(models.Model):
     emTipoDoc = models.CharField(max_length=5, null=False, db_comment="Tipo de identificacion")
     emNumeroDoc = models.IntegerField( null=False, unique=True, db_comment="Numero de identificacion")
     emCargo = models.CharField(max_length=30, null=False, db_comment="Nombre del cargo que ejerce")
-    emCorreo = models.CharField(max_length=30, null=False, unique=True, db_comment="Direccion del correo electronico")
+    emCorreo = models.CharField(max_length=48, null=False, unique=True, db_comment="Direccion del correo electronico")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     

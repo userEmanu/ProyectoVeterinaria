@@ -90,7 +90,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
                                 <i class="bi bi-person"></i>
                                 <span>Mi perfil</span>
                             </a>
@@ -99,7 +99,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Salir</span>
                             </a>
@@ -117,18 +117,18 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="/vistaAdministrador/">
                     <i class="bi bi-grid"></i>
                     <span>Animalagro</span>
                 </a>
             </li><!-- End Dashboard Nav -->
             <li class="nav-heading">Pagina</li>
 
-            <a class="nav-link collapsed" href="/perfiladmin.html/">
+            <a class="nav-link collapsed" href="/perfiladmin/">
                 <i class="bi bi-person"></i>
                 <span>Perfil</span>
             </a>
-            <a class="nav-link collapsed" href="listaemplados.html">
+            <a class="nav-link collapsed" href="/listarEmpleados/">
                 <i class="bi bi-person"></i>
                 <span>Consultar Empleados</span>
             </a>
@@ -144,14 +144,15 @@
             <h1>Perfil</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="#">Perfil</a></li>
+                    <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/perfiladmin/">Perfil</a></li>
 
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
+        <div class="container-xl p-5 my-5  text-center" style="margin: 0 auto">
          <h1 style="text-align: center">Formulario agregar empleado</h1> <br> <br>
+         
         <form action="/AgregarEmpleado/" method="POST" enctype="multipart/form-data" class="was-validated">
             {% csrf_token %}
             <div class="row mb-1">
@@ -187,14 +188,15 @@
                 </div>
             </div>
 
-            <div class="row mb-1">
-                <label for="txtTipoDocEm" class="form-label">Tipo de Documento y Numero</label>
+            <div class="row mb-3">
                 <div class="input-group">
+                    <label for="txtTipoDocEm" class="form-label">Tipo de Documento y Numero</label>
                     <select class="form-select" id="txtTipoDocEm" name="txtTipoDocEm">
                         <option value="">Seleccionar</option>
                         <option value="TI">Tarjeta Identidad</option>
                         <option value="CC">Cedula Ciudadania</option>
                         <option value="CCE">Cedula Extranjera</option>
+
                         <input type="number" class="form-control" placeholder="Numero De Documento"
                             name="txtNumeroDocEm" id="txtNumeroDocEm">
                     </select>
@@ -224,7 +226,11 @@
 
 
 
-            <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+            
+        </form>
+    </div>
+    </main>
+    <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
             <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
             <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
             <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
@@ -235,8 +241,6 @@
 
             <!-- Template Main JS File -->
             <script src=" {% static '../static/js/main.js' %}"></script>
-        </form>
-    </main>
 </body>
 
 </html>
