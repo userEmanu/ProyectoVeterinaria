@@ -466,7 +466,7 @@ def CrearUsuarioEmpleado(request, id):
     try:
         with transaction.atomic():
             tipoDoc = request.POST.get('cbTipo')
-            tipoDoc = request.POST.get('cbTipo')
+            rol = request.POST.get('cbRol')
             
     except Error as e:
         transaction.rollback()
