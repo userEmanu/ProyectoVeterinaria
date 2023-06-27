@@ -110,7 +110,7 @@ class Mascota(models.Model):
 class Tratamiento(models.Model):
     traNombre = models.CharField(max_length=30, null=False, unique=True, db_comment="Nombre del tratamiento")
     traTipo = models.CharField(max_length=40, null=False, db_comment="Tipo de tratamiento, si es cirugia, revision")
-    traEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, db_comment="El empleado que atiende este servicio")
+    traEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, null= True,db_comment="El empleado que atiende este servicio")
     traPrecio = models.IntegerField( null=False, db_comment="Precio del Tratamiento")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")

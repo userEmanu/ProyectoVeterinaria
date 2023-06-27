@@ -465,9 +465,42 @@ def vistaEmpleadoUsuario(request, id):
 def CrearUsuarioEmpleado(request, id):
     try:
         with transaction.atomic():
-            tipoDoc = request.POST.get('cbTipo')
+            tipoUser = request.POST.get('cbTipo')
             rol = request.POST.get('cbRol')
-            
+            empleado = None
+            if empleado != None:
+                em = Empleado.objects.get(pk = id)
+                user = User(userTipoDoc = em.emTipoDoc,  userNoDoc = em.emNumeroDoc, userTelefono = em.emTelefono,
+                        userTipo = tipoUser, first_name = em.emNombre, last_name = em.emApellido, email = em.emCorreo,
+                        username = em.emCorreo)
+                user.save()
+                rol = Group.objects.get(pk=rol)
+                user.groups.add(rol)
+                if(rol.name=="Administrador"):user.is_staff = True
+                user.save()
+                contraseña = generarPassword()
+                print(contraseña)
+                user.set_password(contraseña)
+                user.save()
+                asunto='Registro Usurio De Empleado Sistema Veterinaria Animalagro'
+                mensaje=f'Cordial saludo, <b>{user.first_name} {user.last_name}</b>, nos permitimos,\
+                    informarle que usted ha sido registrado en el Sistema de nuestra veterinaria Animalagro \
+                    ubicada en campoalegre, Huila, ubicada Ca 12 calle 18.\
+                    Nos permitimos enviarle las credenciales de Ingreso a nuestro sistema.<br>\
+                    <br><b>Username: </b> {user.username}\
+                    <br><b>Password: </b> {contraseña}'
+                thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, user.email) )
+                thread.start()                
     except Error as e:
         transaction.rollback()
+        
+def generarPassword():
+    longitud = 6
+    
+    caracteres = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+    password = ''
+    
+    for i in range(longitud):
+        password +=''.join(random.choice(caracteres))
+    return password
     
