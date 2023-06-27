@@ -133,6 +133,6 @@ GOOGLE_RECAPTCHA_SECRET_KEY = '6Lfr8folAAAAABomc2v6ZetDsd6UZsJ3W2NOhGlA'
 #variables configuración correo
 EMAIL_HOST="smtp.gmail.com"
 EMAIL_PORT=587
-EMAIL_HOST_USER="emanueel031@gmail.com" 
-EMAIL_HOST_PASSWORD='rxmaofakoxeqjrkk' 
+EMAIL_HOST_USER="veterinariaanimalagro@gmail.com" 
+EMAIL_HOST_PASSWORD='gppzjjvcaemyswgr' 
 EMAIL_USE_TLS=True
