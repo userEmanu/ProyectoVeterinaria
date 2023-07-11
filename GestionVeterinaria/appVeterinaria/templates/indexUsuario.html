@@ -5,12 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agropecuaria Animalagro</title>
-
-    <!-- font awesome cdn link  -->
-
-    <!-- custom css file link  -->
     {% load static %}
-    <link rel="stylesheet" href="{% static '../static/css/styleProfile.css' %}">
+    <link rel="stylesheet" href="{% static '../static/css/styleUser.css' %}">
     
 </head>
 <body>
@@ -19,7 +15,7 @@
 
 <header class="header">
 
-    <a href="#" class="logo"> <i class=""><img src="{% static ' ../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
+    <a href="#" class="logo"><i class=""><img src="{% static ' ../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
 
     <nav class="navbar">
         <a href="#home">Inicio</a>
@@ -30,8 +26,7 @@
     </nav>
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
-        <div class="fas fa-user" id="login-btn"></div>
-        
+        <div class="fas fa-user" id="login-btn"></div>        
     </div>
     
     <form action="" class="login-form">
@@ -135,7 +130,7 @@
                     <a href="#" class="fas fa-eye"></a>
                 </div>
                 <div class="image">
-                    <img src="{% static '../static/image/WIN_20230522_13_54_08_Pro.jpg' %}" alt="" style="border-radius: 66% 34% 49% 51% / 30% 48% 52% 70%;" >
+                    <img src="{% static '../static/image/product_01.jpg' %}" alt="" style="border-radius: 66% 34% 49% 51% / 30% 48% 52% 70%;" >
                 </div>
                 <div class="content">
                     <h3>Purina Seca-food</h3>
@@ -266,8 +261,7 @@
 
 
 
-<!-- custom js file link  -->
-<script src="{% static '../static/js/script.js'%}"></script>
+<script src=" {% static '../static/js/script.js' %}"></script>
 
 </body>
 </html>
