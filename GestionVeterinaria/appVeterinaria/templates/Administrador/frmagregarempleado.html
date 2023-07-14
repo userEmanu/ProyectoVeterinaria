@@ -138,10 +138,10 @@
 
     </aside><!-- End Sidebar-->
 
-    <main id="main" class="main">
-
+    <main id="main" class="main container-sm p-2 my-4">
+        <br>
         <div class="pagetitle">
-            <h1>Perfil</h1>
+            <h1></h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
@@ -150,71 +150,75 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <div class="container-xl p-5 my-5  text-center" style="margin: 0 auto">
+        <div class="container-sm p-2 my-1  text-center" style="margin: 0 auto">
          <h1 style="text-align: center">Formulario agregar empleado</h1> <br> <br>
          
         <form action="/AgregarEmpleado/" method="POST" enctype="multipart/form-data" class="was-validated">
             {% csrf_token %}
-            <div class="row mb-1">
+            <div class="row mb-2">
                 <label for="txtNombreEm" class="col-md-4 col-lg-3 col-form-label">Nombre</label>
-                <div class="col-md-2 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtNombreEm" type="text" class="form-control" id="txtNombreEm" required
                         placeholder="Digite nombre del empleado">
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <label for="txtApellidoEm" class="col-md-4 col-lg-3 col-form-label">Apellido</label>
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtApellidoEm" type="text" class="form-control" id="txtApellidoEm" required
                         placeholder="Digite apellido del empleado">
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <label for="txtTelefonoEm" class="col-md-4 col-lg-3 col-form-label">N. Telefono</label>
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtTelefonoEm" type="number" class="form-control" id="txtTelefonoEm" required
                         placeholder="Digite telefono del empleado" >
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <label for="txtDireccionEm" class="col-md-4 col-lg-3 col-form-label">Dirrecion</label>
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtDireccionEm" type="text" class="form-control" id="txtDireccionEm" required
                         placeholder="Digite direccion del empleado" >
 
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="input-group">
-                    <label for="txtTipoDocEm" class="form-label">Tipo de Documento y Numero</label>
-                    <select class="form-select" id="txtTipoDocEm" name="txtTipoDocEm">
-                        <option value="">Seleccionar</option>
-                        <option value="TI">Tarjeta Identidad</option>
-                        <option value="CC">Cedula Ciudadania</option>
-                        <option value="CCE">Cedula Extranjera</option>
+            <div class="row mb-2">
+                    <label for="txtTipoDocEm" class="form-label col-md-4 col-lg-3 col-form-label">Tipo de Documento     </label>
+                    <div class="col-md-8 col-lg-7">
+                        <select class="form-select" id="txtTipoDocEm" name="txtTipoDocEm">
+                            <option value="">Seleccionar</option>
+                            <option value="TI">Tarjeta Identidad</option>
+                            <option value="CC">Cedula Ciudadania</option>
+                            <option value="CCE">Cedula Extranjera</option>
+                        </select>
+                    </div>
+            </div>
 
-                        <input type="number" class="form-control" placeholder="Numero De Documento"
-                            name="txtNumeroDocEm" id="txtNumeroDocEm">
-                    </select>
-
+            <div class="row mb-2">
+                <label for="txtCargoEm" class="col-md-4 col-lg-3 col-form-label">Numero De Documento</label>
+                <div class="col-md-8 col-lg-7">
+                    <input name="txtNumeroDocEm" type="text" class="form-control" id="txtNumeroDocEm" required
+                        placeholder="Digite Numero De Documento" >
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <label for="txtCargoEm" class="col-md-4 col-lg-3 col-form-label">Cargo</label>
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtCargoEm" type="text" class="form-control" id="txtCargoEm" required
                         placeholder="Digite cargo del empleado" >
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <label for="txtCorreoEm" class="col-md-4 col-lg-3 col-form-label">Correo</label>
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-lg-7">
                     <input name="txtCorreoEm" type="email" class="form-control" id="txtCorreoEm" required
                         placeholder="Digite correo del empleado">
                 </div>

@@ -31,7 +31,9 @@ def vistaCodigo(request):
 
 def vistaAdministrador(request):
     if request.user.is_authenticated:
-        return render(request, "Administrador/index.html")
+        user= {"user": request.user,
+                       "rol": request.user.groups.get().name}
+        return render(request, "Administrador/index.html",user)
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -144,7 +146,6 @@ def IniciarSesion(request):
                 auth.login(request, user)
                 if user.groups.filter(name='Administrador').exists():
                     return redirect('/vistaAdministrador')
-                
                 elif user.groups.filter(name='Asistente').exists():
                     return redirect('/inicio')
                 else:
@@ -503,7 +504,9 @@ def CrearUsuarioEmpleado(request, id):
                 titulo = "Agregado Correctamente"
                 mensaje = "Se ha registrado el producto correctamente"
                 tema = "success"    
-                return redirect('/listarEmpleados/')                                                                      
+                
+                return redirect('/listarEmpleados/')      
+                                                                            
     except Error as e:
         transaction.rollback()
     

@@ -131,7 +131,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="/vistaAdministrador/">
           <i class="bi bi-grid"></i>
           <span>Animalagro</span>
         </a>
@@ -144,6 +144,18 @@
           <span>Perfil</span>
         </a>
 
+        <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
+          <i class="bi bi-person"></i>
+          <span>Gestion Empleados</span>
+        </a>
+        <a class="nav-link collapsed" href="/listarEmpleados/">
+          <i class="bi bi-person"></i>
+          <span>Consultar Empleados</span>
+        </a>
+        <a class="nav-link collapsed" href="/VistaProductos/">
+          <i class="bi bi-person"></i>
+          <span>Agregar Producto</span>
+        </a>
     
        
       </li><!-- End Profile Page Nav -->
@@ -154,10 +166,12 @@
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+  <main id="main" class="main  container p-4 ">
 
     <div class="pagetitle">
-      <h1 style="text-align: center;">Vista administrador</h1>
+      <br>
+      <br>
+      <h1 style="">Gestion Administrador</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="#">Inicio</a></li>
@@ -194,9 +208,7 @@
                 </div>
 
               </div>
-            </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
+            </div>
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
 
@@ -208,7 +220,7 @@
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-currency-dollar"></i>
                     </div>
-                    <div class="ps-3">
+                    <div class="ps-2">
                       <h6>$19.767.950</h6>
                       <span class="text-success small pt-1 fw-bold">68%</span> <span
                         class="text-muted small pt-2 ps-1">Aumentar</span>
@@ -218,9 +230,7 @@
                 </div>
 
               </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
+            </div>
             <div class="col-xxl-4 col-xl-12">
 
               <div class="card info-card customers-card">
@@ -242,9 +252,7 @@
                 </div>
               </div>
 
-            </div><!-- End Customers Card -->
-
-            <!-- Reports -->
+            </div>
             <div class="col-12">
               <div class="card">
 
@@ -306,7 +314,7 @@
                       }).render();
                     });
                   </script>
-                  <!-- End Line Chart -->
+                  
 
                 </div>
 
@@ -329,9 +337,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row"><a href="#">#1</a></th>
+                    <th scope="row"><a href="">#1</a></th>
                     <td>Emanuel Juan Jesus Guevara vique</td>
-                    <td><a href="#" class="text-primary">Comida Gallina</a></td>
+                    <td><a href="" class="text-primary">Comida Gallina</a></td>
                     <td>$250.000</td>
                     <td><span class="badge bg-success">Aprobado</span></td>
                   </tr>
@@ -344,15 +352,14 @@
         </div><!-- End Recent Sales -->
 
         <!-- Top Selling -->
-        <div class="col-12">
+        <div class="col-10">
           <div class="card top-selling overflow-auto">
-            <div class="card-body pb-0">
-              <h5 class="card-title">Más vendidos<span>|Mes</span></h5>
+            <div class="card-body">
+              <h5 class="card-title">Más vendidos<span> | Mes</span></h5>
 
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th scope="col">Foto</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Vendido</th>
@@ -362,10 +369,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row"><a href="#"><img src="#" alt=""></a></th>
-                    <td><a href="#" class="text-primary fw-bold">Comida Gallina xBulto</a></td>
+                    <td>Comida Gallina xBulto</td>
                     <td>$250.000</td>
-                    <td class="fw-bold">2</td>
+                    <td class="">2</td>
                     <td>69,828</td>
                   </tr>
                 </tbody>
