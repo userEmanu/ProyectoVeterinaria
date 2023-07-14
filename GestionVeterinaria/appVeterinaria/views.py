@@ -30,7 +30,14 @@ def vistaCodigo(request):
     return render(request, "codigoRecuperar.html")
 
 def vistaAdministrador(request):
-    return render(request, "Administrador/index.html")
+    if request.user.is_authenticated:
+        return render(request, "Administrador/index.html")
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
 
 def vistaUsuario(request):
     return render(request, "indexUsuario.html")
@@ -135,12 +142,13 @@ def IniciarSesion(request):
             if user is not None:
                 #registrar la variable de sesión
                 auth.login(request, user)
-                if user.groups.filter(name='Usuario').exists():
-                    return redirect('/vistaIndexUsuario/')
+                if user.groups.filter(name='Administrador').exists():
+                    return redirect('/vistaAdministrador')
+                
                 elif user.groups.filter(name='Asistente').exists():
-                    return redirect('/inicio/')
+                    return redirect('/inicio')
                 else:
-                    return redirect('/vistaAdministrador/')
+                    return redirect('/vistaIndexUsuario')
             else:
                 mensaje = "Usuario o Contraseña Incorrectas"
                 return render(request, "index.html",{"mensaje":mensaje})
