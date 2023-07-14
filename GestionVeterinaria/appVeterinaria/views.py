@@ -518,4 +518,19 @@ def generarPassword():
     for i in range(longitud):
         password +=''.join(random.choice(caracteres))
     return password
-    
+
+
+def agregarServicio(request):
+    try:
+        nombre = request.POST.get('traNombre')
+        tipo = request.POST.get('traTipo')
+        precio = request.POST.get('traPrecio')
+        
+        with transaction.atomic():
+            tratamiento = Tratamiento(traNombre = nombre, traTipo = tipo, traPrecio = precio)
+            tratamiento.save()
+            
+    except Error as e:
+        transaction.rollback()
+        
+    return 
