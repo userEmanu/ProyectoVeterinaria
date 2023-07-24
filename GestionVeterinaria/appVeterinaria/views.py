@@ -42,10 +42,29 @@ def vistaAdministrador(request):
         return render(request,"index.html", retorno)
 
 def vistaUsuario(request):
-    return render(request, "indexUsuario.html")
+    if request.user.is_authenticated:
+        user= {"user": request.user,
+                       "rol": request.user.groups.get().name}
+        return render(request, "indexUsuario.html", user)
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
+    
 
-def vistaPerfilUsuario(request):
-    return render(request, "perfilUsuario.html")
+def vistaPerfilUsuario(request,):
+    if request.user.is_authenticated:
+        user= {"user": request.user,
+                       "rol": request.user.groups.get().name}
+        return render(request, "perfilUsuario.html", user)
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
 
 def vistaRecuperarContra(request):
     return render(request, "RecuperarContraseña.html")
@@ -57,8 +76,6 @@ def vistaRegistrarse(request):
 def vistConNueva(request):
     return render(request, "DigitarContraseñaNueva.html")
 
-def vistaAdministrador(request):
-    return render(request, "Administrador/index.html")
 
 def perfiladmin(request):
     return render(request, "Administrador/perfiladmin.html")
@@ -69,7 +86,10 @@ def VistaAgregarEmpleado(request):
 
 # Aqui las vistas Gestion, son las que se cargan con datos o tienen Tablas 
 
-
+def CerrarSesion(request):
+    auth.logout(request)
+    return redirect( "/inicio/",
+                  {"mensaje":"Has cerrado la sesión"})
 
 
 # Aqui los metodos o funciones que no retornan JSON

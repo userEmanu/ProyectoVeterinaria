@@ -20,17 +20,17 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="Administrador/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="Administrador/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
 
   <!-- Template Main CSS File -->
   
-  <link href="{% static 'Admin/assets/css/style.css'%}" rel="stylesheet">
+  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
 </head>
 <body>
     
@@ -81,12 +81,10 @@
               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
   
                 <img src="../static/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                <h2>Stiven Chacon</h2>
+                <h2>{{user.first_name}} {{user.last_name}}</h2>
                 <div class="social-links mt-2">
-                  <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                   <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
                   <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                  <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
                 </div>
               </div>
             </div>
@@ -116,29 +114,22 @@
                 <div class="tab-content pt-2">
   
                   <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                    <h5 class="card-title">Acerca de</h5>
-                    <p class="small fst-italic">Hola buenas noches me llamo stiven chacon, tengo 18 años, no se que hacer con mi vida ayuda, help me, Vivan las gallina amen.</p>
   
                     <h5 class="card-title">detalles del perfil</h5>
   
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label ">Nombre Completo</div>
-                      <div class="col-lg-9 col-md-8">Stiven Chacon</div>
-                    </div>
-  
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Cargo</div>
-                      <div class="col-lg-9 col-md-8">Usuario</div>
+                      <div class="col-lg-9 col-md-8">{{user.first_name}} {{user.last_name}}</div>
                     </div>
   
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Telefono</div>
-                      <div class="col-lg-9 col-md-8">(57) 321 456 3421</div>
+                      <div class="col-lg-9 col-md-8">{{user.userFoto}}</div>
                     </div>
   
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Correo Electronico</div>
-                      <div class="col-lg-9 col-md-8">Chacon.Stiven@MiSena.edu.co</div>
+                      <div class="col-lg-9 col-md-8">{{user.email}}</div>
                     </div>
   
                   </div>
@@ -150,7 +141,7 @@
                       <div class="row mb-3">
                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagen De Perfil</label>
                         <div class="col-md-8 col-lg-9">
-                          <img src="../static/assets/img/profile-img.jpg" alt="Profile">
+                          <img src="../media/{{user.userFoto}}" alt="Profile">
                           <div class="pt-2">
                             <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                             <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -161,29 +152,15 @@
                       <div class="row mb-3">
                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nombre Completo</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="fullName" type="text" class="form-control" id="fullName" value="Stiven Chacon">
+                          <input name="fullName" type="text" class="form-control" id="fullName" value="{{user.first_name}} {{user.last_name}}">
                         </div>
                       </div>
-  
-                      <div class="row mb-3">
-                        <label for="about" class="col-md-4 col-lg-3 col-form-label">Acerca De </label>
-                        <div class="col-md-8 col-lg-9">
-                          <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Job" class="col-md-4 col-lg-3 col-form-label">Cargo</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="job" type="text" class="form-control" id="Job" value="Administrador">
-                        </div>
-                      </div>
-  
+
   
                       <div class="row mb-3">
                         <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telefonon</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="phone" type="text" class="form-control" id="Phone" value="(57) 321 456 3421">
+                          <input name="phone" type="text" class="form-control" id="Phone" value="{{user.userFoto}}">
                         </div>
                       </div>
   
@@ -198,27 +175,6 @@
                         <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
                         <div class="col-md-8 col-lg-9">
                           <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
                         </div>
                       </div>
   
@@ -321,16 +277,16 @@
 
 <!-- custom js file link  -->
 <script src="{%static 'js/script.js'%}"></script>
-<script src="Administrador/assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="Administrador/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="Administrador/assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="Administrador/assets/vendor/echarts/echarts.min.js"></script>
-  <script src="Administrador/assets/vendor/quill/quill.min.js"></script>
-  <script src="Administrador/assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="Administrador/assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="Administrador/assets/vendor/php-email-form/validate.js"></script>
+<script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+<script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
+<script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
+<script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
+<script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
+<script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
+<script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
 
-  <!-- Template Main JS File -->
-  <script src="{%static 'assets/js/main.js'%}"></script>
+<!-- Template Main JS File -->
+<script src=" {% static '../static/js/main.js' %}"></script>
 </body>
 </html>

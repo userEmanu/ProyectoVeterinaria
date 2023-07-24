@@ -12,7 +12,6 @@ class Carrito:
 
     def agregar(self, producto):
         id = str(producto.id)
-        total = producto.proPrecio
         if id not in self.carrito.keys():
             self.carrito[id]={
                 "producto_id": producto.id,
