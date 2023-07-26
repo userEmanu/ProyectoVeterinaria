@@ -41,8 +41,8 @@
                     <p class="text-center small">Crea tu cuenta para una mejor navegacion</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" action="/registrarseUser/" method="post" >
-                    {% csrf_token %}
+                  <form class="row g-3 needs-validation"  >
+                    {% comment %} {% csrf_token action="/registrarseUser/" method="post" %} {% endcomment %}
                     <div class="">
                       <label for="txtNombre" class="form-label">Nombres</label>
                       <input type="text" name="txtNombre" class="form-control" id="txtNombre" required>
@@ -94,7 +94,7 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <button class="btn btn-primary w-80" type="submit">Crear Cuenta</button>
+                      <button class="btn btn-primary w-80" type="button" onclick="agregarUsuario()">Crear Cuenta</button>
                     </div>
                     <div class="">
                       <p class="small mb-0">Ya tienes cuenta? <a href="/inicio/">Iniciar Sesion</a></p>

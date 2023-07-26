@@ -111,17 +111,62 @@ def enviarCorreo (asunto=None, mensaje=None, destinatario=None):
         print(error)
 
 
+# def registrarseUsuario(request):
+#     try: 
+#         estado = False
+#         mensaje = ""
+#         tipoDoc = request.POST.get('cbIdentificacioon')
+#         identificacion = request.POST.get('txtIdentificacion')
+#         telefono = request.POST.get('txtTelefono')
+#         nombre = request.POST.get('txtNombre')
+#         apellido = request.POST.get('txtApellido')
+#         email =  request.POST.get('txtCorreo')
+#         contraseña = request.POST.get('txtContraseña')
+#         with transaction.atomic():
+#             usuario = User(userTipoDoc = tipoDoc,  userNoDoc = identificacion, userTelefono = telefono,
+#                         userTipo = "Usuario", first_name = nombre, last_name = apellido , email = email,
+#                         username = email)
+#             usuario.save()
+#             rol = Group.objects.get(pk=1)
+#             usuario.groups.add(rol)
+#             if(rol.name=="Administrador"):usuario.is_staff = True
+#             usuario.save()
+#             print(contraseña)
+#             usuario.set_password(contraseña)
+#             usuario.save()
+            
+#             mensajes = "Felicitaciones, Eres un nuevo usuario, Ya puedes Iniciar Sesion"
+#             retorno = {"mensaje": mensaje}
+#             asunto='Registro Sistema Veterinaria Animalagro'
+#             mensaje=f'Cordial saludo, <b>{usuario.first_name} {usuario.last_name}</b>, nos permitimos,\
+#                 informarle que usted ha sido registrado en el Sistema de nuestra veterinaria Animalagro \
+#                 ubicada en campoalegre, Huila, ubicada Ca 12 calle 18.\
+#                 Nos permitimos enviarle las credenciales de Ingreso a nuestro sistema.<br>\
+#                 <br><b>Username: </b> {usuario.username}\
+#                 <br><b>Password: </b> {contraseña}'
+#             thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, usuario.email) )
+#             thread.start()
+#             estado = True
+#     except Error as error:
+#         transaction.rollback()
+#         print(error)
+#     retorno = {"mensaje": mensajes, "estado": estado}  
+#     return render(request,"Registrarse.html",retorno)
+
+
 def registrarseUsuario(request):
     try: 
-        estado = False
+        estado = 1
         mensaje = ""
-        tipoDoc = request.POST.get('cbIdentificacioon')
-        identificacion = request.POST.get('txtIdentificacion')
-        telefono = request.POST.get('txtTelefono')
-        nombre = request.POST.get('txtNombre')
-        apellido = request.POST.get('txtApellido')
-        email =  request.POST.get('txtCorreo')
-        contraseña = request.POST.get('txtContraseña')
+        data = json.loads(request.body)
+        print(data)
+        tipoDoc = data['tipoIde']
+        identificacion = data['identificacion']
+        telefono = data['Telefono']
+        nombre = data['nombre']
+        apellido = data['apellido']
+        email =  data['correo']
+        contraseña = data['contra']
         with transaction.atomic():
             usuario = User(userTipoDoc = tipoDoc,  userNoDoc = identificacion, userTelefono = telefono,
                         userTipo = "Usuario", first_name = nombre, last_name = apellido , email = email,
@@ -146,13 +191,12 @@ def registrarseUsuario(request):
                 <br><b>Password: </b> {contraseña}'
             thread = threading.Thread(target=enviarCorreo, args=(asunto,mensaje, usuario.email) )
             thread.start()
-            estado = True
+            estado = 0
     except Error as error:
         transaction.rollback()
         print(error)
     retorno = {"mensaje": mensajes, "estado": estado}  
-    return render(request,"Registrarse.html",retorno)
-
+    return JsonResponse(retorno)
 
 def IniciarSesion(request):
     try:
@@ -179,7 +223,7 @@ def IniciarSesion(request):
     
 
 def VerificarCorreo(request):
-    try:
+    try: 
         correo =  request.POST['txtCorreo']
         Usuario = None
         with transaction.atomic():
@@ -207,9 +251,8 @@ def VerificarCorreo(request):
         transaction.rollback()
         print(erro)
         
-    mensaje = "Correo Incorrecto"
-    error = "error"
-    return render(request, "RecuperarContraseña.html",{"mensaje":mensaje},{"error":error} )
+    mensaje = "Error hay problemas en el sistema, vuelvalo a intentar mas tarde"
+    return render(request, "index.html",{"mensaje":mensaje} )
         
 def verificarCodigo(request, id):
     try:
