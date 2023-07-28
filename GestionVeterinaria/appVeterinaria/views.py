@@ -1,4 +1,7 @@
 from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
 from django.shortcuts import render,redirect
 from appVeterinaria.models import *
 from django.contrib.auth.models import Group

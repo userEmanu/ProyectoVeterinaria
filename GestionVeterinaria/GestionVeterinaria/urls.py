@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from appVeterinaria import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -37,16 +37,12 @@ urlpatterns = [
     path('RegistrarCategoria/', views.VistaRegistrarCategoria),
     path('VistaProductos/', views.VistaProductos),
     path('RegistrarProducto/', views.RegistrarProducto),
-    
     path('vistaPerfilusuario/',views.vistaPerfilUsuario),
     path('vistaIndexUsuario/',views.vistaUsuario),
-    
     path('vistaRecuperarContra/', views.vistaRecuperarContra),
     path('vistaRegistrarse/',views.vistaRegistrarse),
     path('vistaConNueva/',views.vistConNueva),
-    
-    path('vistaEmpleadoUsuario/<int:id>',views.vistaEmpleadoUsuario),
-    
+    path('vistaEmpleadoUsuario/<int:id>',views.vistaEmpleadoUsuario), 
     path('registrarseUser/', views.registrarseUsuario),
     path('iniciarSesion/',views.IniciarSesion),
     path('verificarCorreo/', views.VerificarCorreo),
@@ -57,7 +53,10 @@ urlpatterns = [
     path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
     path('restar/<int:id>/', views.restar_producto, name="Sub"),
     path('limpiar/', views.limpiar_carrito, name="CLS"),
-    path('registrarEmpleadoUser/<int:id>/', views.CrearUsuarioEmpleado)
+    path('registrarEmpleadoUser/<int:id>/', views.CrearUsuarioEmpleado),
+    
+    
+    path('', include('appVeterinaria.urlsApi')),
 ]
 
 
