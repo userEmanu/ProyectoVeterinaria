@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-3+z0@$mte9-v6afdrzyqv9_y9gxf7nv-8ptbda0d_+k(e$a0sm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -26,10 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'appVeterinaria'
+    'appVeterinaria', 
+    'rest_framework', 
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,3 +139,6 @@ EMAIL_PORT=587
 EMAIL_HOST_USER="veterinariaanimalagro@gmail.com" 
 EMAIL_HOST_PASSWORD='gppzjjvcaemyswgr' 
 EMAIL_USE_TLS=True
+
+CORS_ORIGIN_ALLOW_ALL= True
+ALLOWED_HOSTS = ['*']
