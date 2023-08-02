@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Usuario / Perfil - Animalagro</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+  <!-- Favicons -->
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+
+  <!-- Vendor CSS Files -->
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
+
+  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">20</span>
+          </a><!-- End Notification Icon -->
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">13</span>
+          </a><!-- End Messages Icon -->
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{%static '../static/image/profile.jpg' %}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">Stiven Chacon</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>Stiven Chacon</h6>
+              <span>Administrador</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-person"></i>
+                <span>Mi perfil</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/inicio/">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Salir</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/vistaAdministrador/">
+          <i class="bi bi-grid"></i>
+          <span>Animalagro</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      <li class="nav-heading">Pagina</li>
+
+      <a class="nav-link collapsed" href="/perfiladmin/">
+        <i class="bi bi-person"></i>
+        <span>Perfil</span>
+      </a>
+      <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
+        <i class="bi bi-person"></i>
+        <span>Gestion Empleados</span>
+      </a>
+      <a class="nav-link collapsed" href="/VistaProductos/">
+        <i class="bi bi-person"></i>
+        <span>Gestion Producto</span>
+      </a>
+      <a class="nav-link collapsed" href="/GestionServicio/">
+        <i class="bi bi-person"></i>
+        <span>Gestion Servicio</span>
+      </a>
+    </li><!-- End Profile Page Nav -->
+      </li><!-- End Profile Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main container p-4 ">
+    <br>
+    <br>
+    <div class="pagetitle">
+      <h1>Perfil</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="/perfiladmin/">Perfil</a></li>
+
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+          
+
+
+
+        {% comment %} Formularios De Agregar {% endcomment %}
+        <div class="col-xl-9">
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab"
+                    data-bs-target="#profile-overview">Agregar Servicio</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" >Listar Servicio</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#asignarEmpleado">Asignar Empleado</button>
+                </li>
+
+              </ul>
+              {% comment %} Bloque De Codigo Para Agregar Servico {% endcomment %}
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview" >
+                    <form  class="was-validated" >
+
+                        <!-- Nombre Del Servicio -->
+                        <div class="row mb-1">
+                            <label for="txtNombreser" class="col-md-4 col-lg-3 col-form-label">Nombre Del Servicio</label>
+                            <div class="col-md-1 col-lg-7">
+                                <input name="txtNombreser" type="text" class="form-control" id="txtNombreser" required placeholder="Digite el nombre del servicio">
+                            </div>
+                        </div>
+            
+                        <!-- Tipo Servicio -->
+                        <div class="row mb-1">
+                            <label for="txtTiposer" class="col-md-4 col-lg-3 col-form-label">Tipo De Servicio</label>
+                            <div class="col-md-1 col-lg-7">
+                                <input name="txtTiposer" type="text" class="form-control" id="txtTiposer" required placeholder="Digite el tipo de serivicio (Cirugia, Seguimiento) ">
+                            </div>
+                        </div>
+            
+                        <!-- Descripcion -->
+                        <div class="row mb-1">
+                            <label for="txtDescripcionser" class="col-md-4 col-lg-3 col-form-label">Descripcion</label>
+                            <div class="col-md-1 col-lg-7">
+                              <textarea id="txtDescripcionser" name="txtDescripcionser" class="form-control" aria-label="With textarea" required placeholder="Descripcion del Servicio"></textarea>
+                            </div>
+                        </div>
+            
+                        <!-- Precio -->
+                        <div class="row mb-1">
+                            <label for="txtPrecioSer" class="col-md-4 col-lg-3 col-form-label">Precio</label>
+                            <div class="col-md-1 col-lg-7">
+                                <input name="txtPrecioSer" type="number" class="form-control" id="txtPrecioSer" required placeholder="Precio Del Servicio">
+                            </div>
+                        </div>
+            
+                        <!-- Empleado -->
+                        <div class="row mb-1">
+                            <label for="cbEmpleado" class="col-md-1 col-lg-3 col-form-label">Empleado Asignado (Opcional)</label>
+                            <div class="col-md-1 col-lg-7">
+                              <select name="cbEmpleado" id="cbEmpleado" class="form-control" required >
+                                <option value="0">Seleccione  Empleado</option>
+                                {% for em in empleado %} 
+                                    <option value="{{em.id}}">{{em.emNombre}} {{em.emApellido}} - {{em.emCargo}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Botón -->
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" onclick="agregarServicio()">Agregar Servicio</button>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+              {% comment %}  Final De form servico{% endcomment %}
+
+              {% comment %} Bloque De Codigo Para listar  {% endcomment %}
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <table class="table table-striped table-bordered table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Empleado</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      {% for lista in servicio %}
+                            <tr>
+                                <td>{{lista.serNombre}}</td>
+                                <td>{{lista.serTipo}}</td>
+                                <td>{{lista.serPrecio}}</td>
+                                {% if lista.serEmpleado != null %}
+                                  <td>{{lista.serEmpleado.emNombre}}</td>
+                                {% else %} 
+                                  <td class="text-danger">No hay Empleado Asignado</td>
+                                {% endif %}
+                            </tr>
+                      {% endfor %} 
+                    </tbody>
+                  </table>
+
+                </div>
+              </div> 
+              <div class="tab-content pt-2" >
+                <div class="tab-pane fade pt-3" id="asignarEmpleado" >
+                  <form class="was-validated">
+                                    
+                      <div class="section register min-vh-50 d-flex flex-column align-items-center justify-content-center py-2">
+                        <div class="container">
+                          <div class="row justify-content-center">
+                            <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                              <div class="card mb-3">
+
+                                <div class="card-body">
+
+                                  <div class="pt-4 pb-2">
+                                    <h3 class="card-title text-center pb-0 fs-4">Asignar Empleado Aun Servicio</h3>
+                                    <p class="text-center small">Solo se puede asignar un empleado al servicio que no tenga</p>
+                                  </div>
+
+                                  <form class="row g-3 needs-validation" >                                    
+                                    <div>
+                                      <label for="cbservicio" class="form-label">Servicio</label>
+                                      <div class="input-group">                      
+                                      <select class="form-select" id="cbservicio" name ="cbservicio">
+                                        <option value="0">Seleccione Servicio</option>
+                                        {% for lista in servicio %} 
+                                          {% if lista.serEmpleado == null %}
+                                            <option value="{{lista.id}}">{{lista.serNombre}} - {{lista.serTipo}}</option>
+                                          {% endif %}
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                    </div>
+                                    <div>
+                                        <label for="cbempleado" class="form-label">Empleado</label>
+                                        <div class="input-group ">                      
+                                        <select class="form-select" id="cbempleado" name ="cbempleado">
+                                          <option value="0">Seleccione Empleado</option>
+                                          {% for em in empleado %} 
+                                             <option value="{{em.id}}">{{em.emNombre}} {{em.emApellido}} - {{em.emCargo}}</option>
+                                          {% endfor %}
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="text-center">
+                                      <button type="button" class="btn btn-success" onclick="asignarEmpleado()">Agregar Servicio</button>
+                                    </div>                    
+                                  </form>
+
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>    
+    </section>
+
+  </main><!-- End #main -->
+
+<!-- custom js file link  -->
+<script src=" {% static '../static/js/script.js' %}"></script>
+<script>
+    {% if mensaje %}
+    Swal.fire({
+      title: '{{titulo}}',
+      text: '{{mensaje}}',
+      icon: '{{tema}}',               
+      confirmButtonColor: '#3085d6',             
+      confirmButtonText: 'Aceptar'
+    });
+  
+    {% endif %}
+  </script>
+
+  
+  <!-- Vendor JS Files -->
+  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src=" {% static '../static/js/main.js' %}"></script>
+  <script src=" {% static '../static/js/GestionServicios.js' %}"></script>
+</body>
+
+</html>

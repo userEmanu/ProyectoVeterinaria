@@ -1,103 +1,119 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Agropecuaria Animalagro</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<link href="css/wickedpicker.css" rel="stylesheet" type='text/css' media="all" />
-{% load static %}
-<link rel="stylesheet" href="{%static '../static/css/style.css'%}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	{% load static %}
+    <link rel="stylesheet" href="{% static '../static/css/forma.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
-<body>
-<h1>Reservas De Cita</h1>
-    <div class="bg-agile">
-	<div class="book-appointment">
-	<h2>Hacer una cita</h2>
-				
-			<form action="#" method="post" name="appointment" id="appointment">
-			<div id="resultados_ajax" class="gaps"></div>
-			<div class="left-agileits-w3layouts same">
-			
-			<div class="gaps">
-				<p>Nombre del amo</p>
-					<input type="text" name="name" placeholder="" required=""/>
-			</div>	
-				<div class="gaps">	
-				<p>Número de teléfono</p>
-					<input type="text" name="number" placeholder="" required=""/>
-				</div>
-				<div class="gaps">
-				<p>E-mail</p>
-						<input type="email" name="email" placeholder="" required="" />
-				</div>
-							<div class="gaps">
-				<p>Nombre de la mascota </p>
-					<input type="text" name="name" placeholder="" required=""/>
-			</div>	
-			</div>
-			<div class="right-agileinfo same">
-			<div class="gaps">
-				<p>Seleccionar fecha</p>		
-						<input  id="datepicker1" name="datepicker1" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'mm/dd/yyyy';}" required="">
-			</div>
-			<div class="gaps">
-				<p>Sexo</p>	
-					<select class="form-control" name="gender" required>
-						<option></option>
-						<option value="M">Macho</option>
-						<option value="F">Hembra</option>
-					</select>
-			</div>
-			<div class="gaps">
-				<p>Hora</p>		
-					<input type="text" id="timepicker" name="time" class="timepicker form-control" value="">	
-			</div>
-			<div class="gaps">
-				<p>Síntomas de la mascota</p>
-						<textarea name="symptoms" placeholder="" required="" ></textarea>
-				</div>
-			</div>
-			<div class="clear"></div>
-						  <input type="submit" value="Realizar cita">
-			</form>
-		</div>
-   </div>
-   	
-		<script type="text/javascript" src="{%static 'js/jquery-2.1.4.min.js' %}"></script>
-		<script type="text/javascript" src="{%static 'js/wickedpicker.js' %}"></script>
-			<script type="text/javascript">
-				$('.timepicker').wickedpicker({twentyFour: false});
-			</script>
-		<!-- Calendar -->
-				<link rel="stylesheet" href="{%static 'css/jquery-ui.css'%}" />
-				<script src="js/jquery-ui.js"></script>
-				  <script>
-						  $(function() {
-							$( "#datepicker,#datepicker1,#datepicker2,#datepicker3" ).datepicker();
-						  });
-						  
-				  </script>
-			<!-- //Calendar -->
-			<script>
-				$( "#appointment" ).submit(function( event ) {
-				  var parametros = $(this).serialize();
-				  $.ajax({
-						type: "POST",
-						url: "enviar-mail.php",
-						data: parametros,
-						 beforeSend: function(objeto){
-							$("#resultados_ajax").html("Enviando...");
-						  },
-						success: function(datos){
-							$("#resultados_ajax").html(datos);
-						}
-				});
-			
-				  event.preventDefault();
-				});
-			</script>	
+<body style="background-image: url('{% static '../static/image/fondo.png' %}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+    <div class="login-box">
+        <h2>Agenda Tu Cita</h2>
+        <form action="/agregarCita/{{ser.id}}/" method="post">
+            {% csrf_token %}        
+            <div class="user-box">
+                {% if usuario.is_authenticated %}
+                    <input type="text" name="txtNombreCita" id="txtNombreCita" value="{{ usuario.first_name }}" required="">
+                {% endif %}
+				<label for="">Nombre del AMO</label>
 
+              </div>
+
+              <div class="user-box">
+                    {% if usuario.is_authenticated %}
+                        <input type="text"  name="txtApellidoCita" id="txtApellidoCita" value="{{ usuario.last_name }}" required="">
+                    {% endif %}
+					<label for="">Apellido del AMO</label>
+              </div>
+
+            <div class="user-box">
+                  {% if usuario.is_authenticated %}
+                      <input type="text"  name="txtDocumentoCita" id="txtDocumentoCita" value="{{ usuario.userNoDoc}}" required="">
+                  {% endif %}
+				  <label for="">Documento Del AMO</label>
+            </div>
+
+            <div class="user-box">	
+                    {% if usuario.is_authenticated %}
+                    <input type="text" name="txtNumeroCita" id="txtNumeroCita" value="{{ usuario.userTelefono}}" required="">
+                    {% endif %}
+					<label for="">Número de teléfono</label>
+            </div>
+
+            <div class="user-box">
+                    {% if usuario.is_authenticated %}
+                        <input type="text" name="txtCorreoCita" id="txtCorreoCita" value="{{ usuario.email}}" required="">
+                      {% endif %}
+					  <label for="">E-mail</label>
+            </div>
+            <div class="user-box">
+                <select name="txtNombreMasCita" id="txtNombreMasCita" required="">
+                    {% for mascota in mascotas %}
+                        <option value="{{mascota.id}}">{{ mascota.masNombre}}</option>
+                    {% endfor %}
+                </select>
+				<label for="">Nombre de la mascota </label>
+                </div>
+            
+            <div class="user-box">
+                    <input type="text" name="txtServicioCita" id="txtServicioCita" value="{{ser.serNombre }}" required="">
+					<label for="">Servicio</label>
+              </div>
+
+              <div class="user-box">
+                    {% if ser.serEmpleado != null %}
+                     <input type="text" name="txtVeterinarioCita" id="txtVeterinarioCita" value="{{ ser.serEmpleado.emNombre }} {{ser.serEmpleado.emApellido }}" required="">
+                    {% else %} 
+                     <input type="text" name="txtVeterinarioCita" id="txtVeterinarioCita" value="No hay veterinario asignado" required="" readonly>
+                    {% endif %}
+				<label for="txtVeterinarioCita">Veterinarios</label>
+                <br>
+            </div>
+
+            <div class="user-box">
+                    <input type="date" id="txtFechaCita" name="txtFechaCita" value="" min="{{fecha_actual}}">
+					<label for="">Seleccionar fecha</label>		
+            </div>
+            <div class="user-box">
+                    <select name="txtHoraCita" id="txtHoraCita">
+                        {% if horas_no_reservadas %}
+                            {% for hora in horas_no_reservadas %}
+                                <option value="{{ hora|time:'H:i' }}">{{ hora|time:'g:i A' }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No hay horas disponibles en esta fecha.</option>
+                        {% endif %}
+                    </select>
+                    <label for="txtHoraCita">Seleccione la hora:</label>
+            </div>
+            <div class="user-box">
+                    <input name="txtSintomasCita" id="txtSintomasCita" placeholder="" required="" ></input>
+					<label for="">Síntomas de la mascota</label>
+			</div>
+            <!-- el Span es para insertar la lineas -->
+            <div class="btn-box-container">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <button class="btn-box">Agendar Cita</button>
+            </div>
+        </form>
+    </div>
+    {% if mensaje %}
+        <script>
+            var mensaje = "{{ mensaje|escapejs }}"; // Escapar el mensaje
+            if (mensaje !== "") {
+                Swal.fire({
+                    icon: 'error',
+                    text: mensaje,
+                    confirmButtonText: 'Aceptar'
+                }); // Mostrar mensaje con Swal.fire()
+            }
+        </script>
+    {% endif %}
 </body>
 </html>

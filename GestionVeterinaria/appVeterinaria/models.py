@@ -107,22 +107,27 @@ class Mascota(models.Model):
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     
     
-class Tratamiento(models.Model):
-    traNombre = models.CharField(max_length=30, null=False, unique=True, db_comment="Nombre del tratamiento")
-    traTipo = models.CharField(max_length=40, null=False, db_comment="Tipo de tratamiento, si es cirugia, revision")
-    traEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, null= True,db_comment="El empleado que atiende este servicio")
-    traPrecio = models.IntegerField( null=False, db_comment="Precio del Tratamiento")
+class Servicio(models.Model):
+    serNombre = models.CharField(max_length=30, null=False, unique=True, db_comment="Nombre del tratamiento")
+    serTipo = models.CharField(max_length=40, null=False, db_comment="Tipo de tratamiento, si es cirugia, revision")
+    serEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, null= True,db_comment="El empleado que atiende este servicio")
+    serPrecio = models.IntegerField(null=False, db_comment="Precio del Tratamiento")
+    serDescripcion = models.TextField(null=False, db_comment = "Descripcion Del servicio")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
+    
+    
     
 class Cita(models.Model):
     ciDescripcion = models.TextField(max_length=500, null=True, db_comment ="Descripcion de la cita despues de ser atendida")
     ciSintomas = models.CharField(max_length=50, null=False, db_comment="sintomas de la mascota")
     ciEstado = models.CharField(max_length=20, choices=estadoCita, db_comment="Estado de la cita", null=False)
+    ciFecha = models.DateField(null=True, db_comment="Fecha de la cita")
+    ciHora = models.TimeField(null=True, db_comment="Hora de la cita")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     ciMascota = models.ForeignKey(Mascota, on_delete=models.PROTECT, db_comment="Macota", null=True)
-    ciTratamiento = models.ForeignKey(Tratamiento, on_delete=models.PROTECT, null=True, db_comment="Tratmiento")
+    ciServicio = models.ForeignKey(Servicio, on_delete=models.PROTECT, null=True, db_comment="Servicio")
     ciUsuario = models.ForeignKey(User, on_delete=models.PROTECT, null=False, db_comment="Usuario")
     
 class Producto(models.Model):

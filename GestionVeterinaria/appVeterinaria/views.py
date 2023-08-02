@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 from django.shortcuts import render
 from django.shortcuts import render,redirect
@@ -17,20 +17,53 @@ import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 import threading
-from datetime import date, datetime
+from datetime import date, datetime, time, timedelta
 from smtplib import SMTPException
 from django.http import JsonResponse
 from appVeterinaria.carrito import *
 
 # Aqui las vistas
+
 def vistaInicio(request):
-    return render(request, "index.html")
+    # Obtener todos los objetos del modelo Servicio desde la base de datos
+    servicio = Servicio.objects.all()
+
+    # Crear un diccionario con la lista de objetos de Servicio y pasarlo a la plantilla
+    retorno = {"servicio": servicio}
+    return render(request, "index.html", retorno)
+
+def vistaGestionCitas(request):
+    retorno = {'cita': Cita.objects.all(), 'estado': estadoCita }   
+    return render(request,"Administrador/frmGestionCitas.html", retorno)
+
+def vistaCita(request):
+    return render(request,"Administrador/frmCita.html")
 
 def vistaCitas(request):
-    return render(request, "CITAS.html")
+    if request.user.is_authenticated:
+         return render(request, "CITAS.html")
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
 
 def vistaCodigo(request):
     return render(request, "codigoRecuperar.html")
+
+def vistaGestionServicio(request):
+    if request.user.is_authenticated:
+        empleado = {'empleado': Empleado.objects.all(), 'servicio': Servicio.objects.all(),"user": request.user,
+                       "rol": request.user.groups.get().name}
+        
+        return render(request, 'Administrador/frmGestionServicio.html', empleado)
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
 
 def vistaAdministrador(request):
     if request.user.is_authenticated:
@@ -47,7 +80,7 @@ def vistaAdministrador(request):
 def vistaUsuario(request):
     if request.user.is_authenticated:
         user= {"user": request.user,
-                       "rol": request.user.groups.get().name}
+                       "rol": request.user.groups.get().name, "servicio": Servicio.objects.all()}
         return render(request, "indexUsuario.html", user)
     else:
         mensaje = "Debes Iniciar Sesión"
@@ -283,6 +316,7 @@ def RegistrarNuevaContraseña(request, id):
     
 # Aqui las funciones que retornan JSON
 
+# --------------
 ################################################################
 #Bloque De Codigo para El Apartado De Contactos
 
@@ -548,15 +582,156 @@ def generarPassword():
 
 def agregarServicio(request):
     try:
-        nombre = request.POST.get('traNombre')
-        tipo = request.POST.get('traTipo')
-        precio = request.POST.get('traPrecio')
-        
+        estado = False
+        mensaje = ''
+        data = json.loads(request.body)
+        nombre = data['nombre']
+        tipo = data['tipo']
+        precio = data['precio']
+        descripcion = data['descripcion']
+        idEm= data['empleado']
         with transaction.atomic():
-            tratamiento = Tratamiento(traNombre = nombre, traTipo = tipo, traPrecio = precio)
-            tratamiento.save()
+            if idEm != '0':
+                em = Empleado.objects.get(pk = idEm)
+                servicio = Servicio(serNombre = nombre, serTipo = tipo, serEmpleado = em, serPrecio = precio, serDescripcion = descripcion)
+                servicio.save()
+                estado = True
+                mensaje = 'Servicio Agregado Correctamente'
+            else:
+                servicio = Servicio(serNombre = nombre, serTipo = tipo, serPrecio = precio, serDescripcion = descripcion)
+                servicio.save()
+                estado = True
+                mensaje = 'Servicio Agregado Correctamente'
             
     except Error as e:
         transaction.rollback()
         
-    return 
+    retorno = {'mensaje': mensaje, 'estado': estado}
+    return JsonResponse(retorno)
+
+def asignasServicio(request):
+    try:
+        try:
+            estado = False
+            mensaje = ''
+            data = json.loads(request.body)
+            servicio = data['servicio']
+            empleado = data['empleado']
+            with transaction.atomic():
+                    si = Servicio.objects.get(pk = servicio)
+                    em = Empleado.objects.get(pk = empleado)
+                    si.serEmpleado = em
+                    si.save()
+                    estado = True
+                    mensaje = 'Empleado Asignado Correctamente'
+                    
+        except ObjectDoesNotExist as e:
+            transaction.rollback()
+    except Exception as e:
+        print(e)
+        
+    retorno = {'mensaje': mensaje, 'estado': estado}
+    return JsonResponse(retorno)
+
+def vistaAgregarCita(request, id,mensaje=""):
+    ser = Servicio.objects.get(pk=id)
+    if request.user.is_authenticated:
+        usuario_actual = request.user
+        mascotas_del_usuario = Mascota.objects.filter(masUser=usuario_actual)
+        empleado_del_servicio = Empleado.objects.filter(servicio=ser)
+
+        #Validamos que se agregue de la fecha actual en adelante
+        fecha=datetime.now()
+        fecha_actual=datetime.strftime(fecha,"%Y-%m-%d")
+        
+        # Obtenemos las horas ya reservadas para el servicio en la fecha actual
+        horas_reservadas = Cita.objects.filter(ciFecha=fecha_actual, ciServicio=ser).values_list('ciHora', flat=True)
+
+        # Definimos las horas de inicio y fin del horario de citas 
+        hora_inicio = datetime.combine(datetime.today(), time(7, 0))  # 07:00 AM
+        hora_fin = datetime.combine(datetime.today(), time(17, 0))    # 05:00 PM
+
+        # Creamos una lista con todas las horas posibles en ese horario
+        horas_posibles = [hora_inicio + timedelta(hours=i) for i in range((hora_fin.hour - hora_inicio.hour) + 1)]
+
+        # Filtramos las horas que no están reservadas
+        horas_no_reservadas = [hora for hora in horas_posibles if hora.strftime('%H:%M') not in horas_reservadas]
+        
+        retorno = {"ser": ser, "usuario": usuario_actual, "mascotas": mascotas_del_usuario, "empleado_del_servicio": empleado_del_servicio,"mensaje":mensaje,
+                   "fecha_actual":fecha_actual, "horas_no_reservadas": horas_no_reservadas}
+        return render(request, "CITAS.html", retorno)
+    else:
+        mensaje = "Debes Iniciar Sesión"
+        titulo= "¿Iniciaste Sesión?"
+        icon = "error"
+        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
+        return render(request,"index.html", retorno)
+    
+def agregarCita(request, id):
+    if request.user.is_authenticated:
+       
+        idMascota = request.POST["txtNombreMasCita"]
+        
+
+        # Datos De la Cita ForeignKey
+        fechaCita = request.POST["txtFechaCita"]
+        horaCita = request.POST["txtHoraCita"]
+        sintomasCita = request.POST["txtSintomasCita"]
+        try:
+            mascota = Mascota.objects.get(pk=idMascota)
+            user = request.user
+            servicio = Servicio.objects.get(pk=id)
+            
+            #Validamos que no se agreguen cita los sabados, los domingos 
+            #No se repita la misma fecha con el mismo servicio
+            fecha_datetime = datetime.strptime(fechaCita, "%Y-%m-%d")
+            if fecha_datetime.weekday() in [5, 6]: # Sábado: 5, Domingo: 6
+                mensaje = "No se pueden hacer reservas los sábados y domingos."
+                ide = int(servicio.id)
+                return redirect(f"/vistaAgregarCita/{ide}/{mensaje}/")
+            # Consultar si no existe cita con el mismo veterinario y hora
+            citas_exist = Cita.objects.filter(
+                ciFecha=fechaCita, ciHora=horaCita, ciServicio=servicio
+            ).exists()
+
+            if citas_exist:
+                mensaje ="Ya hay una cita reservada con el mismo veterinario y hora."
+                ide = int(servicio.id)
+                return redirect(f"/vistaAgregarCita/{ide}/{mensaje}/")
+            else:
+            # Crear el objeto Cita y asignar los valores
+                cita = Cita(
+                    ciMascota=mascota,
+                    ciServicio=servicio,
+                    ciUsuario=user,
+
+                    ciFecha=fechaCita,
+                    ciHora=horaCita,
+                    ciSintomas=sintomasCita,
+                    ciEstado='Solicitada'  # Aquí se proporcionar el estado de la cita que desees
+                )
+                cita.save()
+                mensaje = "Cita agregada correctamente"
+        except Exception as error:
+                mensaje = f"Problemas al agregar la Cita. {error}"
+
+        retorno = {"mensaje": mensaje, "cita": cita}
+        return render(request, "perfilUsuario.html", retorno)
+
+def cancelarCita(request, id):
+    try:
+        estado = False
+        mensaje = ''
+        transaction.rollback()
+        cita = Cita.objects.get(pk = id)
+        cita.ciEstado = 'Cancelada'
+        cita.save()
+        estado = True
+        mensaje = "Citas Cancelada exitosamente"
+        
+    except Exception as error:
+        transaction.rollback()
+        print(error)
+    
+    retorno = {'estado': estado, 'mensaje': mensaje}
+    return JsonResponse(retorno)

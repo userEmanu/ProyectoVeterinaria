@@ -175,51 +175,19 @@
     <!-- shop section ends -->
     
     <!-- services section starts  -->
-    
-    <section class="services" id="services">
+    <section class="services" id="services" >
     
         <h1 class="heading"> Servicios <span> Disponibles, Para Agendar Cita</span> </h1>
-    
-        <div class="box-container">
-    
-            <div class="box">
-                <i class="fas fa-dog"></i>
-                <h3>Revision Perruna </h3>
-                <a href="#" class="btn">Agendar</a>
+
+            <div class="box-container">
+                {% for ser in servicio %}
+                <div class="box">
+                    <i class="fas fa-dog"></i>
+                        <h3 value="{{ser.id}}">{{ ser.serNombre}}</h3>
+                    <a href="/vistaAgregarCita/{{ser.id}}" class="btn">Agendar</a>
+                </div>
+                {% endfor %}
             </div>
-    
-            <div class="box">
-                <i class="fas fa-cat"></i>
-                <h3>Revision Gatuna</h3>
-                <a href="#" class="btn">Agendar</a>
-            </div>
-    
-            <div class="box">
-                <i class="fas fa-bath"></i>
-                <h3>Spa</h3>
-                <a href="#" class="btn">Agendar</a>
-            </div>
-    
-            <div class="box">
-                <i class="fas fa-drumstick-bite"></i>
-                <h3>Dieta</h3>
-                <a href="#" class="btn">Agendar</a>
-            </div>
-    
-            <div class="box">
-                <i class="fas fa-baseball-ball"></i>
-                <h3>Actividad Ludica</h3>
-                <a href="#" class="btn">read more</a>
-            </div>
-    
-            <div class="box">
-                <i class="fas fa-heartbeat"></i>
-                <h3>Revision Preventiva, de tu mascota</h3>
-                <a href="#" class="btn">Agendar</a>
-            </div>
-    
-        </div>
-    
     </section>
     
     

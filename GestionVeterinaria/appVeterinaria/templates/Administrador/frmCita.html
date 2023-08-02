@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Usuario / Perfil - Animalagro</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+  <!-- Favicons -->
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+
+  <!-- Vendor CSS Files -->
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
+
+  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
+
+
+</head>
+
+<body>
+
+  <!-- ======= main ======= -->
+  <main>
+    <div class="container-sm p-2 my-4 shadow-sm p-3 mb-5 bg-white rounded ">
+        <div class="row">
+            <div class="col-5">
+                
+            </div>
+            <div class="col-5">
+                
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+                
+            </div>
+            <div class="col-4">
+               
+            </div>
+            <div class="col-4">
+                
+            </div>
+          </div>
+          <div class="row">
+            ...
+          </div>
+    </div>
+  </main><!-- End #main -->
+
+<!-- custom js file link  -->
+<script src=" {% static '../static/js/script.js' %}"></script>
+<script>
+    {% if mensaje %}
+    Swal.fire({
+      title: '{{titulo}}',
+      text: '{{mensaje}}',
+      icon: '{{tema}}',               
+      confirmButtonColor: '#3085d6',             
+      confirmButtonText: 'Aceptar'
+    });
+  
+    {% endif %}
+
+  </script>
+
+  
+  <!-- Vendor JS Files -->
+  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src=" {% static '../static/js/main.js' %}"></script>
+  <script src=" {% static '../static/js/gestionCitas.js' %}"></script>
+</body>
+
+</html>

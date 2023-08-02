@@ -1,0 +1,183 @@
+html{
+    height: 100%;
+}
+body {
+    background-image: url(fondo.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login-box{
+    position: absolute;
+    top: 50%;
+    left: 34%;
+    width: 800px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: #4edd7256;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+.login-box h2{
+    margin: 0 0 30px;
+    padding: 0;
+    color: #000000;
+    text-align: center;
+}
+.login-box .user-box{
+    position: relative;
+    float: left;
+    box-sizing: border-box;
+    width: 50%;
+}
+.login-box .user-box input, select{
+    width: 80%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #000000;
+    outline: none;
+    background: transparent;
+}
+
+.login-box .user-box label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #000000;
+    pointer-events: none;
+    transition: .5s;
+}
+.login-box .user-box input:focus~label,
+.login-box .user-box input:valid~label{
+    top: -20px;
+    left: 0;
+    color: #000000;
+    font-size: 12px;
+}
+
+.login-box .user-box select:focus~label,
+.login-box .user-box select:valid~label{
+    top: -20px;
+    left: 0;
+    color: #000000;
+    font-size: 12px;
+}/* Estilos para el contenedor */
+.btn-box-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilos para el botón con animación */
+button.btn-box {
+  display: block;
+  padding: 10px 20px;
+  color: #000000;
+  font-size: 16px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+button.btn-box:hover {
+  background-color: #4edd72;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #000000, 0 0 10px #000000, 0 0 10px rgb(0, 0, 0)
+}
+
+/* Estilos para las líneas */
+.btn-box-container span {
+  position: absolute;
+  display: block;
+}
+
+/* Animación linea arriba */
+.btn-box-container span:nth-child(1) {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #000000);
+  animation: btn-animation 1s linear infinite;
+}
+@keyframes btn-animation{
+  0%{
+      left: -100%;
+  }
+  50%,
+  100%{
+      left: 100%;
+  }
+}
+
+/* Animación linea derecha */
+.btn-box-container span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #000000);
+  animation: btn-animation2 1s linear infinite;
+  animation-delay: .25s;
+}
+@keyframes btn-animation2{
+  0%{
+      top: -100%;
+  }
+  50%,
+  100%{
+      top: 100%;
+  }
+}
+
+/* Animación linea abajo */
+.btn-box-container span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #000000);
+  animation: btn-animation3 1s linear infinite;
+  animation-delay: .5s;
+}
+@keyframes btn-animation3{
+  0%{
+      right: -100%;
+  }
+  50%,
+  100%{
+      right: 100%;
+  }
+}
+/* Animación linea izquierda */
+.btn-box-container span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2%;
+  height: 100%;
+  background: linear-gradient(270deg, transparent, #000000);
+  animation: btn-animation4 1s linear infinite;
+}
+
+@keyframes btn-animation4{
+  0%{
+      bottom: -100%;
+  }
+  50%,
+  100%{
+      bottom: 100%;
+  }
+}
