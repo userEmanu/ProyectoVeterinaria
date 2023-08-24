@@ -41,7 +41,7 @@
                     <p class="text-center small">Crea tu cuenta para una mejor navegacion</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" action="/registrarseUser/" method="post" >
+                  <form class="row g-3 was-validated" action="/registrarseUser/" method="post" >
                     {% csrf_token %}
                     <div class="">
                       <label for="txtNombre" class="form-label">Nombres</label>
@@ -65,25 +65,24 @@
 
                     <div class="">
                       <label for="txtContraseña" class="form-label">Contraseña</label>
-                      <input type="text" name="txtContraseña" class="form-control" id="txtContraseña" required>
+                      <input type="password" name="txtContraseña" class="form-control" id="txtContraseña" required>
                       <div class="invalid-feedback">Ingrese Contraseña</div>
                     </div>
                     <div>
                       <label for="cbIdentificacioon" class="form-label">Tipo de Documento y Numero</label>
                       <div class="input-group ">                      
-                      <select class="form-select" id="cbIdentificacioon" name ="cbIdentificacioon">
-                        <option value= "">Selecionar</option>
+                      <select class="form-select" id="cbIdentificacioon" name ="cbIdentificacioon" required>
+                        <option value= "" required>Selecionar</option>
                         <option value= "TI">Tarjeta Identidad</option>
                         <option value= "CC">Cedula Ciudadania</option>
                         <option value= "CCE">Cedula Extranjera</option>
                       </select>
-                      <input type="number" class="form-control" placeholder="Numero De Documento" name="txtIdentificacion" id="txtIdentificacion">
+                      <input type="number" class="form-control" placeholder="Numero De Documento" name="txtIdentificacion" id="txtIdentificacion" required>
                       <div class="invalid-feedback">Ingrese Documento</div>
                     </div>
                     </div>
                     <div class="">
-                      <input type="number" name="txtTelefono" class="form-control" id="txtTelefono" req
-                      uired placeholder="Numero Telefonico">
+                      <input type="number" name="txtTelefono" class="form-control" id="txtTelefono" required placeholder="Numero Telefonico">
                       <div class="invalid-feedback">Ingrese Numero Telefonico</div>
                     </div>
                     <div class="">

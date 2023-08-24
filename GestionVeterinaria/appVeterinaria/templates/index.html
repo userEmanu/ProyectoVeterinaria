@@ -40,8 +40,8 @@
     <form action="/iniciarSesion/" class="login-form"  method="post">
         <center><h3>Inicio Sesión</h3>
         {% csrf_token %}
-        <input type="email" name="txtUsuario" placeholder="Usuario o Email" id="txtUsuario" class="box">
-        <input type="password" name="txtContraseña" placeholder="Contraseña o Codigo" id="txtContraseña" class="box">
+        <input type="email" name="txtUsuario" placeholder="Usuario o Email" id="txtUsuario" class="box" required="">
+        <input type="password" name="txtContraseña" placeholder="Contraseña o Codigo" id="txtContraseña" class="box" required="">
         
         </center>
         <button class="btn">Iniciar Sesion</button>
@@ -129,48 +129,21 @@
         <h1 class="heading">Productos<span> Disponibles Mas Vendidos</span> </h1>
     
         <div class="box-container">
-    
+            {% for producto in productos %}
             <div class="box">
                 <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a>
-                    <a href="#" class="fas fa-eye"></a>
+                    <a href="{% url 'Add' producto.id %}" class="fas fa-shopping-cart"></a>
+                    <a href="/verProducto/{{producto.id}}" class="fas fa-eye"></a>
                 </div>
                 <div class="image">
-                    <img src="{% static '../static/image/product_01.jpg' %}" alt=""  >
+                    <img src="../media/{{producto.proFoto}}" alt=""  >
                 </div>
                 <div class="content">
-                    <h3>Purina Seca-food</h3>
-                    <div class="amount"> $1500 - $30.000 </div>
+                    <h3>{{producto.proNombre}}</h3>
+                    <div class="amount">  Precio: $ {{producto.proPrecio}} COL.</div>
                 </div>
             </div>
-    
-            <div class="box">
-                <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a>
-                    <a href="#" class="fas fa-eye"></a>
-                </div>
-                <div class="image">
-                    <img src="{% static '../static/image/product_02.jpg' %}" alt="">
-                </div>
-                <div class="content">
-                    <h3>Beff-food</h3>
-                    <div class="amount"> $1.500 - $3.000 </div>
-                </div>
-            </div>
-    
-            <div class="box">
-                <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a>
-                    <a href="#" class="fas fa-eye"></a>
-                </div>
-                <div class="image">
-                    <img src="{% static '../static/image/product_03.jpg' %}" alt="">
-                </div>
-                <div class="content">
-                    <h3>Lmab-food</h3>
-                    <div class="amount"> $1.500 - $3.000 </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     
     </section>
@@ -204,10 +177,10 @@
         <form action="/registrarContactos/". method="post">
             {% csrf_token%}
             <h3>Contactanos</h3>
-            <input type="text" placeholder="Nombre" id="txtNombreCon" name="txtNombreCon" class="box" requiered>
-            <input type="email" placeholder="Email" id="txtEmailCon" name="txtEmailCon" class="box" requiered>
-            <input type="number" placeholder="Numero Telefonico" id="txtNumeroCon" name="txtNumeroCon" class="box" requiered>
-            <input type="text" placeholder="Mensaje" id="txtMensajeCon" name="txtMensajeCon" class="box" requiered>
+            <input type="text" placeholder="Nombre" id="txtNombreCon" name="txtNombreCon" class="box" required="">
+            <input type="email" placeholder="Email" id="txtEmailCon" name="txtEmailCon" class="box" required="">
+            <input type="number" placeholder="Numero Telefonico" id="txtNumeroCon" name="txtNumeroCon" class="box" required="">
+            <input type="text" placeholder="Mensaje" id="txtMensajeCon" name="txtMensajeCon" class="box" required="">
             <input type="submit" value="Enviar Mensaje" class="btn">
         </form>
     
@@ -233,9 +206,9 @@
 <script>
     {% if mensaje %}
     Swal.fire({
-      title: '{{titulo}}',
+      title: 'Sistema Veterinaria Animalagro',
       text: '{{mensaje}}',
-      icon: '{{tema}}',               
+      icon: 'info',               
       confirmButtonColor: '#3085d6',             
       confirmButtonText: 'Aceptar'
     });

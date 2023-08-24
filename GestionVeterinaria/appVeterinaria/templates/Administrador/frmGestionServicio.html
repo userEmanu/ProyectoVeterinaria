@@ -91,7 +91,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
                 <i class="bi bi-person"></i>
                 <span>Mi perfil</span>
               </a>
@@ -100,7 +100,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/inicio/">
+              <a class="dropdown-item d-flex align-items-center" href="/cerrarSesion/">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Salir</span>
               </a>
@@ -132,16 +132,20 @@
         <span>Perfil</span>
       </a>
       <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-people"></i>
         <span>Gestion Empleados</span>
       </a>
       <a class="nav-link collapsed" href="/VistaProductos/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-basket3-fill"></i>
         <span>Gestion Producto</span>
       </a>
       <a class="nav-link collapsed" href="/GestionServicio/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-clipboard2-heart-fill"></i>
         <span>Gestion Servicio</span>
+      </a>
+      <a class="nav-link collapsed" href="/gestionCitas/">
+        <i class="bi bi-calendar-week-fill"></i>
+        <span>Gestion Citas</span>
       </a>
     </li><!-- End Profile Page Nav -->
       </li><!-- End Profile Page Nav -->
@@ -154,7 +158,7 @@
     <br>
     <br>
     <div class="pagetitle">
-      <h1>Perfil</h1>
+      <h1>Perfil Gestion Servicio</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
@@ -171,7 +175,7 @@
 
 
         {% comment %} Formularios De Agregar {% endcomment %}
-        <div class="col-xl-9">
+        <div class="col-xl-10">
           <div class="card">
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
@@ -252,7 +256,7 @@
               <div class="tab-content pt-2">
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                  <table class="table table-striped table-bordered table-hover text-center">
+                  <table class="table table-striped table-bordered table-hover datatable text-center">
                     <thead>
                       <tr>
                         <th scope="col">Nombre</th>
@@ -297,12 +301,12 @@
                                     <p class="text-center small">Solo se puede asignar un empleado al servicio que no tenga</p>
                                   </div>
 
-                                  <form class="row g-3 needs-validation" >                                    
+                                  <form class="row g-3 was-validated" >                                    
                                     <div>
                                       <label for="cbservicio" class="form-label">Servicio</label>
                                       <div class="input-group">                      
-                                      <select class="form-select" id="cbservicio" name ="cbservicio">
-                                        <option value="0">Seleccione Servicio</option>
+                                      <select class="form-select" id="cbservicio" name ="cbservicio" required>
+                                        <option value="" required>Seleccione Servicio</option>
                                         {% for lista in servicio %} 
                                           {% if lista.serEmpleado == null %}
                                             <option value="{{lista.id}}">{{lista.serNombre}} - {{lista.serTipo}}</option>
@@ -314,8 +318,8 @@
                                     <div>
                                         <label for="cbempleado" class="form-label">Empleado</label>
                                         <div class="input-group ">                      
-                                        <select class="form-select" id="cbempleado" name ="cbempleado">
-                                          <option value="0">Seleccione Empleado</option>
+                                        <select class="form-select" id="cbempleado" name ="cbempleado" required>
+                                          <option value="" required>Seleccione Empleado</option>
                                           {% for em in empleado %} 
                                              <option value="{{em.id}}">{{em.emNombre}} {{em.emApellido}} - {{em.emCargo}}</option>
                                           {% endfor %}

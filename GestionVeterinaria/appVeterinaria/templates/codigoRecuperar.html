@@ -38,7 +38,7 @@
                     <p class="text-center small">Ingrese el codigo que se envio a su correo para verificar su cuenta, se reenviara a su correo la nueva contraseña</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" validate action="/verificarCodigo/{{id}}"  method="post" >  
+                  <form class="row g-3 was-validated" validate action="/verificarCodigo/{{id}}"  method="post" >  
                     {% csrf_token %}                                        
                     <input type="number" name="txtCodigo" class="form-control" id="txtCodigo" required placeholder="Codigo">                    
                     <div class="text-center">

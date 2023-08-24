@@ -91,7 +91,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
                 <i class="bi bi-person"></i>
                 <span>Mi perfil</span>
               </a>
@@ -100,7 +100,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/inicio/">
+              <a class="dropdown-item d-flex align-items-center" href="/cerrarSesion/">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Salir</span>
               </a>
@@ -132,16 +132,20 @@
         <span>Perfil</span>
       </a>
       <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-people"></i>
         <span>Gestion Empleados</span>
       </a>
       <a class="nav-link collapsed" href="/VistaProductos/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-basket3-fill"></i>
         <span>Gestion Producto</span>
       </a>
       <a class="nav-link collapsed" href="/GestionServicio/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-clipboard2-heart-fill"></i>
         <span>Gestion Servicio</span>
+      </a>
+      <a class="nav-link collapsed" href="/gestionCitas/">
+        <i class="bi bi-calendar-week-fill"></i>
+        <span>Gestion Citas</span>
       </a>
     </li><!-- End Profile Page Nav -->
       </li><!-- End Profile Page Nav -->
@@ -154,7 +158,7 @@
     <br>
     <br>
     <div class="pagetitle">
-      <h1>Perfil</h1>
+      <h1>Perfil Gestion Citas</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
@@ -190,7 +194,7 @@
               <div class="tab-content pt-2">
                 <div class="tab-pane fade show active profile-overview" id="profile-overview" >
                     <form  class="was-validated" >
-                        <table class="table table-striped table-bordered table-hover text-center">
+                        <table class="table table-striped table-bordered datatable table-hover text-center">
                             <thead>
                               <tr>
                                 <th scope="col">Nombre</th>
@@ -208,9 +212,9 @@
                                         <td>{{lista.ciFecha}} {{lista.ciHora}}</td>
                                         <td>{{lista.ciEstado}}</td>
                                         {% if lista.ciEstado == 'Solicitada' %}
-                                            <td><a href=""> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
+                                            <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
                                         {% else %}
-                                            <td><button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></td>
+                                            <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a></td>
                                         {% endif %}
                                     </tr>
                               {% endfor %} 
@@ -224,7 +228,8 @@
               {% comment %} Bloque De Codigo Para listar  {% endcomment %}
               <div class="tab-content pt-2">
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-                  <table class="table table-striped table-bordered table-hover text-center">
+                  <form  class="was-validated" >
+                  <table class="table table-striped table-bordered datatable table-hover text-center">
                     <thead>
                       <tr>
                         <th scope="col">Nombre</th>
@@ -242,19 +247,16 @@
                                 <td>{{lista.ciServicio.serNombre}}</td>
                                 <td>{{lista.ciFecha}} {{lista.ciHora}}</td>
                                 <td>{{lista.ciEstado}}</td>
-                                <td><a href=""> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
+                                <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
                               {% endif %}
                             </tr>
                       {% endfor %} 
                     </tbody>
                   </table>
-
+                </form>
                 </div>
               </div> 
-              <div class="tab-content pt-2" >
-                <div class="tab-pane fade pt-3" id="asignarEmpleado" >
-                  
-              </div>
+        
             </div>
           </div>
         </div>
@@ -264,20 +266,8 @@
   </main><!-- End #main -->
 
 <!-- custom js file link  -->
-<script src=" {% static '../static/js/script.js' %}"></script>
-<script>
-    {% if mensaje %}
-    Swal.fire({
-      title: '{{titulo}}',
-      text: '{{mensaje}}',
-      icon: '{{tema}}',               
-      confirmButtonColor: '#3085d6',             
-      confirmButtonText: 'Aceptar'
-    });
-  
-    {% endif %}
 
-  </script>
+
 
   
   <!-- Vendor JS Files -->

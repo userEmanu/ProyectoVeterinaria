@@ -97,8 +97,11 @@ function asignarEmpleado() {
                                 text: data.mensaje,
                                 icon: 'Succes',                          
                                 confirmButtonText: 'Aceptar'
-                            })
-                            window.location.reload();
+                            }).then((result) => {
+                                if (result.isConfirmed) {           
+                                    window.location.reload();
+                                }});
+                            
                         } else {
                             Swal.fire({
                                 title: 'Sistema veterinaria animalgro',

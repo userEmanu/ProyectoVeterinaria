@@ -38,11 +38,11 @@
                     <p class="text-center small">Ingrese el codigo que se envio a su correo para verificar su cuenta, se reenviara a su correo la nueva contraseña</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" validate action="/contraseñaNueva/{{id}}"  method="post">     
+                  <form class="row g-3 was-validated" validate action="/contraseñaNueva/{{id}}"  method="post">     
                     {% csrf_token %}                                     
                     <div class="">
                         <label for="txtCodigo" class="form-label">Codigo La Nueva Contraseña</label>
-                        <input type="text" name="txtContraseña" class="form-control" id="txtContraseña" required>
+                        <input type="password" name="txtContraseña" class="form-control" id="txtContraseña" required>
                       </div>
                     <div class="text-center">
                       <button class="btn btn-success w-100 " type="submit">Cambiar</button>

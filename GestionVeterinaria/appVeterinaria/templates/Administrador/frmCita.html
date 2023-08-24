@@ -1,29 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Usuario / Perfil - Animalagro</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-
-  <!-- Favicons -->
-
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
-
-
-  <!-- Vendor CSS Files -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Verinaria Animalagro</title>
   {% load static %}
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
   <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
@@ -31,45 +13,145 @@
   <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
   <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
   <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
-
-  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
-
-
+ 
 </head>
-
 <body>
-
-  <!-- ======= main ======= -->
-  <main>
-    <div class="container-sm p-2 my-4 shadow-sm p-3 mb-5 bg-white rounded ">
-        <div class="row">
-            <div class="col-5">
-                
-            </div>
-            <div class="col-5">
-                
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4">
-                
-            </div>
-            <div class="col-4">
-               
-            </div>
-            <div class="col-4">
-                
-            </div>
-          </div>
-          <div class="row">
-            ...
-          </div>
+  
+  <div class="container-sm p-2 my-4 shadow p-3 mb-5 bg-white rounded">
+    <div class="text-center">
+        <h2><b>Descripción De La Cita</b></h2>
     </div>
-  </main><!-- End #main -->
+    <br>
+    <div class="row">
+      <div class="col">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" value="{{cita.ciUsuario.first_name}}" disabled>
+      </div>
+      <div class="col">
+        <label for="apellido">Apellido:</label>
+        <input type="text" class="form-control" id="apellido" value="{{cita.ciUsuario.last_name}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="text" class="form-control" id="telefono" value="{{cita.ciUsuario.userTelefono}}" disabled>
+      </div>
+      <div class="col">
+        <label for="correo">Correo:</label>
+        <input type="email" class="form-control" id="correo" value="{{cita.ciUsuario.email}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="documento">Tipo de Documento:</label>
+        <input type="text" class="form-control" id="documento" value="{{cita.ciUsuario.userTipoDoc}}" disabled>
+      </div>
+      <div class="col">
+        <label for="no_documento">Número de Documento:</label>
+        <input type="text" class="form-control" id="no_documento" value="{{cita.ciUsuario.userNoDoc}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="nombre_mascota">Nombre de Mascota:</label>
+        <input type="text" class="form-control" id="nombre_mascota" value="{{cita.ciMascota.masNombre}}" disabled>
+      </div>
+      <div class="col">
+        <label for="raza">Raza de Mascota:</label>
+        <input type="text" class="form-control" id="raza" value="{{cita.ciMascota.masRaza}}" disabled>
+      </div>
+      <div class="col">
+        <label for="tipo_animal">Tipo de Animal:</label>
+        <input type="text" class="form-control" id="tipo_animal" value="{{cita.ciMascota.masTipoAnimal}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="servicio">Servicio:</label>
+        <input type="text" class="form-control" id="servicio" value="{{cita.ciServicio.serNombre}}" disabled>
+      </div>
+      <div class="col">
+        <label for="tipo_servicio">Tipo de Servicio:</label>
+        <input type="text" class="form-control" id="tipo_servicio" value="{{cita.ciServicio.serTipo}}" disabled>
+      </div>
+      <div class="col">
+        <label for="precio">Precio:</label>
+        <input type="text" class="form-control" id="precio" value="{{cita.ciServicio.serPrecio}}" disabled>
+      </div>
+      <div class="col">
+        <label for="nombre_empleado">Nombre del Empleado:</label>
+        <input type="text" class="form-control" id="nombre_empleado" value="{{cita.ciServicio.serEmpleado.emNombre}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="fecha">Fecha Agendada:</label>
+        <input type="Text" class="form-control" id="fecha"value="{{cita.ciFecha}} Hora: {{cita.ciHora}} " disabled>
+      </div>
+      <div class="col-2">
+        <label for="estado_cita">Estado de la cita:</label>
+        <input type="text" class="form-control" id="estado_cita" value="{{cita.ciEstado}}" disabled >
+      </div>
+      <div class="col-7">
+        <label for="estado_sintomas">Síntomas de la mascota:</label>
+        <input type="text" class="form-control" id="estado_sintomas" value="{{cita.ciSintomas}}" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        {% if cita.ciEstado == 'Solicitada' %}
+          <label for="descripcion">Descripción:</label>
+          <textarea class="form-control" id="descripcion" rows="8" name ="descripcion"></textarea>
+        {% else %}
+          {% if cita.ciEstado == 'Atendida' %}
+            <label for="descripcion">Descripción:</label>
+            <textarea class="form-control" id="descripcion" rows="4" disabled >{{cita.ciDescripcion}}</textarea>
+          {% else %}
+            <label for="descripcion">Descripción:</label>
+            <textarea class="form-control" id="descripcion" rows="4" disabled>Esta Cita Fue Cancelada</textarea>
+          {% endif %}
+        {% endif %} 
+      </div>
+    </div>
+    <hr>
+    <div class="btn-group">
+        
+          {% if cita.ciEstado == 'Solicitada' %}
+          <button type="button" class="btn btn-danger btn-lg" onclick="cancelarDescripcion({{cita.id}})" ><i class="bi bi-trash-fill"></i> Cancelar</button>
+          {% else %}
+          <button type="button" class="btn btn-danger btn-lg" disabled><i class="bi bi-trash-fill"></i>Cancelar</button>
+          {% endif %} 
 
-<!-- custom js file link  -->
-<script src=" {% static '../static/js/script.js' %}"></script>
-<script>
+        
+          {% if cita.ciEstado == 'Solicitada' %}
+            <button type="button" class="btn btn-success btn-lg" onclick="realizarCita({{cita.id}})"><i class="bi bi-check"></i> Atender</button>
+          {% else %}
+           <button type="button" class="btn btn-success btn-lg" disabled ><i class="bi bi-check"></i>Atender</button>
+          {% endif %} 
+       
+          {% if cita.ciEstado == 'Solicitada' %}
+          <button type="button" class="btn btn-info btn-lg text-white" disabled  ><i class="bi bi-file-pdf"></i>Descargar PDF</button>
+          {% else %}
+          <button type="button" class="btn btn-info btn-lg text-white" onclick="generarPdf({{cita.id}})"><i class="bi bi-file-pdf"></i>Descargar PDF</button>
+          {% endif %} 
+        
+          <a href="/gestionCitas/"><button type="button" class="btn btn-warning btn-lg text-white" ><i class="bi bi-arrow-left"></i>Atras</button></a>
+       
+    </div>
+  </div>
+  
+  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static '../static/js/gestionCitas.js' %}"></script>
+  
+  <script>
     {% if mensaje %}
     Swal.fire({
       title: '{{titulo}}',
@@ -81,22 +163,7 @@
   
     {% endif %}
 
+    
   </script>
-
-  
-  <!-- Vendor JS Files -->
-  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
-  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
-  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src=" {% static '../static/js/main.js' %}"></script>
-  <script src=" {% static '../static/js/gestionCitas.js' %}"></script>
 </body>
-
 </html>

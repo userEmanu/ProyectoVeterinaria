@@ -21,13 +21,44 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    #urls de inicio Sesion o Inicio, que no han iniciado sesion
     path('admin/', admin.site.urls),
-    path('e/',views.vistaInicio),
+    path('',views.vistaInicio),
     path('inicio/',views.vistaInicio),
+    path('inicio/<str:mensaje>',views.vistaInicio),
     path('cerrarSesion/', views.CerrarSesion),
-    path('vistaCitas/', views.vistaCitas),
     path('vistaCodigo/', views.vistaCodigo),
+    path('vistaRecuperarContra/', views.vistaRecuperarContra),
+    path('vistaRegistrarse/',views.vistaRegistrarse),
+    path('vistaConNueva/',views.vistConNueva),
+    path('registrarseUser/', views.registrarseUsuario),
+    path('iniciarSesion/',views.IniciarSesion),
+    path('verificarCorreo/', views.VerificarCorreo),
+    path('verificarCodigo/<int:id>', views.verificarCodigo),
+    path('contraseñaNueva/<int:id>', views.RegistrarNuevaContraseña),
+    path('registrarContactos/', views.registrarContactos),
+    #----------------------------------------- 
+    #urls sobre  Usuario
+    #----------------------------------------- 
+    path('vistaIndexUsuario/',views.vistaUsuario),
+    path('vistaCitas/', views.vistaCitas),
+    path('vistaPerfilusuario/',views.vistaPerfilUsuario),
+    path('vistaAgregarCita/<int:id>/', views.vistaAgregarCita),
+    path('vistaAgregarCita/<int:id>/<str:mensaje>/', views.vistaAgregarCita),
+    path('agregarCita/<int:id>/', views.agregarCita),
+    #----------------------------------------- 
+    #urls sobre Tienda de los productos para comprar
+    #----------------------------------------- 
     path('vistaProductos/', views.vistaproductos, name="productos"),
+    path('agregar/<int:id>/', views.agregar_producto, name="Add"),
+    path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
+    path('restar/<int:id>/', views.restar_producto, name="Sub"),
+    path('limpiar/', views.limpiar_carrito, name="CLS"),
+    path('finalizarCompra/', views.finalizar_compra),
+    path('procesarPedido/', views.procesar_pedido),
+    #----------------------------------------- 
+    #Funciones del administrado y vistas
+    #----------------------------------------- 
     path('vistaAdministrador/',views.vistaAdministrador),
     path('perfiladmin/',views.perfiladmin),
     path('AgregarEmpleado/',views.vistaAgregarEmpleado),
@@ -35,39 +66,20 @@ urlpatterns = [
     path('listarEmpleados/',views.listarEmpleados),
     path('VistaProductos/', views.VistaProductos),
     path('RegistrarProducto/', views.RegistrarProducto),
-    path('vistaPerfilusuario/',views.vistaPerfilUsuario),
-    path('vistaIndexUsuario/',views.vistaUsuario),
-    path('vistaRecuperarContra/', views.vistaRecuperarContra),
-    path('vistaRegistrarse/',views.vistaRegistrarse),
-    path('vistaConNueva/',views.vistConNueva),
     path('vistaEmpleadoUsuario/<int:id>',views.vistaEmpleadoUsuario), 
     path('GestionServicio/',views.vistaGestionServicio),
     path('gestionCitas/', views.vistaGestionCitas),
-    path("", views.vistaCita),
-    
-    #----------------------------------------- 
-    path('cancelarCita/<int:id>', views.cancelarCita),
-    path('registrarseUser/', views.registrarseUsuario),
-    path('iniciarSesion/',views.IniciarSesion),
-    path('verificarCorreo/', views.VerificarCorreo),
+    path("descripcionCita/<int:id>", views.vistaCitaHTML),
+    path("realizarCita/<int:id>", views.citaRealizada),
+    path('cancelarCita/<int:id>/', views.cancelarCita),
     path('RegistrarProveedor/', views.VistaRegistrarProveedor),
     path('RegistrarCategoria/', views.VistaRegistrarCategoria),
-    path('verificarCodigo/<int:id>', views.verificarCodigo),
-    path('contraseñaNueva/<int:id>', views.RegistrarNuevaContraseña),
-    path('registrarContactos/', views.registrarContactos),
-    path('agregar/<int:id>/', views.agregar_producto, name="Add"),
-    path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
-    path('restar/<int:id>/', views.restar_producto, name="Sub"),
-    path('limpiar/', views.limpiar_carrito, name="CLS"),
     path('registrarEmpleadoUser/<int:id>/', views.CrearUsuarioEmpleado),
     path("agregarServicio/",views.agregarServicio),
-    path('vistaAgregarCita/<int:id>/', views.vistaAgregarCita),
-    path('vistaAgregarCita/<int:id>/<str:mensaje>/', views.vistaAgregarCita),
-    path('agregarCita/<int:id>/', views.agregarCita),
     path('asignarservicio/',views.asignasServicio),
-    
-    
-    
+    path('generarPDFHistorialEnviar/<int:id>/', views.descargarPDFhistorial),
+    #----------------------------------------- 
+    #API todo sobre api
     path('', include('appVeterinaria.urlsApi')),
 ]
 

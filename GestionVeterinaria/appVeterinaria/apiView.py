@@ -4,7 +4,14 @@ from appVeterinaria.serializers import *
 from django.http import JsonResponse
 from django.core import serializers
 from django.contrib import auth
-from django.contrib.auth import authenticate
+from django.http import HttpResponse
+import json
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 # Listas
 class userList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -90,11 +97,66 @@ class pedidoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
 
-def login(request,userName,password):
+def loginGET(request,userName,password):
     if request.method == 'GET':
         queryset = authenticate(request,username=userName, password = password)
         if queryset is not None:
             auth.login(request, queryset)
-            serializerd_data = serializers.serialize('json',queryset)
-            return JsonResponse(serializerd_data, safe=False)
-    
+            serialized_data = serializers.serialize('json', [queryset]) 
+            return JsonResponse(serialized_data, safe=False)
+        else:
+            return HttpResponse("ERROR USUARIO NO ENCONTRADo,  GET")  
+    else:
+        return HttpResponse("error INTERNO")     
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class LoginView(APIView):
+    def post(self ,request):
+            username = request.data.get("username", None)
+            password = request.data.get("password", None)
+            user = authenticate(username=username, password=password)
+
+            if user:
+                login(request, user)
+                #UserSerializer(users).data
+                return Response(UserSerializer(user).data, status = status.HTTP_200_OK)
+
+            return Response(status = status.HTTP_404_NOT_FOUND)
+        
+@method_decorator(csrf_exempt, name='dispatch')       
+class aggMascotaView(APIView):
+    def post(self ,request):
+        id = request.data.get("id", None)
+        tipo = request.data.get("tipo", None)
+        raza  = request.data.get("raza", None)
+        nombre = request.data.get("nombre", None)
+        
+        usuario = User.objects.get(pk = id)
+        if usuario != "":
+            mascota = Mascota.objects.create(masNombre = nombre, masRaza= raza,
+                                             masTipoAnimal = tipo,  masUser = usuario)
+            return Response(MascotaSerializer(mascota).data, status= status.HTTP_201_CREATED)
+            
+        return Response(status = status.HTTP_404_NOT_FOUND)
+
+
+
+class LogoutView(APIView):
+    def post(self, request):
+        logout(request)
+        return Response(status = status.HTTP_200_OK)
+
+class ProductoImagen(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            archivo = validated_data['proFoto']
+            archivo.name = 'producto.png'
+            validated_data['proFoto'] = archivo
+            producto = Producto(**validated_data)
+            producto.save()
+            serializer_response = ProductoSerializer(producto)
+            return Response(serializer_response.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from appVeterinaria.models import *
+from drf_extra_fields.fields import Base64ImageField
 
 class UserSerializer(serializers.ModelSerializer):
+    userFoto = Base64ImageField(required = False)
     class Meta: 
         model = User
         fields = ('__all__')

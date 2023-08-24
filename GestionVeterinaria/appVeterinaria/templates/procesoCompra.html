@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulario De Compra</title>
+
+
+    <!-- Enlace al archivo CSS de Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<!-- Enlace a los archivos JavaScript de Bootstrap (requiere jQuery y Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+{% load static %}
+
+
+  </head>
+  <body class="bg-light">
+    
+<div class="container">
+  <main>
+     
+      <div class="py-5 text-center">
+        <h2>Formulario de pago</h2>
+      </div>
+  
+      <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Productos</span>
+            <span class="badge bg-primary rounded-pill">{{ cantidad_total_productos }}</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                {% for detalle_producto in productos_en_carrito %}
+                  <small class="text-muted">Nombre Producto:</small>
+                  <h6>{{ detalle_producto.producto.proNombre }}</h6>
+                  <small class="text-muted">Cantidad</small>
+                  <h6>{{ detalle_producto.cantidad }}</h6>
+                  <span class="text-muted">Precio Unitario</span>
+                  <h6>${{ detalle_producto.producto.proPrecio}}</h6>
+                  <hr class="my-8">
+                {% endfor %}
+              </div>
+
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total Pagar (COP)</span>
+              <strong >$ {{total}}</strong>
+            </li>
+          </ul>
+  
+        </div>
+        <div class="col-md-7 col-lg-8">
+          <h4 class="mb-3">Datos para el envio</h4>
+          <form  class="was-validated" action="/procesarPedido/" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="txtNombreCompra" class="form-label">Nombre Completo</label>
+                {% if usuario.is_authenticated %}
+                <input type="text"  class="form-control" name="txtNombreCompra" id="txtNombreCompra" value="{{ usuario.first_name }} {{ usuario.last_name }} " required>
+                 {% endif %}
+              </div>
+              <div class="col-6">
+                <label for="txtNumeroIdentificacion" class="form-label">Identificacion</label>
+                   {% if usuario.is_authenticated %}
+                   <input type="number" class="form-control" name ="txtNumeroIdentificacion" id="txtNumeroIdentificacion" value="{{ usuario.userNoDoc }}" placeholder="" required >
+                   {% endif %}              
+              </div>
+              <div class="col-6">
+                <label for="email" class="form-label">Correo Electronico</label>
+                <div class="input-group has-validation">
+                    {% if usuario.is_authenticated %}
+                        <span class="input-group-text">@</span>
+                        <input type="email" class="form-control" id="email" name="email"value="{{ usuario.email }}" placeholder="" required>
+                    {% endif %}
+                </div>
+              </div>
+
+
+                <div class="col-6">
+                    <label for="txtTelefono" class="form-label">Telefono</label>
+                    {% if usuario.is_authenticated %}
+                    <input type="number" class="form-control" id="txtTelefono" name="txtTelefono" value="{{ usuario.userTelefono }}" placeholder="" required>
+                    {% endif %}                 
+                </div>
+
+              <div class="col-6">
+                <label for="txtDireccion" class="form-label">Direccion</label>
+                <input type="text" class="form-control" id="txtDireccion" name="txtDireccion" placeholder="" required>
+              </div>
+  
+              <div class="col-6">
+                <label for="txtDireccionDes" class="form-label">Descripcion De La Direccion</label>
+                <input type="text" class="form-control" id="txtDireccionDes" name="txtDireccionDes" placeholder="" required>
+              </div>
+  
+              <div class="col-6">
+                <label for="departamento" class="form-label">Departamento</label>
+                <select class="form-select" onchange="mostrarMunicipios()" id="departamento"  name="departamento"required>
+                  <option value="" required>Seleccione...</option>
+                  <option value="Antioquia">Antioquia</option>
+                  <option value="Arauca">Arauca</option>  
+                  <option value="Atlántico">Atlántico</option>                
+                  <option value="Bolívar">Bolívar</option>        
+                  <option value="Huila">Huila</option>                               
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="municipio" class="form-label">Municipio:</label>
+                  <select class="form-select" id="municipio" name="municipio" required>
+                      <option value="" required>Selecciona un municipio</option>
+                      <!-- Los municipios serán generados dinámicamente por JavaScript -->
+                  </select>
+              </div>
+              <div class="col-12">
+                <label for="cc-name" class="form-label">Metodo De Pago</label>
+                <select class="form-select" id="state" name="state" required data-bs-toggle="popover" title="Método de Pago" data-bs-content="Seleccione un método de pago para completar la transacción. Te llegará a tu correo un PDF, como comprobante para pagar, y también la cuenta a la que puedes hacer la transacción.">
+                  <option value="" required>Seleccione...</option>
+                  <option value="PSE">PSE - Pagos Seguros en Línea</option>
+                  <option value="Bancolombia">Bancolombia</option>
+                  <option value="Nequi">Nequi</option>
+                </select>
+              </div>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Confirmar Pago</button>
+          </form>
+        </div>
+      </div>
+  </main>
+</div>
+    <script>
+        const departamentos = [
+        {
+          departamento: "Amazonas",
+          municipios: ["Leticia", "Puerto Nariño"]
+        },
+        {
+          departamento: "Antioquia",
+          municipios: ["Medellín", "Abejorral", "Abriaquí", "Alejandría", "Amagá", "Amalfi", "Andes", "Angelópolis", "Angostura", "Anorí", "Anzá", "Apartadó", "Arboletes", "Argelia", "Armenia", "Barbosa", "Bello", "Belmira", "Betania", "Betulia", "Briceño", "Buriticá", "Cáceres", "Caicedo", "Caldas", "Campamento", "Cañasgordas", "Caracolí", "Caramanta", "Carepa", "Carolina del Príncipe", "Caucasia", "Chigorodó", "Cisneros", "Cocorná", "Concepción", "Concordia", "Copacabana", "Dabeiba", "Donmatías", "Ebéjico", "El Bagre", "El Carmen de Viboral", "El Peñol", "El Retiro", "El Santuario", "Entrerríos", "Envigado", "Fredonia", "Frontino", "Giraldo", "Girardota", "Gómez Plata", "Granada", "Guadalupe", "Guarne", "Guatapé", "Heliconia", "Hispania", "Itagüí", "Ituango", "Jardín", "Jericó", "La Ceja", "La Estrella", "La Pintada", "La Unión", "Liborina", "Maceo", "Marinilla", "Medellín", "Montebello", "Murindó", "Mutatá", "Nariño", "Nechí", "Necoclí", "Olaya", "Peque", "Pueblorrico", "Puerto Berrío", "Puerto Nare", "Puerto Triunfo", "Remedios", "Rionegro", "Sabanalarga", "Sabaneta", "Salgar", "San Andrés de Cuerquia", "San Carlos", "San Francisco", "San Jerónimo", "San José de la Montaña", "San Juan de Urabá", "San Luis", "San Pedro", "San Pedro de Urabá", "San Rafael", "San Roque", "San Vicente", "Santa Bárbara", "Santa Fe de Antioquia", "Santa Rosa de Osos", "Santo Domingo", "Segovia", "Sonsón", "Sopetrán", "Támesis", "Tarazá", "Tarso", "Titiribí", "Toledo", "Turbo", "Uramita", "Urrao", "Valdivia", "Valparaíso", "Vegachí", "Venecia", "Vigía del Fuerte", "Yalí", "Yarumal", "Yolombó", "Yondó", "Zaragoza"]
+        },
+        {
+          departamento: "Arauca",
+          municipios: ["Arauca", "Arauquita", "Cravo Norte", "Fortul", "Puerto Rondón", "Saravena", "Tame"]
+        },
+        {
+          departamento: "Huila",
+          municipios: ["Acevedo", "Agrado", "Aipe", "Algeciras", "Altamira", "Baraya", "Campoalegre", "Colombia", "Elías", "Garzón", "Gigante", "Guadalupe", "Hobo", "Iquira", "Isnos", "La Argentina", "La Plata", "Nátaga", "Neiva", "Oporapa", "Paicol", "Palermo", "Palestina", "Pital", "Pitalito", "Rivera", "Saladoblanco", "San Agustín", "Santa María", "Suaza", "Tarqui", "Tesalia", "Tello", "Teruel", "Timaná", "Villavieja", "Yaguará"]
+        }
+        ,
+          
+      ];
+      
+        function mostrarMunicipios() {
+            const departamentoSelect = document.getElementById("departamento");
+            const municipioSelect = document.getElementById("municipio");
+          
+            // Limpiar el select de municipios
+            municipioSelect.innerHTML = "";
+          
+            // Obtener el departamento seleccionado
+            const selectedDepartamento = departamentoSelect.value;
+          
+            // Buscar el departamento en el arreglo
+            const departamento = departamentos.find(dep => dep.departamento === selectedDepartamento);
+          
+            if (departamento) {
+              // Generar opciones para los municipios del departamento seleccionado
+              departamento.municipios.forEach(municipio => {
+                const option = document.createElement("option");
+                option.text = municipio;
+                municipioSelect.add(option);
+              });
+            }
+          }
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+              return new bootstrap.Popover(popoverTriggerEl)
+            })
+            
+    </script>
+
+  </body>
+</html>

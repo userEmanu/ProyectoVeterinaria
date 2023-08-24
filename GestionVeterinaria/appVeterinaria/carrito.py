@@ -17,6 +17,7 @@ class Carrito:
                 "producto_id": producto.id,
                 "nombre": producto.proNombre,
                 "acumulado": producto.proPrecio,
+                "imagen": str(producto.proFoto),
                 "cantidad": 1
             }
         else:

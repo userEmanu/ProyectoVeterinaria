@@ -262,6 +262,28 @@ section {
   background: #130f40;
 }
 
+.header .login-form .links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 1rem;
+}
+
+.header .login-form .links a {
+  font-size: 1.4rem;
+  color: #069747;
+}
+
+.header .login-form .links a:hover {
+  color: #d3c227;
+  text-decoration: underline;
+}
 
 #menu-btn {
   display: none;

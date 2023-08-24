@@ -8,6 +8,7 @@ from django.contrib.auth.models import Group
 from django.db import Error,transaction
 import random
 import string
+import os
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.conf import settings
@@ -19,29 +20,62 @@ from django.template.loader import get_template
 import threading
 from datetime import date, datetime, time, timedelta
 from smtplib import SMTPException
-from django.http import JsonResponse
+from django.db.models import Sum, Avg, Count
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse, FileResponse
+from fpdf import FPDF
 from appVeterinaria.carrito import *
+from appVeterinaria.pdfHistorialClinico import PDF
 
 # Aqui las vistas
 
-def vistaInicio(request):
-    # Obtener todos los objetos del modelo Servicio desde la base de datos
-    servicio = Servicio.objects.all()
+def vistaInicio(request, mensaje = ""):
+    auth.logout(request)
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):
+            return redirect('/vistaIndexUsuario/')
+        elif request.user.groups.filter(name='Administrador'):
+            return redirect('/vistaAdministrador/')
+    else:
 
-    # Crear un diccionario con la lista de objetos de Servicio y pasarlo a la plantilla
-    retorno = {"servicio": servicio}
-    return render(request, "index.html", retorno)
+        # Obtener todos los objetos del modelo Servicio desde la base de datos
+        servicio = Servicio.objects.all()
+        pro = Producto.objects.all()
+        # Crear un diccionario con la lista de objetos de Servicio y pasarlo a la plantilla
+        retorno = {"servicio": servicio, "productos": pro, "mensaje": mensaje}
+        return render(request, "index.html", retorno)
 
 def vistaGestionCitas(request):
-    retorno = {'cita': Cita.objects.all(), 'estado': estadoCita }   
-    return render(request,"Administrador/frmGestionCitas.html", retorno)
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):
+            return render(request, 'Error/403.html')
+        else:
+            retorno = {'cita': Cita.objects.all(), 'estado': estadoCita }   
+            return render(request,"Administrador/frmGestionCitas.html", retorno)
+    else:
+        return render(request, 'Error/403.html')
+    
 
-def vistaCita(request):
-    return render(request,"Administrador/frmCita.html")
+def vistaCitaHTML(request, id):
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):
+            return render(request, 'Error/403.html')
+        else:
+            retorno = {
+                "cita": Cita.objects.get(pk = id)
+            }
+            return render(request,"Administrador/frmCita.html", retorno)
+    else: 
+        return render(request, 'Error/403.html')
+    
 
 def vistaCitas(request):
     if request.user.is_authenticated:
-         return render(request, "CITAS.html")
+        if request.user.groups.filter(name='Usuario'):      
+            return render(request, "CITAS.html")
+        else:
+            return render(request, 'Error/403.html')
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -50,14 +84,19 @@ def vistaCitas(request):
         return render(request,"index.html", retorno)
 
 def vistaCodigo(request):
-    return render(request, "codigoRecuperar.html")
+    if request.user.is_authenticated:
+        return render(request, 'Error/403.html')
+    else:
+        return render(request, "codigoRecuperar.html")
 
 def vistaGestionServicio(request):
     if request.user.is_authenticated:
-        empleado = {'empleado': Empleado.objects.all(), 'servicio': Servicio.objects.all(),"user": request.user,
-                       "rol": request.user.groups.get().name}
-        
-        return render(request, 'Administrador/frmGestionServicio.html', empleado)
+        if request.user.groups.filter(name='Usuario'):      
+            return render(request, 'Error/403.html')
+        else:
+            empleado = {'empleado': Empleado.objects.all(), 'servicio': Servicio.objects.all(),"user": request.user,
+                        "rol": request.user.groups.get().name}
+            return render(request, 'Administrador/frmGestionServicio.html', empleado)
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -67,9 +106,12 @@ def vistaGestionServicio(request):
 
 def vistaAdministrador(request):
     if request.user.is_authenticated:
-        user= {"user": request.user,
-                       "rol": request.user.groups.get().name}
-        return render(request, "Administrador/index.html",user)
+        if request.user.groups.filter(name='Usuario'):      
+            return render(request, 'Error/403.html')
+        else:
+            user= {"user": request.user,
+                        "rol": request.user.groups.get().name}
+            return render(request, "Administrador/index.html",user)
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -79,9 +121,12 @@ def vistaAdministrador(request):
 
 def vistaUsuario(request):
     if request.user.is_authenticated:
-        user= {"user": request.user,
+        if request.user.groups.filter(name='Usuario'):      
+            user= {"user": request.user,
                        "rol": request.user.groups.get().name, "servicio": Servicio.objects.all()}
-        return render(request, "indexUsuario.html", user)
+            return render(request, "indexUsuario.html", user)
+        else:
+            return render(request, 'Error/403.html')
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -90,11 +135,17 @@ def vistaUsuario(request):
         return render(request,"index.html", retorno)
     
 
-def vistaPerfilUsuario(request,):
+def vistaPerfilUsuario(request):
     if request.user.is_authenticated:
-        user= {"user": request.user,
-                       "rol": request.user.groups.get().name}
-        return render(request, "perfilUsuario.html", user)
+        if request.user.groups.filter(name='Usuario'): 
+            use = request.user      
+            pedidos = Pedido.objects.filter(peUsuario = use)
+            user= {"user": use,
+                        "rol": request.user.groups.get().name, "pedido": pedidos}
+            print(len(pedidos))
+            return render(request, "perfilUsuario.html", user)
+        else:
+            return render(request, 'Error/403.html')
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
@@ -103,21 +154,43 @@ def vistaPerfilUsuario(request,):
         return render(request,"index.html", retorno)
 
 def vistaRecuperarContra(request):
-    return render(request, "RecuperarContraseña.html")
+    if request.user.is_authenticated:      
+        return render(request, 'Error/403.html')
+    else:     
+        return render(request, "RecuperarContraseña.html")
 
 def vistaRegistrarse(request):
-    retorno = {"identificacion": tipoDocumento}
-    return render(request, "Registrarse.html", retorno)
+    if request.user.is_authenticated:
+        return render(request, 'Error/403.html')
+    else:
+        retorno = {"identificacion": tipoDocumento}
+        return render(request, "Registrarse.html", retorno)
 
 def vistConNueva(request):
-    return render(request, "DigitarContraseñaNueva.html")
+    if request.user.is_authenticated:
+        return render(request, 'Error/403.html')
+    else:
+        return render(request, "DigitarContraseñaNueva.html")
 
 
 def perfiladmin(request):
-    return render(request, "Administrador/perfiladmin.html")
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, 'Error/403.html')
+        else:
+            return render(request, "Administrador/perfiladmin.html")
+    else:
+        return render(request, 'Error/403.html')
 
 def VistaAgregarEmpleado(request):
-    return render(request, "Administrador/frmagregarempleado.html")
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, 'Error/403.html')
+        else:
+            return render(request, "Administrador/frmagregarempleado.html")
+    else:
+        return render(request, 'Error/403.html')
+    
 
 
 # Aqui las vistas Gestion, son las que se cargan con datos o tienen Tablas 
@@ -130,8 +203,8 @@ def CerrarSesion(request):
 
 # Aqui los metodos o funciones que no retornan JSON
 
-def enviarCorreo (asunto=None, mensaje=None, destinatario=None): 
-    remitente = settings.EMAIL_HOST_USER 
+def enviarCorreo(asunto=None, mensaje=None, destinatario=None,archivo=None):
+    remitente = settings.EMAIL_HOST_USER
     template = get_template('enviarCorreo.html')
     contenido = template.render({
         'destinatario': destinatario,
@@ -140,12 +213,14 @@ def enviarCorreo (asunto=None, mensaje=None, destinatario=None):
         'remitente': remitente,
     })
     try:
-        correo = EmailMultiAlternatives (asunto, mensaje, remitente, [destinatario]) 
-        correo.attach_alternative (contenido, 'text/html') 
+        correo = EmailMultiAlternatives(
+            asunto, mensaje, remitente, [destinatario])
+        correo.attach_alternative(contenido, 'text/html')
+        if archivo != None:
+            correo.attach_file(archivo)
         correo.send(fail_silently=True)
-    except SMTPException as error: 
+    except SMTPException as error:
         print(error)
-
 
 def registrarseUsuario(request):
     try: 
@@ -185,7 +260,9 @@ def registrarseUsuario(request):
             estado = True
     except Error as error:
         transaction.rollback()
+        redirect ("/inicio/")
         print(error)
+        
     retorno = {"mensaje": mensajes, "estado": estado}  
     return render(request,"Registrarse.html",retorno)
 
@@ -208,7 +285,7 @@ def IniciarSesion(request):
                     return redirect('/vistaIndexUsuario')
             else:
                 mensaje = "Usuario o Contraseña Incorrectas"
-                return render(request, "index.html",{"mensaje":mensaje})
+                return redirect(f'/inicio/{mensaje}')
     except Error as erro:
         transaction.rollback()
         print(erro)
@@ -304,7 +381,7 @@ def RegistrarNuevaContraseña(request, id):
                     mensaje = "Recuperaste Tu contraseña Con Exito"
                     tema = "success"
                     titulo = "Felicitaciones"
-                    return redirect('/inicio/', {'mensaje': mensaje}, {'tema': tema}, {'titulo':titulo} )                 
+                    return redirect(f'/inicio/{mensaje}' )                 
                 else:
                     mensaje = "Digita La Contraseña"
                     error = "error"
@@ -348,73 +425,85 @@ def registrarContactos(request):
 ################################################################
 #Bloque de codigo para agregar un empleado 
 def vistaAgregarEmpleado(request):
-    if request.method == 'POST':
-        nombreE = request.POST["txtNombreEm"]
-        apellidoE = request.POST["txtApellidoEm"]
-        telefonoE = int(request.POST["txtTelefonoEm"])
-        direccionE = request.POST["txtDireccionEm"]
-        tipoDocE = request.POST["txtTipoDocEm"]
-        numeroDocE = int(request.POST["txtNumeroDocEm"])
-        cargoE = request.POST["txtCargoEm"]
-        correoE = request.POST["txtCorreoEm"]
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, '403.html')
+        else:
+            if request.method == 'POST':
+                nombreE = request.POST["txtNombreEm"]
+                apellidoE = request.POST["txtApellidoEm"]
+                telefonoE = int(request.POST["txtTelefonoEm"])
+                direccionE = request.POST["txtDireccionEm"]
+                tipoDocE = request.POST["txtTipoDocEm"]
+                numeroDocE = int(request.POST["txtNumeroDocEm"])
+                cargoE = request.POST["txtCargoEm"]
+                correoE = request.POST["txtCorreoEm"]
 
-    try:
-        empleado = Empleado(emNombre = nombreE, emApellido =apellidoE, emTelefono=telefonoE, 
-                            emDireccion=direccionE,emTipoDoc=tipoDocE,
-                            emNumeroDoc=numeroDocE, emCargo=cargoE, emCorreo=correoE)
-        empleado.save()
-        mensaje ="Empleado agregado correctamente"
-        return redirect("/listarEmpleados/")
-    except Error as error:
-        mensaje=f"Problemas al agregar empleado. {error}"
-
-    retorno = {"mensaje":mensaje, "empleado":empleado}
-    return render(request,"Administrador/frmagregarempleado.html", retorno)
-
+                try:
+                    empleado = Empleado(emNombre = nombreE, emApellido =apellidoE, emTelefono=telefonoE, 
+                                        emDireccion=direccionE,emTipoDoc=tipoDocE,
+                                        emNumeroDoc=numeroDocE, emCargo=cargoE, emCorreo=correoE)
+                    empleado.save()
+                    mensaje ="Empleado agregado correctamente"
+                    return redirect("/listarEmpleados/")
+                except Error as error:
+                    mensaje=f"Problemas al agregar empleado. {error}"
+                retorno = {"mensaje":mensaje, "empleado":empleado}
+                return render(request,"Administrador/frmagregarempleado.html", retorno)
+    else:
+        return render(request, 'Error/403.html')
 
 
 def listarEmpleados(request):
-    try: 
-        empleados = Empleado.objects.all()
-        mensaje=""
-        print(empleados)
-    except:
-        mensaje="Problemas al obtener los empleados"
-    retorno = {"mensaje":mensaje, "listarEmpleados":empleados}
-    return render(request,"Administrador/listaempleados.html", retorno)
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, 'Error/403.html')
+        else:
+            try: 
+                empleados = Empleado.objects.all()
+                mensaje=""
+                print(empleados)
+            except:
+                mensaje="Problemas al obtener los empleados"
+            retorno = {"mensaje":mensaje, "listarEmpleados":empleados}
+            return render(request,"Administrador/listaempleados.html", retorno)
+    else: 
+        return redirect('/inicio/')
 
 ########################################################################
 #Bloque De Codigo Para Agregar Proveedor
 
 def VistaRegistrarProveedor(request):
-    if request.method == 'POST':
-        try:
-            # Traemos los datos del formulario de proveedor
-            NombreP = request.POST.get("txtNombrePro")
-            NombreRepresentante = request.POST.get("txtNombreRepre")
-            DireccionEmpresa = request.POST.get("txtDireccionPro")
-            TelefonoProveedor = int(request.POST.get("txtTelefonoPro"))
-            NitEmpresa = int(request.POST.get("txtNitPro"))
-            
-            # Creamos un proveedor
-            proveedor = Proveedor(
-                proNombre=NombreP,
-                proRepresentante=NombreRepresentante,
-                proDireccion=DireccionEmpresa,
-                proTelefono=TelefonoProveedor,
-                proNit=NitEmpresa
-            )
-            # Guardamos el proveedor en la base de datos
-            proveedor.save()
-            mensaje = "Proveedor agregado correctamente"
-        except Exception as error:
-            mensaje = f"Error: {str(error)}"
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, 'Error/403.html')
+        else:
+            if request.method == 'POST':
+                try:
+                    # Traemos los datos del formulario de proveedor
+                    NombreP = request.POST.get("txtNombrePro")
+                    NombreRepresentante = request.POST.get("txtNombreRepre")
+                    DireccionEmpresa = request.POST.get("txtDireccionPro")
+                    TelefonoProveedor = int(request.POST.get("txtTelefonoPro"))
+                    NitEmpresa = int(request.POST.get("txtNitPro"))
+                    
+                    # Creamos un proveedor
+                    proveedor = Proveedor(
+                        proNombre=NombreP,
+                        proRepresentante=NombreRepresentante,
+                        proDireccion=DireccionEmpresa,
+                        proTelefono=TelefonoProveedor,
+                        proNit=NitEmpresa
+                    )
+                    # Guardamos el proveedor en la base de datos
+                    proveedor.save()
+                    mensaje = "Proveedor agregado correctamente"
+                except Exception as error:
+                    mensaje = f"Error: {str(error)}"
+            retorno = {"mensaje": mensaje, "provedor": proveedor}
+            return redirect("/VistaProductos/", retorno)
     else:
-        mensaje = ""
-        proveedor = None
-    
-    retorno = {"mensaje": mensaje, "provedor": proveedor}
-    return redirect("/VistaProductos/", retorno)
+        return redirect('/inicio/')
 
 ##########################################################
 #Bloque de codigo para guardar la categoria
@@ -442,12 +531,18 @@ def VistaRegistrarCategoria(request):
 
 
 def VistaProductos(request):
-    proveedores = Proveedor.objects.all()
-    categorias = Categoria.objects.all()
-    es = estadoProducto
-    retorno = {"proveedores": proveedores, "categorias": categorias, "estados": es}
-    print(retorno)
-    return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, '403.html')
+        else:
+            proveedores = Proveedor.objects.all()
+            categorias = Categoria.objects.all()
+            es = estadoProducto
+            retorno = {"proveedores": proveedores, "categorias": categorias, "estados": es}
+            print(retorno)
+            return render(request, "Administrador/frmAgregarProveedor.html", retorno)
+    else:
+        return render(request, 'Error/403.html')
 
 
 def RegistrarProducto(request):
@@ -495,6 +590,7 @@ def vistaproductos(request):
     total = carrito.total_carrito()
     return render(request, "productos.html", {'productos':productos, 'total': total})
 
+
 def agregar_producto(request, id):
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id)
@@ -519,14 +615,20 @@ def limpiar_carrito(request):
     return redirect("productos")
 
 def vistaEmpleadoUsuario(request, id):
-    try:
-        empleado = Empleado.objects.get(pk = id)
-        rol = Group.objects.all()
-        retorno = {"empleado": empleado, "rol": rol, "tipo": tiposUsuarios}        
-    except Error as e:
-        print(e)    
-        
-    return render(request, "Administrador/registrarUsuarioEmpleado.html", retorno)
+    if request.user.is_authenticated:
+        if request.user.groups.filter(name='Usuario'):    
+            return render(request, 'Error/403.html')
+        else:
+            try:
+                empleado = Empleado.objects.get(pk = id)
+                rol = Group.objects.all()
+                retorno = {"empleado": empleado, "rol": rol, "tipo": tiposUsuarios}        
+            except Error as e:
+                print(e)    
+                
+            return render(request, "Administrador/registrarUsuarioEmpleado.html", retorno)
+    else:
+        return render(request, 'Error/403.html')
 
 def CrearUsuarioEmpleado(request, id):
     try:
@@ -636,36 +738,41 @@ def asignasServicio(request):
 def vistaAgregarCita(request, id,mensaje=""):
     ser = Servicio.objects.get(pk=id)
     if request.user.is_authenticated:
-        usuario_actual = request.user
-        mascotas_del_usuario = Mascota.objects.filter(masUser=usuario_actual)
-        empleado_del_servicio = Empleado.objects.filter(servicio=ser)
+    # Código que se ejecuta si el usuario está autenticado y pertenece al grupo "Usuario"
+        if request.user.groups.filter(name='Usuario'):
+            usuario_actual = request.user
+            mascotas_del_usuario = Mascota.objects.filter(masUser=usuario_actual)
+            empleado_del_servicio = Empleado.objects.filter(servicio=ser)
 
-        #Validamos que se agregue de la fecha actual en adelante
-        fecha=datetime.now()
-        fecha_actual=datetime.strftime(fecha,"%Y-%m-%d")
-        
-        # Obtenemos las horas ya reservadas para el servicio en la fecha actual
-        horas_reservadas = Cita.objects.filter(ciFecha=fecha_actual, ciServicio=ser).values_list('ciHora', flat=True)
+            #Validamos que se agregue de la fecha actual en adelante
+            fecha=datetime.now()
+            fecha_actual=datetime.strftime(fecha,"%Y-%m-%d")
+            
+            # Obtenemos las horas ya reservadas para el servicio en la fecha actual
+            horas_reservadas = Cita.objects.filter(ciFecha=fecha_actual, ciServicio=ser).values_list('ciHora', flat=True)
 
-        # Definimos las horas de inicio y fin del horario de citas 
-        hora_inicio = datetime.combine(datetime.today(), time(7, 0))  # 07:00 AM
-        hora_fin = datetime.combine(datetime.today(), time(17, 0))    # 05:00 PM
+            # Definimos las horas de inicio y fin del horario de citas 
+            hora_inicio = datetime.combine(datetime.today(), time(7, 0))  # 07:00 AM
+            hora_fin = datetime.combine(datetime.today(), time(17, 0))    # 05:00 PM
 
-        # Creamos una lista con todas las horas posibles en ese horario
-        horas_posibles = [hora_inicio + timedelta(hours=i) for i in range((hora_fin.hour - hora_inicio.hour) + 1)]
+            # Creamos una lista con todas las horas posibles en ese horario
+            horas_posibles = [hora_inicio + timedelta(hours=i) for i in range((hora_fin.hour - hora_inicio.hour) + 1)]
 
-        # Filtramos las horas que no están reservadas
-        horas_no_reservadas = [hora for hora in horas_posibles if hora.strftime('%H:%M') not in horas_reservadas]
-        
-        retorno = {"ser": ser, "usuario": usuario_actual, "mascotas": mascotas_del_usuario, "empleado_del_servicio": empleado_del_servicio,"mensaje":mensaje,
-                   "fecha_actual":fecha_actual, "horas_no_reservadas": horas_no_reservadas}
-        return render(request, "CITAS.html", retorno)
+            # Filtramos las horas que no están reservadas
+            horas_no_reservadas = [hora for hora in horas_posibles if hora.strftime('%H:%M') not in horas_reservadas]
+            
+            retorno = {"ser": ser, "usuario": usuario_actual, "mascotas": mascotas_del_usuario, "empleado_del_servicio": empleado_del_servicio,"mensaje":mensaje,
+                    "fecha_actual":fecha_actual, "horas_no_reservadas": horas_no_reservadas}
+            
+            return render(request, "CITAS.html", retorno)
+        else: 
+            return render(request, 'Error/403.html')
     else:
         mensaje = "Debes Iniciar Sesión"
         titulo= "¿Iniciaste Sesión?"
         icon = "error"
-        retorno = {"titulo": titulo, "mensaje": mensaje, "tema": icon}
-        return render(request,"index.html", retorno)
+        
+        return redirect(f'/inicio/{mensaje}')
     
 def agregarCita(request, id):
     if request.user.is_authenticated:
@@ -722,12 +829,38 @@ def cancelarCita(request, id):
     try:
         estado = False
         mensaje = ''
+        ide = id
+        with transaction.atomic():
+            cita = Cita.objects.get(pk = ide)
+            cita.ciEstado = 'Cancelada'
+            cita.ciDescripcion = 'Cita fue cancenlada'
+            cita.save()
+            estado = True
+            mensaje = "Cita Cancelada exitosamente"
+    except Exception as error:
         transaction.rollback()
-        cita = Cita.objects.get(pk = id)
-        cita.ciEstado = 'Cancelada'
-        cita.save()
-        estado = True
-        mensaje = "Citas Cancelada exitosamente"
+        print(error)
+        mensaje = "ocurrio un error"
+        retorno = {'estado': estado, 'mensaje': mensaje}
+        return JsonResponse(retorno)
+    
+    retorno = {'estado': estado, 'mensaje': mensaje}
+    return JsonResponse(retorno)
+    
+
+def citaRealizada(request, id): 
+    try:
+        estado = False
+        mensaje = ''
+        data = json.loads(request.body)
+        descripcion = data['descripcion']
+        with transaction.atomic():
+            cita = Cita.objects.get(pk = id)
+            cita.ciEstado = 'Atendida'
+            cita.ciDescripcion = descripcion
+            cita.save()
+            estado = True
+            mensaje = "Cita atentida correctamente, ya puedes generar el historial clinico!"
         
     except Exception as error:
         transaction.rollback()
@@ -735,3 +868,174 @@ def cancelarCita(request, id):
     
     retorno = {'estado': estado, 'mensaje': mensaje}
     return JsonResponse(retorno)
+
+
+##############################################################################
+#Metodo De Compra
+def finalizar_compra(request):
+    if request.user.is_authenticated:
+    # Obtener el carrito del usuario a través de la sesión
+        if request.user.groups.filter(name='Usuario'):
+            carrito = Carrito(request)
+
+            # Obtener los datos del usuario logeado
+            usuario = request.user  # Esto asume que has configurado la autenticación de usuario en tu proyecto
+
+            # Obtener todos los productos en el carrito con sus detalles
+            productos_en_carrito = []
+            productos_distintos = set()  # Utilizamos un conjunto para almacenar los IDs de los productos distintos
+
+            for key, value in carrito.carrito.items():
+                producto_id = value["producto_id"]
+                producto = Producto.objects.get(id=producto_id)
+                detalle_producto = {
+                    "producto": producto,
+                    "cantidad": value["cantidad"],
+                }
+                productos_en_carrito.append(detalle_producto)
+
+
+                productos_distintos.add(producto_id)  # Agregamos el ID del producto al conjunto
+
+            cantidad_total_productos = len(productos_distintos)  # La cantidad de productos distintos es el tamaño del conjunto
+
+            # Calcular el total del carrito después de la compra
+            total = Carrito.total_carrito(request)
+
+            # Pasar los datos a la plantilla HTML
+            return render(request, 'procesoCompra.html', {'usuario': usuario, 'productos_en_carrito': productos_en_carrito, 'total': total, 'cantidad_total_productos': cantidad_total_productos})
+        else: 
+            return render(request, "Error/403.html")
+    else:
+        mensaje = "No has iniciado sesión"
+        return redirect (f'/inicio/{mensaje}')
+        
+# Tu función para generar el código único numérico
+def generar_codigo_unico_numerico(longitud=8):
+    numeros = "0123456789"
+    codigo = ''.join(random.choice(numeros) for _ in range(longitud))
+
+    # Asegurarse de que el código generado sea único
+    while Pedido.objects.filter(peCodigoPedido=codigo).exists():
+        codigo = ''.join(random.choice(numeros) for _ in range(longitud))
+
+    return codigo
+
+# Tu función para procesar el pedido
+def procesar_pedido(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                carrito = Carrito(request)
+                # Obtener los datos del formulario
+                nombre_completo = request.POST.get('txtNombreCompra')
+                numero_identificacion = request.POST.get('txtNumeroIdentificacion')
+                correo_electronico = request.POST.get('email')
+                telefono = request.POST.get('txtTelefono')
+                direccion = request.POST.get('txtDireccion')
+                descripcion_direccion = request.POST.get('txtDireccionDes')
+                departamento = request.POST.get('departamento')
+                municipio = request.POST.get('municipio')
+                metodo_pago = request.POST.get('state')
+                total_carrito = carrito.total_carrito()
+                total_pagar  = total_carrito
+                # Datos de envío
+
+                # Datos del pedido
+                with transaction.atomic():
+                    # Guardar en la base de datos
+                    usuario = request.user
+                    estado_pedido = 'Solicitado'
+                    # Generar código único
+                    codigoPedido = generar_codigo_unico_numerico()
+                    total = int(total_pagar)
+                    # Calcular el impuesto del 19%
+                    impuesto_porcentaje = 19
+                    impuesto = int(total * impuesto_porcentaje / 100)
+
+
+
+                    # Crear objeto FormaDePago y guardar
+                    metodo_pago = metodo_pago or "Sin especificar"
+                    
+                    # Creamo la descripcion del envio
+                    descripcion_envio = f"Departemento: {departamento}, municipio: {municipio}, Direccion: {direccion}, Descripcion: {descripcion_direccion}"
+                    # Crear objeto DetellaEnvio y guardar
+                    envio = DetellaEnvio.objects.create(detNombreDestinatario = nombre_completo,
+                                         detNitDestinatario = numero_identificacion,
+                                         detDescripcion = descripcion_envio,
+                                         detTelefonoDestinatario = telefono,
+                                         detCorreoDestinatario = correo_electronico 
+                                         )
+
+                    # Crear objeto Pedido y guardar
+                    pedido = Pedido(
+                        peUsuario=usuario,
+                        peEstado=estado_pedido,
+                        peCodigoPedido= codigoPedido,
+                        peImpuestoPedido=impuesto,
+                        peTotalPedido=total_pagar,
+                        peFormaPago=metodo_pago,
+                        peDetEnvio=envio,
+                    )
+                    pedido.save()
+                    
+                    # Recorremos el objeto Carrito para hacer el detatllePedido
+                    
+                    for key, value in carrito.carrito.items():
+                        producto_id = value["producto_id"]
+                        producto = Producto.objects.get(pk = producto_id)
+                        totalProductoCantidad = value["acumulado"]
+                        cantida = value["cantidad"]
+                        DetallePe =DetallePedido.objects.create(detCantida = cantida,  
+                                                                detPrecio = totalProductoCantidad, 
+                                                                detProducto = producto,
+                                                                detPedido = pedido
+                                                                )
+                        DetallePe.save()
+            except Exception as error:
+                transaction.rollback()
+                print(error)
+            return redirect('/vistaPerfilusuario/')
+
+def descargarPDFhistorial(request, id):
+    try:
+        ide = id
+        citas = Cita.objects.get(pk=ide)
+        archivo_path = generaPdfHistorial(citas)
+        
+        asunto = 'Registro Sistema Veterinaria Animalagro'
+        mensaje = f'Cordial saludo, <b>{citas.ciUsuario.first_name} {citas.ciUsuario.last_name}</b>, nos permitimos,\
+            informarle que la cita fue finalizada, y adjuntamos el historial clínico.\
+            Esperamos tu pronto regreso.<br>'
+        enviarCorreo(asunto, mensaje, citas.ciUsuario.email, archivo_path)
+        
+        retorno = {"estado": True, "mensaje": "PDF generado correctamente y enviado"}
+        return JsonResponse(retorno)  # Si estás esperando una respuesta JSON
+        
+    except Exception as erro:
+        print(erro)
+        retorno = {"estado": False, "mensaje": "Error al generar o enviar el PDF"}
+        return JsonResponse(retorno)  # Si estás esperando una respuesta JSON
+
+def generaPdfHistorial(citas):
+    pdf = PDF()
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 12)
+    pdf.mostrar(citas)
+    # archivo = f'historial-{citas.ciFecha}-{citas.ciHora}.pdf'
+    # archivo_path = os.path.join('media', archivo)
+    # pdf.output(archivo_path, 'F')
+    # return archivo_path
+    fecha_hora_str = citas.ciFecha.strftime('%Y-%m-%d')
+    hora = citas.ciHora.strftime('%H-%M-%S')
+    archivo_nombre = f'historial-{fecha_hora_str}-{hora}.pdf'
+
+    archivo_path = os.path.join('media', archivo_nombre)
+    pdf.output(archivo_path, 'F')
+
+    with open(archivo_path, 'rb') as pdf_file:
+        response = FileResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{archivo_nombre}"'
+    
+    return archivo_path

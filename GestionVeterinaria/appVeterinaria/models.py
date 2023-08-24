@@ -3,6 +3,10 @@ from django.contrib.auth.models import AbstractUser, Group
 from django.conf import settings 
 from django.utils import timezone
 
+
+
+
+
 estadoUsuario= [
     ('Activo','Activo'), ('Suspendido', 'Suspendido')
 ]
@@ -76,12 +80,7 @@ class Categoria(models.Model):
         return f"{self.catNombre}"
     
     
-class FormaDePago(models.Model):
-    forNombre = models.CharField(max_length=40, unique=True, null=False, db_comment="Nombre de la forma de pago")
-    fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
-    fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
-    def __str__(self):
-        return f"{self.forNombre}"
+
     
 class User(AbstractUser):
     userTipoDoc = models.CharField(max_length=8, choices=tipoDocumento, null=False, db_comment="Tipo de Documento")
@@ -91,7 +90,7 @@ class User(AbstractUser):
     userTipo = models.CharField(max_length=15,choices=tiposUsuarios,db_comment="Nombre Tipo de usuario")
     userEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT,null=True,db_comment ="id del empleado, solo si el empleado tiene un usuario")
     userCodigo = models.IntegerField(null=True,unique= True, db_comment="Codigo Recuperacion")
-    fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
+    fechaHoraCreacio  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     
     def __str__(self):
@@ -142,29 +141,35 @@ class Producto(models.Model):
     fechaHoraCaducidad = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
 
+class Pedido(models.Model):
+    peUsuario = models.ForeignKey(User, on_delete=models.PROTECT, db_comment="Usuario que hizo el pedido")
+    peEstado = models.CharField(max_length=10, null=False, choices=estadoPedido, db_comment="estado del pedido")
+    peCodigoPedido = models.IntegerField(null=True, db_comment ="Codigo del comprobante", unique=True) 
+    peImpuestoPedido = models.IntegerField( null=True, db_comment="Impuesto del pedido")
+    peTotalPedido = models.IntegerField(null=True, db_comment="Total pedido")
+    proFotoComprobante = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del comprobante")    
+    peFormaPago = models.CharField(max_length=20,null=False, db_comment="Forma de pago")
+    peDetEnvio = models.ForeignKey(DetellaEnvio, on_delete=models.PROTECT, db_comment="Detalle ENVIO")
+    fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
+    fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
+    
 class DetallePedido(models.Model):
     detCantida = models.IntegerField( null=False, db_comment="Cantidad del producto")
     detPrecio = models.IntegerField(null=False, db_comment ="Precio por cada producto")
     detProducto = models.ForeignKey(Producto, on_delete=models.PROTECT, db_comment="Producto")
+    detPedido = models.ForeignKey(Pedido, on_delete=models.PROTECT, db_comment="Detalle envio", null=True)
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     
-class Pedido(models.Model):
-    peUsuario = models.ForeignKey(User, on_delete=models.PROTECT, db_comment="Usuario que hizo el pedido")
-    peEstado = models.CharField(max_length=10, null=False, choices=estadoPedido, db_comment="estado del pedido")
-    peCodigoComprobante = models.IntegerField( null=False, db_comment ="Codigo del comprobante") 
-    fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
-    fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
-    peImpuestoPedido = models.IntegerField( null=True, db_comment="Impuesto del pedido")
-    peTotalPedido = models.IntegerField(null=True, db_comment="Total pedido")
-    proFotoComprobante = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del comprobante")    
-    peFormaPago = models.ForeignKey(FormaDePago, on_delete=models.PROTECT, db_comment="Forma de pago")
-    peDetEnvio = models.ForeignKey(DetellaEnvio, on_delete=models.PROTECT, db_comment="Detalle ENVIO")
-    peDetPedido = models.ForeignKey(DetallePedido, on_delete=models.PROTECT, db_comment="Detalle envio")
 
-
+    
 class Contactanos(models.Model):
     conNombre = models.CharField(max_length=50, null=False, db_comment=" Nombre De La Persona Que Se Va Contactar")
     conEmail = models.CharField(max_length= 30, null=False,  db_comment="Direccion del correo electronico")
     conNumeroTe = models.IntegerField( null=True, db_comment="Telefono del usuario Que Se Contacta")
     conMensaje = models.CharField(max_length=150, null=True, db_comment="Mensaje Que El Usuario enviar para contartacnos")
     
+
+Group.objects.get_or_create(name='Usuario')
+Group.objects.get_or_create(name='Administrador')
+Group.objects.get_or_create(name='Asistente')
+

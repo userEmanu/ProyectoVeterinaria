@@ -90,7 +90,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
                 <i class="bi bi-person"></i>
                 <span>Mi perfil</span>
               </a>
@@ -99,7 +99,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/inicio/">
+              <a class="dropdown-item d-flex align-items-center" href="/cerrarSesion/">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Salir</span>
               </a>
@@ -131,16 +131,20 @@
         <span>Perfil</span>
       </a>
       <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-people"></i>
         <span>Gestion Empleados</span>
       </a>
       <a class="nav-link collapsed" href="/VistaProductos/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-basket3-fill"></i>
         <span>Gestion Producto</span>
       </a>
       <a class="nav-link collapsed" href="/GestionServicio/">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-clipboard2-heart-fill"></i>
         <span>Gestion Servicio</span>
+      </a>
+      <a class="nav-link collapsed" href="/gestionCitas/">
+        <i class="bi bi-calendar-week-fill"></i>
+        <span>Gestion Citas</span>
       </a>
     </li><!-- End Profile Page Nav -->
       </li><!-- End Profile Page Nav -->
@@ -293,7 +297,7 @@
                               <label for="cbEstado" class="col-md-4 col-lg-3 col-form-label">Estado Del Producto:</label>
                               <div class="col-md-2 col-lg-9">
                                   <select name="cbEstado" id="cbEstado" class="form-control" required>
-                                      <option>Seleccione Estado</option>
+                                      <option value="" required>Seleccione Estado</option>
                                       {% for estados in estados %} 
                                           <option value="{{estados.0}}">{{estados.1}}</option>
                                       {% endfor %}
@@ -314,7 +318,7 @@
                             <label for="cbProvedor" class="col-md-4 col-lg-3 col-form-label">Proveedor:</label>
                             <div class="col-md-2 col-lg-9">
                                 <select name="cbProvedor" id="cbProvedor" class="form-control" required>
-                                    <option>Seleccione Proveedor</option>
+                                    <option value="" required>Seleccione Proveedor</option>
                                     {% for pro in proveedores %} 
                                         <option value="{{pro.id}}">{{pro.proNombre}}</option>
                                     {% endfor %}
@@ -327,7 +331,7 @@
                           <label for="cbCategoria" class="col-md-4 col-lg-3 col-form-label">Categoria:</label>
                           <div class="col-md-2 col-lg-9">
                             <select name="cbCategoria" id="cbCategoria" class="form-control" required>
-                                <option>Seleccione categoria</option>
+                                <option value="" required>Seleccione categoria</option>
                                 {% for cat in categorias %} 
                                     <option value="{{cat.id}}">{{cat.catNombre}}</option>
                                 {% endfor %}
@@ -350,7 +354,6 @@
                             <label for="txtDescripcionP" class="col-md-4 col-lg-3 col-form-label">Foto</label>
                             <div class="col-md-2 col-lg-9">
                                   <input type="file" name="fileFoto" id="fileFoto" class="form-control" required accept=".jpg" accept=".jpg" placeholder="Cargar foto">
-                                  <label for="fileFoto">Cargar foto</label>
                               </div>
                             </div>
                             <br>

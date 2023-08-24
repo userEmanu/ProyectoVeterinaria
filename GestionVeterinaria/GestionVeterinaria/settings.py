@@ -29,6 +29,8 @@ DEBUG = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_CREDENTIALS = True
+# ALLOWED_HOSTS = ['veterinariaAnimalagro.pythonanywhere.com']
 
 # Application definition
 
@@ -74,7 +76,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'GestionVeterinaria.wsgi.application'
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -89,13 +93,24 @@ WSGI_APPLICATION = 'GestionVeterinaria.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'VeterinariaAnimalagro',
+        'NAME': 'veterinaria',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'veterinariaAnima$veterinaria',
+#         'USER': 'veterinariaAnima',
+#         'PASSWORD': 'veterinaria2023',
+#         'HOST': 'veterinariaAnimalagro.mysql.pythonanywhere-services.com'
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -116,6 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -133,11 +149,20 @@ USE_TZ = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ]
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = os.path.join(BASE_DIR,'/static/')
 MEDIA_URL = '/media/'
+# STATIC_ROOT = '/home/veterinariaAnimalagro/GestionVeterinaria/GestionVeterinaria/appVeterinaria/static'
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
 AUTH_USER_MODEL = 'appVeterinaria.User'
 

@@ -30,7 +30,7 @@
 
   <!-- Template Main CSS File -->
   
-  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
+  <link href="{% static '../static/css/styleProfileUser.css' %}" rel="stylesheet"> 
 </head>
 <body>
     
@@ -38,79 +38,95 @@
 
 <header class="header">
 
-    <a href="#" class="logo"> <i class=""><img src="../static/image/image/logo.jpg" alt="" width="25" height="25"></i> shop </a>
+    <a href="" class=""> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
 
     <nav class="navbar">
-        <a href="#home">Inicio</a>
-        <a href="#about">Promociones</a>
-        <a href="indexe.html">Productos</a>
-        <a href="#services">Servicios</a>
-        <a href="#contact">Contacto</a>
+      <a href="/vistaIndexUsuario/">Inicio</a>
+      <a href="#about">Promociones</a>
+      <a href="/vistaProductos/">Productos</a>
+      <a href="#services">Servicios</a>
+      <a href="#contact">Contacto</a>
     </nav>
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
-        <div class="fas fa-user" id="login-btn"></div>
+        <div class="fas fa-user" id="login-btn"></div>        
     </div>
 
     <form action="" class="login-form">
-        <center><h3>Inicio Sesión</h3>
-        <input type="email" name="" placeholder="Usuario o Email" id="" class="box">
-        <input type="password" name="" placeholder="Contraseña o Codigo" id="" class="box">
-        <div class="remember">
-            <input type="checkbox" name="" id="remember-me">
-            <label for="remember-me">Recordar Contraseña</label>
-        </div>
-        </center>
-        <a href="/inicio/" class="btn">Iniciar Sesion</a>
-        <div class="links">
-            <a href="/RecuperarContra/">Olvide Mi Contraseña</a>
-            <a href="/Registrarse/">Registrarser</a>
-        </div>
-    </form>
+      <div class="my-2"></div>
+      <a href="/vistaPerfilusuario/" class="btn btn-info btn-icon-split" id="btninformacion">
+          <span class="icon text-white-50">
+              <i class="fas fa-info-circle"></i>
+          </span>
+          <span class="text">Ver informacion Personal</span>
+      </a>
+      <div class="my-2"></div>
+      <a href="/cerrarSesion/" class="btn btn-secondary btn-icon-split" id="btnCerrarSesion">
+          <span class="icon text-white-50">
+              <i class="fas fa-arrow-right"></i>
+          </span>
+          <span class="text">Cerrar Sesión</span>
+      </a>
+  </form>
 
 </header>
 
 
-<main id="main" class="main">
-  
-      <section class="section profile">
+<main id="" class="">
+      <br>
+      <br>
+      <br>
+      <br>
+      <section class="section profile container">
         <div class="row">
-          <div class="col-xl-4">
-  
+          <div class="col-xl-3">
             <div class="card">
+
               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-  
-                <img src="../static/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                <h2>{{user.first_name}} {{user.last_name}}</h2>
-                <div class="social-links mt-2">
-                  <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                  <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <br>
+                <img src="../media/{{user.userFoto}}" alt="Profile"  style="clip-path: circle(48.2% at 50% 50%);">
+                <br>
+                <h2 class = "text-center">{{user.first_name}} {{user.last_name}}</h2>
+                <br>
+                <hr align="left" noshade="noshade" size="2" width="100%" />
+                <h2 class ="text-center">Tus Mascotas</h2>
+                <br>
+                <div class=""> 
+                  <img src="../media/{{user.userFoto}}" alt="Profile"  style="clip-path: circle(31.1% at 50% 50%);  width: auto;">
+                  <img src="../media/{{user.userFoto}}" alt="Profile"  style="clip-path: circle(31.1% at 50% 50%);  width: auto;">
+                </div>
+                <br>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Agregar Mascota</button>
                 </div>
               </div>
+              
             </div>
-  
           </div>
   
           <div class="col-xl-8">
-  
+            
             <div class="card">
+              
               <div class="card-body pt-3">
                 <!-- Bordered Tabs -->
+                
                 <ul class="nav nav-tabs nav-tabs-bordered">
-  
+                  
                   <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">descripcion</button>
+                    <button class="nav-link active " data-bs-toggle="tab" data-bs-target="#profile-overview"><h4>Descripcion</h4></button>
                   </li>
   
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar perfil</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit"><h4>Editar perfil</h4></button>
                   </li>
   
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Cambiar Contraseña</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password"><h4>Pedidos</h4></button>
                   </li>
   
                 </ul>
+                
                 <div class="tab-content pt-2">
   
                   <div class="tab-pane fade show active profile-overview" id="profile-overview">
@@ -124,12 +140,17 @@
   
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Telefono</div>
-                      <div class="col-lg-9 col-md-8">{{user.userFoto}}</div>
+                      <div class="col-lg-9 col-md-8"> No: {{user.userTelefono}}</div>
                     </div>
   
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Correo Electronico</div>
                       <div class="col-lg-9 col-md-8">{{user.email}}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Tipo, No Identificacion</div>
+                      <div class="col-lg-9 col-md-8">{{user.userTipoDoc}} {{user.userNoDoc}}</div>
                     </div>
   
                   </div>
@@ -139,7 +160,7 @@
                     <!-- Profile Edit Form -->
                     <form>
                       <div class="row mb-3">
-                        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagen De Perfil</label>
+                        <label for="profileImage" class="col-lg-3 col-md-4  col-form-label text-lg-start fs-5">Imagen De Perfil</label>
                         <div class="col-md-8 col-lg-9">
                           <img src="../media/{{user.userFoto}}" alt="Profile">
                           <div class="pt-2">
@@ -150,29 +171,29 @@
                       </div>
   
                       <div class="row mb-3">
-                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nombre Completo</label>
+                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Nombre Completo</label>
                         <div class="col-md-8 col-lg-9">
                           <input name="fullName" type="text" class="form-control" id="fullName" value="{{user.first_name}} {{user.last_name}}">
                         </div>
                       </div>
 
-  
+   
                       <div class="row mb-3">
-                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telefonon</label>
+                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Telefonon</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="phone" type="text" class="form-control" id="Phone" value="{{user.userFoto}}">
+                          <input name="phone" type="text" class="form-control" id="Phone" value="{{user.userTelefono}}">
                         </div>
                       </div>
   
                       <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">Correo Electronico</label>
+                        <label for="Email" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Correo Electronico</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="email" type="email" class="form-control" id="Email" value="Chacon.Stiven@MiSena.edu.co">
+                          <input name="email" type="email" class="form-control" id="Email" value="{{user.email}}">
                         </div>
                       </div>
   
                       <div class="row mb-3">
-                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Twitter Profile</label>
                         <div class="col-md-8 col-lg-9">
                           <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
                         </div>
@@ -185,82 +206,35 @@
   
                   </div>
   
-                  <div class="tab-pane fade pt-3" id="profile-settings">
-  
-                    <!-- Settings Form -->
-                    <form>
-  
-                      <div class="row mb-3">
-                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                        <div class="col-md-8 col-lg-9">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                            <label class="form-check-label" for="changesMade">
-                              Changes made to your account
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                            <label class="form-check-label" for="newProducts">
-                              Information on new products and services
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="proOffers">
-                            <label class="form-check-label" for="proOffers">
-                              Marketing and promo offers
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                            <label class="form-check-label" for="securityNotify">
-                              Security alerts
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-  
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                      </div>
-                    </form><!-- End settings Form -->
-  
-                  </div>
-  
+                  
                   <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
-                    <form>
-  
-                      <div class="row mb-3">
-                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Antigua Contraseña</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="password" type="password" class="form-control" id="currentPassword">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nueva Contraseña</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="newpassword" type="password" class="form-control" id="newPassword">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Escribe Nuevamente La Contraseña</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                        </div>
-                      </div>
-  
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
-                      </div>
-                    </form><!-- End Change Password Form -->
-  
+                      <form  class="was-validated" >
+                        <table class="table table-striped table-bordered datatable table-hover text-center">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nombre</th>
+                              <th scope="col">Total</th>
+                              <th scope="col">codigo</th>
+                              <th scope="col">Estado</th>
+                              <th scope="col">Opciones</th>
+                            </tr>
+                          </thead>
+                          <tbody >
+                            {% for lista in pedido %}
+                                  <tr>
+                                      <td>{{lista.peUsuario.first_name}} {{lista.peUsuario.last_name}}</td>
+                                      <td>$ {{lista.peTotalPedido}}</td>
+                                      <td>{{lista.peCodigo}} </td>
+                                      <td>{{lista.peEstado}}</td>
+                                      <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
+                                  </tr>
+                            {% endfor %} 
+                          </tbody>
+                        </table>
+                      </form>
                   </div>
-  
                 </div><!-- End Bordered Tabs -->
-  
               </div>
             </div>
   
