@@ -23,9 +23,16 @@ urlpatterns = [
      path('ProductorList/<int:pk>/',apiView.productoDetail.as_view()),
      path('DetallePedidoList/<int:pk>/',apiView.detallePedidoDetail.as_view()),
      path('PedidoList/<int:pk>/',apiView.pedidoDetail.as_view()),
+     path('buscar_mascota/<int:id>/', apiView.mascotaBuscar.as_view()),
+     path('buscar_citas/<int:id>/', apiView.CitasUsuarioApi.as_view()),
      
      #login
      path('logout/',apiView.LogoutView.as_view()),
      path('login/',apiView.LoginView.as_view()),
-     path('agregarMascotaApi/', apiView.aggMascotaView.as_view())
+     path('agregarMascotaApi/', apiView.aggMascotaView.as_view()),
+     path('productoImagen/', apiView.ProductoImagen.as_view()),
+     path('mascotaImagen/', apiView.MascotaFoto.as_view()),
+     path('UsuarioImagen/', apiView.userFoto.as_view()),
+     path('editarUsuario/', apiView.editarUsuarioView.as_view()),
+     path('todoLosProductos/', apiView.productosTodos.as_view())
 ]

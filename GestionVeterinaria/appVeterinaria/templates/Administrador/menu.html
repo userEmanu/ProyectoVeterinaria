@@ -1,0 +1,105 @@
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+      {% if rol == "Administrador" %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/vistaAdministrador/">
+          <i class="bi bi-grid"></i>
+          <span>Animalagro</span>
+        </a>
+
+      <li class="nav-heading">Pagina</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/perfiladmin/">
+          <i class="bi bi-person"></i>
+          <span>Perfil</span>
+        </a>
+
+        <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
+          <i class="bi bi-people"></i>
+          <span>Gestion Empleados</span>
+        </a>
+        <a class="nav-link collapsed" href="/VistaProductos/">
+          <i class="bi bi-basket3-fill"></i>
+          <span>Gestion Producto</span>
+        </a>
+        <a class="nav-link collapsed" href="/GestionServicio/">
+          <i class="bi bi-clipboard2-heart-fill"></i>
+          <span>Gestion Servicio</span>
+        </a>
+        <a class="nav-link collapsed" href="/gestionCitas/">
+          <i class="bi bi-calendar-week-fill"></i>
+          <span>Gestion Citas</span>
+        </a>
+        <a class="nav-link collapsed" href="/gestionPedidos/">
+          <i class="bi bi-cart4"></i>
+          <span>Gestion Pedidos</span>
+        </a>
+        <a class="nav-link collapsed" href="/listarUsuarios/">
+          <i class="ri-contacts-line"></i>
+          <span>Gestion Usuarios</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      </li><!-- End Register Page Nav -->
+      {% else %}
+        {% if rol == "Medico" %}
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/vistaAdministrador/">
+              <i class="bi bi-grid"></i>
+              <span>Animalagro</span>
+            </a>
+
+          <li class="nav-heading">Pagina</li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/perfiladmin/">
+              <i class="bi bi-person"></i>
+              <span>Perfil</span>
+            </a>
+
+            <a class="nav-link collapsed" href="/gestionCitas/">
+              <i class="bi bi-calendar-week-fill"></i>
+              <span>Gestion Citas</span>
+            </a>
+            
+          </li>
+          </li>
+        {% else %}
+            {% if rol == "Asistente" %}
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/vistaAdministrador/">
+                <i class="bi bi-grid"></i>
+                <span>Animalagro</span>
+              </a>
+      
+            <li class="nav-heading">Pagina</li>
+      
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/perfiladmin/">
+                <i class="bi bi-person"></i>
+                <span>Perfil</span>
+              </a>
+              <a class="nav-link collapsed" href="/gestionPedidos/">
+                <i class="bi bi-cart4"></i>
+                <span>Gestion Pedidos</span>
+              </a>
+              <a class="nav-link collapsed" href="/GestionServicio/">
+                <i class="bi bi-clipboard2-heart-fill"></i>
+                <span>Gestion Servicio</span>
+              </a>
+              <a class="nav-link collapsed" href="/VistaProductos/">
+                <i class="bi bi-basket3-fill"></i>
+                <span>Gestion Producto</span>
+              </a>
+            </li>
+            </li>
+            {% else %}
+                
+            {% endif %}
+        {% endif %}
+      {% endif %}
+    </ul>
+
+  </aside><!-- End Sidebar-->

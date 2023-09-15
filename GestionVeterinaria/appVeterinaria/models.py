@@ -4,9 +4,6 @@ from django.conf import settings
 from django.utils import timezone
 
 
-
-
-
 estadoUsuario= [
     ('Activo','Activo'), ('Suspendido', 'Suspendido')
 ]
@@ -32,7 +29,7 @@ metodoPago=[
 ]
 
 estadoPedido=[
-    ('Enviado','Enviado'), ('Entregado', 'Entregado'), ('Solicitado', 'Solicitado'), ('Rechazado', 'Rechazado'), ('Cancelado','Cancelado')
+    ('Enviado','Enviado'), ('Entregado', 'Entregado'), ('Solicitado', 'Solicitado'), ('Rechazado', 'Rechazado'), ('Cancelado','Cancelado'), ('Pago Cargado','Pago Cargado')
 ]
 
 tipoDocumento = [
@@ -84,21 +81,21 @@ class Categoria(models.Model):
     
 class User(AbstractUser):
     userTipoDoc = models.CharField(max_length=8, choices=tipoDocumento, null=False, db_comment="Tipo de Documento")
+    userEstado = models.CharField(max_length=11, choices= estadoUsuario, null=False, db_comment="Estado del usuario", default="Activo")
     userNoDoc = models.IntegerField( null=True, unique=True, db_comment="Numero de documento")
     userTelefono = models.IntegerField( null=True, db_comment="Telefono del usuario")
-    userFoto = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del Usuario")
+    userFoto = models.ImageField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del Usuario")
     userTipo = models.CharField(max_length=15,choices=tiposUsuarios,db_comment="Nombre Tipo de usuario")
     userEmpleado = models.ForeignKey(Empleado, on_delete=models.PROTECT,null=True,db_comment ="id del empleado, solo si el empleado tiene un usuario")
     userCodigo = models.IntegerField(null=True,unique= True, db_comment="Codigo Recuperacion")
     fechaHoraCreacio  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
-    
     def __str__(self):
         return f"{self.username}"
 
 class Mascota(models.Model):
     masNombre = models.CharField(max_length=20, null=False, db_comment="Nombre de la mascota")
-    masFoto = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto de la mascota")
+    masFoto = models.ImageField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto de la mascota")
     masRaza = models.CharField(max_length=30, null=True, db_comment="Raza de la mascota")
     masTipoAnimal = models.CharField(max_length=30, null=True, db_comment="Tipo del animal. Gato, perro etc")
     masUser = models.ForeignKey(User, on_delete=models.PROTECT, null=False, db_comment="Usuario al que pertenece la mascota")
@@ -143,11 +140,13 @@ class Producto(models.Model):
 
 class Pedido(models.Model):
     peUsuario = models.ForeignKey(User, on_delete=models.PROTECT, db_comment="Usuario que hizo el pedido")
-    peEstado = models.CharField(max_length=10, null=False, choices=estadoPedido, db_comment="estado del pedido")
+    peEstado = models.CharField(max_length=14, null=False, choices=estadoPedido, db_comment="estado del pedido")
     peCodigoPedido = models.IntegerField(null=True, db_comment ="Codigo del comprobante", unique=True) 
     peImpuestoPedido = models.IntegerField( null=True, db_comment="Impuesto del pedido")
     peTotalPedido = models.IntegerField(null=True, db_comment="Total pedido")
-    proFotoComprobante = models.FileField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del comprobante")    
+    peFecha = models.DateField(null=True,db_comment="Fecha pedido")
+    peHora = models.TimeField(null=True,db_comment="Hora pedido")
+    proFotoComprobante = models.ImageField(upload_to=f"fotos/", null=True, blank=True,db_comment="Foto del comprobante")    
     peFormaPago = models.CharField(max_length=20,null=False, db_comment="Forma de pago")
     peDetEnvio = models.ForeignKey(DetellaEnvio, on_delete=models.PROTECT, db_comment="Detalle ENVIO")
     fechaHoraCreacion  = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
@@ -169,7 +168,7 @@ class Contactanos(models.Model):
     conMensaje = models.CharField(max_length=150, null=True, db_comment="Mensaje Que El Usuario enviar para contartacnos")
     
 
-Group.objects.get_or_create(name='Usuario')
-Group.objects.get_or_create(name='Administrador')
-Group.objects.get_or_create(name='Asistente')
-
+# Group.objects.get_or_create(name='Usuario')
+# Group.objects.get_or_create(name='Administrador')
+# Group.objects.get_or_create(name='Asistente')
+# Group.objects.get_or_create(name='Medico')

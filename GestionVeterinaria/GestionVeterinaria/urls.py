@@ -46,6 +46,12 @@ urlpatterns = [
     path('vistaAgregarCita/<int:id>/', views.vistaAgregarCita),
     path('vistaAgregarCita/<int:id>/<str:mensaje>/', views.vistaAgregarCita),
     path('agregarCita/<int:id>/', views.agregarCita),
+    path('detPedidoUser/<int:id>/', views.detallePedido),
+    path('subirImagenComprobante/<int:id>/', views.cargarImagenComprobantePedido),
+    path('agregarMacota/', views.AgregarMascota),
+    path('subirImagenPerfil/<int:id>/', views.subirImagenPerfilUser),
+    path('actualizarDatosPerfil/<int:id>/', views.actualizarDatosUsuario),
+    path('cancelarPedidoUser/<int:id>/', views.cancelarPedidoUser),
     #----------------------------------------- 
     #urls sobre Tienda de los productos para comprar
     #----------------------------------------- 
@@ -63,10 +69,10 @@ urlpatterns = [
     path('perfiladmin/',views.perfiladmin),
     path('AgregarEmpleado/',views.vistaAgregarEmpleado),
     path('VistaAgregarEmpleado/',views.VistaAgregarEmpleado),
-    path('listarEmpleados/',views.listarEmpleados),
     path('VistaProductos/', views.VistaProductos),
     path('RegistrarProducto/', views.RegistrarProducto),
     path('vistaEmpleadoUsuario/<int:id>',views.vistaEmpleadoUsuario), 
+    path("listarUsuarios/", views.vistasListarUsuarios),
     path('GestionServicio/',views.vistaGestionServicio),
     path('gestionCitas/', views.vistaGestionCitas),
     path("descripcionCita/<int:id>", views.vistaCitaHTML),
@@ -78,6 +84,8 @@ urlpatterns = [
     path("agregarServicio/",views.agregarServicio),
     path('asignarservicio/',views.asignasServicio),
     path('generarPDFHistorialEnviar/<int:id>/', views.descargarPDFhistorial),
+    path('cambiarEstadoPedido/<int:id>/', views.cambiarestadoPedido),
+    path('gestionPedidos/', views.vistaGestionPedidos),
     #----------------------------------------- 
     #API todo sobre api
     path('', include('appVeterinaria.urlsApi')),

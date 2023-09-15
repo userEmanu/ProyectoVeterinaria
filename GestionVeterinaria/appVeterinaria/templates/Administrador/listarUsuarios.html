@@ -1,0 +1,122 @@
+{% extends "Administrador/indexA.html" %}
+{% block encabezado %}
+    {% include "Administrador/encabezado.html" %}
+{% endblock %}
+{% block menu %}
+    {% include "Administrador/menu.html" %}
+{% endblock %}
+{% block contenido %}
+  {% load static %}
+  <main id="main" class="main ">
+    <div class="pagetitle">
+      <h1>Perfil Gestion Usuarios</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="/perfiladmin/">Perfil</a></li>
+
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+          
+
+
+
+        {% comment %} Formularios De Agregar {% endcomment %}
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab"
+                    data-bs-target="#profile-overview">Listados Usuarios Empleado</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" >Listado Usuarios</button>
+                </li>
+
+              </ul>
+              {% comment %} Bloque De Codigo Para Agregar Servico {% endcomment %}
+              {% if rol == "Administrador" %}
+                      <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview" >
+                            <form  class="was-validated" >
+                                <table class="table table-striped table-bordered datatable table-hover text-center">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">User</th>
+                                        <th scope="col">email</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Acciones</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody >
+                                      {% for lista in empleados_info%}
+                                            <tr>
+                                                <td>{{lista.first_name}} {{lista.last_name}}</td>
+                                                <td>{{lista.username}}</td>
+                                                <td>{{lista.email}}</td>
+                                                <td>{{lista.userEstado}}</td>
+                                                <td>{{lista.empleado.emNombre}} {{lista.empleado.emApellido}}</td>
+                                                <td></td>
+                                            </tr>
+                                      {% endfor %} 
+                                    </tbody>
+                                  </table>
+                            </form>
+                        </div>
+                    </div>            
+               
+              {% endif %}
+              
+              {% comment %}  Final De form servico{% endcomment %}
+
+              {% comment %} Bloque De Codigo Para listar  {% endcomment %}
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                  <form  class="was-validated" >
+                  <table class="table table-striped table-bordered datatable table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      {% comment %} {% for lista in cita %}
+                            <tr>
+                              {% if lista.ciEstado == 'Solicitada' %}
+                                <td>{{lista.ciUsuario.first_name}} {{lista.ciUsuario.last_name}}</td>
+                                <td>{{lista.ciServicio.serNombre}}</td>
+                                <td>{{lista.ciFecha}} {{lista.ciHora}}</td>
+                                <td>{{lista.ciEstado}}</td>
+                                <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
+                              {% endif %}
+                            </tr>
+                      {% endfor %}  {% endcomment %}
+                    </tbody>
+                  </table>
+                </form>
+                </div>
+              </div> 
+        
+            </div>
+          </div>
+        </div>
+      </div>    
+    </section>
+
+  </main><!-- End #main -->
+
+<!-- custom js file link  -->
+  {% endblock %}

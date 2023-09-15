@@ -123,15 +123,10 @@ section {
   left: 0;
   right: 0;
   z-index: 1000;
-  -webkit-transform: translateY(-10rem);
-          transform: translateY(-10rem);
+ 
 }
 
-.header.active {
-  -webkit-transform: translateY(0rem);
-          transform: translateY(0rem);
-}
-
+/*  */
 
 .header .navbar a {
   margin: 0 1rem;
@@ -142,6 +137,10 @@ section {
 .header .navbar a:hover {
   color: #148a38;
 }
+
+
+
+/*  */
 
 .header .icons a,
 .header .icons div {
@@ -463,10 +462,8 @@ section {
 }
 
 .shop .box-container {
-  display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (minmax(30rem, 1fr))[auto-fit];
-      grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* Mostrar cuatro columnas */
   gap: 1.5rem;
 }
 
@@ -481,9 +478,8 @@ section {
 }
 
 .shop .box-container .box .image img {
-  
-  width: 300px;
-  height: 300px;
+  width: 100%; /* Usar el ancho completo del contenedor */
+  height: auto; /* Ajustar la altura automáticamente */
 }
 .shop .box-container .box:hover .icons {
   -webkit-transform: translateX(0rem);
@@ -535,15 +531,15 @@ section {
 }
 
 .shop .box-container .box .content h3 {
-  font-size: 2.2rem;
+  font-size: 1.8rem; /* Ajustar el tamaño de la fuente */
   color: #130f40;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
 
 .shop .box-container .box .content .amount {
-  font-size: 2rem;
+  font-size: 1.6rem; /* Ajustar el tamaño de la fuente */
   color: #e67e22;
-}
+} 
 
 .services .box-container {
   display: -ms-grid;
@@ -762,4 +758,8 @@ section {
     width: 90%;
   }
 }
-/*# sourceMappingURL=style.css.map */
+
+/* Agrega estos estilos para el submenú */
+/* Agrega estos estilos para el submenú */
+/* Mantén estos estilos para el submenú */
+/* Agrega estos estilos para el submenú */

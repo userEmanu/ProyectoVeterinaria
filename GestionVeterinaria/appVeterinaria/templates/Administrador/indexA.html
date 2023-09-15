@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Administrador</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
+  <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
+
+  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
+
+</head>
+<body>
+    
+        <header>
+            {% block encabezado %}
+            
+            {% endblock %}
+        </header>
+        <nav >
+            {% block menu %}
+
+            {% endblock %}
+        </nav>
+        <section>
+            {% block contenido %}
+            
+            {% endblock %}
+        </section>
+        
+    
+  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src=" {% static '../static/js/main.js' %}"></script>
+</body>
+</html>

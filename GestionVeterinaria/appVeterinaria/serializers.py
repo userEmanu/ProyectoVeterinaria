@@ -29,6 +29,7 @@ class CategoriaSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 class MascotaSerializer(serializers.ModelSerializer):
+    masFoto = Base64ImageField(required = False)
     class Meta: 
         model = Mascota
         fields = ('__all__')

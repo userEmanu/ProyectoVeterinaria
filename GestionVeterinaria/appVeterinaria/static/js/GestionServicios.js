@@ -36,7 +36,7 @@ function agregarServicio() {
                             Swal.fire({
                                 title: 'Sistema Veterinaria Animalagro',
                                 text: data.mensaje,
-                                icon: 'Succes',               
+                                icon: 'success',               
                                 confirmButtonColor: '#3085d6',             
                                 confirmButtonText: 'Aceptar'
                             }).then((result) => {
@@ -95,7 +95,7 @@ function asignarEmpleado() {
                             Swal.fire({
                                 title: 'Sistema veterinaria animalgro',
                                 text: data.mensaje,
-                                icon: 'Succes',                          
+                                icon: 'success',                          
                                 confirmButtonText: 'Aceptar'
                             }).then((result) => {
                                 if (result.isConfirmed) {           

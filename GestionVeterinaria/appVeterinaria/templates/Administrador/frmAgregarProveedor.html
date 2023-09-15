@@ -1,163 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Usuario / Perfil - Animalagro</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-
-  <!-- Favicons -->
-
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
-
-
-  <!-- Vendor CSS Files -->
+{% extends "Administrador/indexA.html" %}
+{% block encabezado %}
+    {% include "Administrador/encabezado.html" %}
+{% endblock %}
+{% block menu %}
+    {% include "Administrador/menu.html" %}
+{% endblock %}
+{% block contenido %}
   {% load static %}
-
-  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static '../static/vendor/bootstrap-icons/bootstrap-icons.css' %}">
-  <link rel="stylesheet" href="{%static '../static/vendor/boxicons/css/boxicons.min.css' %}">
-  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.snow.css' %}">
-  <link rel="stylesheet" href="{%static '../static/vendor/quill/quill.bubble.css' %}">
-  <link rel="stylesheet" href="{%static '../static/vendor/remixicon/remixicon.css' %}">
-  <link rel="stylesheet" href="{%static '../static/vendor/simple-datatables/style.css' %}">
-
-  <link href="{% static '../static/css/adminStyle.css' %}" rel="stylesheet"> 
-
-
-</head>
-
-<body>
-
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">20</span>
-          </a><!-- End Notification Icon -->
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">13</span>
-          </a><!-- End Messages Icon -->
-        </li><!-- End Messages Nav -->
-
-        <li class="nav-item dropdown pe-3">
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{%static '../static/image/profile.jpg' %}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Stiven Chacon</span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Stiven Chacon</h6>
-              <span>Administrador</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
-                <i class="bi bi-person"></i>
-                <span>Mi perfil</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/cerrarSesion/">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Salir</span>
-              </a>
-            </li>
-
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/vistaAdministrador/">
-          <i class="bi bi-grid"></i>
-          <span>Animalagro</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-      <li class="nav-heading">Pagina</li>
-
-      <a class="nav-link collapsed" href="/perfiladmin/">
-        <i class="bi bi-person"></i>
-        <span>Perfil</span>
-      </a>
-      <a class="nav-link collapsed" href="/VistaAgregarEmpleado/">
-        <i class="bi bi-people"></i>
-        <span>Gestion Empleados</span>
-      </a>
-      <a class="nav-link collapsed" href="/VistaProductos/">
-        <i class="bi bi-basket3-fill"></i>
-        <span>Gestion Producto</span>
-      </a>
-      <a class="nav-link collapsed" href="/GestionServicio/">
-        <i class="bi bi-clipboard2-heart-fill"></i>
-        <span>Gestion Servicio</span>
-      </a>
-      <a class="nav-link collapsed" href="/gestionCitas/">
-        <i class="bi bi-calendar-week-fill"></i>
-        <span>Gestion Citas</span>
-      </a>
-    </li><!-- End Profile Page Nav -->
-      </li><!-- End Profile Page Nav -->
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
-
-  <main id="main" class="main container p-4 ">
-    <br>
-    <br>
+  <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Perfil</h1>
+      <h1>Perfil Gestion Productos</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/vistaAdministrador/">Inicio</a></li>
@@ -168,22 +20,9 @@
     </div><!-- End Page Title -->
 
     <section class="section profile">
-      <div class="row">
-          <div class="col-xl-3">
-            <div class="card">
-                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-                  <img src="{%static '../static/image/profile.jpg' %}" alt="Profile" class="rounded-circle">
-                  <h2>Administrador</h2>
-                  <center><h3>Este Es El Apartado Para Agregar El Producto</h3></center> 
-                </div>
-              </div>
-            </div>
-
-
-
+     
         {% comment %} Formularios De Agregar {% endcomment %}
-        <div class="col-xl-7">
+        <div class="col-xl-12">
           <div class="card">
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
@@ -251,7 +90,8 @@
             
                         <!-- Botón -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Agregar Proveedor</button>
+                          <br>
+                            <button type="submit" class="btn btn-success">Agregar Proveedor</button>
                         </div>
                     </form>
                 </div>
@@ -272,7 +112,8 @@
                               </div>
                           </div>
                           <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Agregar Categoria</button>
+                            <br>
+                            <button type="submit" class="btn btn-success">Agregar Categoria</button>
                         </div>
                   </form>
                 </div>
@@ -358,7 +199,7 @@
                             </div>
                             <br>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                <button type="submit" class="btn btn-success">Agregar Producto</button>
                             </div>
                         </div>
                       </form>
@@ -387,21 +228,4 @@
   
     {% endif %}
   </script>
-
-  
-  <!-- Vendor JS Files -->
-  <script src=" {% static '../static/vendor/apexcharts/apexcharts.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/chart.js/chart.umd.js' %}"></script>
-  <script src=" {% static '../static/vendor/echarts/echarts.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/quill/quill.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/simple-datatables/simple-datatables.js' %}"></script>
-  <script src=" {% static '../static/vendor/tinymce/tinymce.min.js' %}"></script>
-  <script src=" {% static '../static/vendor/php-email-form/validate.js' %}"></script>
-
-  <!-- Template Main JS File -->
-  <script src=" {% static '../static/js/main.js' %}"></script>
-
-</body>
-
-</html>
+  {% endblock %}

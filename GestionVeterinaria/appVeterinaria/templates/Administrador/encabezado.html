@@ -1,0 +1,139 @@
+{% load static %}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="/vistaAdministrador/" class="logo d-flex align-items-center" style="text-decoration: none;">
+      <span class="d-none d-xl-block" style="font-size: 25px;">Veterinaria Animalagro</span>
+    </a>
+
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+  </div>
+
+
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-bell"></i>
+          <span class="badge bg-primary badge-number">{{ventashoy.countPedido}}</span>
+        </a><!-- End Notification Icon -->
+      </li><!-- End Notification Nav -->
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="badge bg-success badge-number">{{contactanos}}</span>
+        </a><!-- End Messages Icon -->
+      </li><!-- End Messages Nav -->
+
+      <li class="nav-item dropdown pe-3">
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <img src="../media/{{user.userFoto}}" alt="Profile" class="rounded-circle">
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name}}</span>
+        </a><!-- End Profile Iamge Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <li class="dropdown-header">
+            <h6>{{user.first_name}}</h6>
+            <span>{{user.userTipo}}</span>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/perfiladmin/">
+              <i class="bi bi-person"></i>
+              <span>Mi perfil</span>
+            </a>
+          </li>
+
+          {% if rol == "Administrador" %}
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/VistaAgregarEmpleado/">
+              <i class="bi bi-people"></i>
+              <span>Gestion Empleados</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/VistaProductos/">
+              <i class="bi bi-basket3-fill"></i>
+              <span>Gestion Producto</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/GestionServicio/">
+              <i class="bi bi-clipboard2-heart-fill"></i>
+              <span>Gestion Servicio</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/gestionCitas/">
+              <i class="bi bi-calendar-week-fill"></i>
+              <span>Gestion Citas</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/gestionPedidos/">
+              <i class="bi bi-cart4"></i>
+              <span>Gestion Pedidos</span>
+            </a>
+          </li>
+          {% else %}
+              {% if rol == "Medico" %}
+                  <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/gestionCitas/">
+                      <i class="bi bi-calendar-week-fill"></i>
+                      <span>Gestion Citas</span>
+                    </a>
+                  </li>
+              {% else %}
+                  {% if rol == "Asistente" %}
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center" href="/gestionPedidos/">
+                            <i class="bi bi-cart4"></i>
+                            <span>Gestion Pedidos</span>
+                          </a>
+                        </li>
+
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center" href="/VistaProductos/">
+                            <i class="bi bi-basket3-fill"></i>
+                            <span>Gestion Producto</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center" href="/GestionServicio/">
+                            <i class="bi bi-clipboard2-heart-fill"></i>
+                            <span>Gestion Servicio</span>
+                          </a>
+                        </li>
+                  {% else %}
+                  
+                  {% endif %}
+              {% endif %}
+          {% endif %}
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/cerrarSesion/">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Salir</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+
+    </ul>
+  </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->

@@ -35,13 +35,13 @@
 
                   <div class="pt-4 pb-2">
                     <h3 class="card-title text-center pb-0 fs-4">Recuperar Cuenta</h3>
-                    <p class="text-center small">Ingrese el codigo que se envio a su correo para verificar su cuenta, se reenviara a su correo la nueva contraseña</p>
+                    <p class="text-center small">Ingrese la nueva contraseña</p>
                   </div>
 
                   <form class="row g-3 was-validated" validate action="/contraseñaNueva/{{id}}"  method="post">     
                     {% csrf_token %}                                     
                     <div class="">
-                        <label for="txtCodigo" class="form-label">Codigo La Nueva Contraseña</label>
+                        <label for="txtCodigo" class="form-label">Ingrese Nueva Contraseña</label>
                         <input type="password" name="txtContraseña" class="form-control" id="txtContraseña" required>
                       </div>
                     <div class="text-center">

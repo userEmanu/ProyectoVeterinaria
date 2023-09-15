@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+import base64
+from django.core.files.base import ContentFile
 # Listas
 class userList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -78,7 +80,7 @@ class categoriaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategoriaSerializer
     
 class mascotaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Mascota.objects.all()
+    queryset = Mascota.objects.filter()
     serializer_class = MascotaSerializer
 
 class citaDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -124,23 +126,111 @@ class LoginView(APIView):
 
             return Response(status = status.HTTP_404_NOT_FOUND)
         
-@method_decorator(csrf_exempt, name='dispatch')       
+# @method_decorator(csrf_exempt, name='dispatch')
+# class aggMascotaView(APIView):
+#     def post(self ,request, id):
+#         ide = id
+#         tipo = request.data.get("tipo", None)
+#         raza  = request.data.get("raza", None)
+#         nombre = request.data.get("nombre", None)
+#         usuario = User.objects.get(pk = ide)
+#         if usuario != "":
+#             mascota = Mascota.objects.create(masNombre = nombre, masRaza= raza,
+#                                              masTipoAnimal = tipo,  masUser = usuario)
+#             return Response(MascotaSerializer(mascota).data, status= status.HTTP_201_CREATED)
+#         return Response(status = status.HTTP_404_NOT_FOUND)
+
+@method_decorator(csrf_exempt, name='dispatch')
 class aggMascotaView(APIView):
-    def post(self ,request):
-        id = request.data.get("id", None)
+    def post(self, request):
+        ide = request.data.get("id", None)
         tipo = request.data.get("tipo", None)
-        raza  = request.data.get("raza", None)
+        raza = request.data.get("raza", None)
         nombre = request.data.get("nombre", None)
+        foto = request.data.get("foto", None)
+
+        try:
+            usuario = User.objects.get(pk=ide)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        mascota = Mascota.objects.create(masNombre=nombre, masRaza=raza,
+                                         masTipoAnimal=tipo, masUser=usuario)
+
+        if foto:
+            image_data = base64.b64decode(foto)
+            mascota.masFoto.save('fotoMascota.png', ContentFile(image_data), save=True)
+
+        return Response(MascotaSerializer(mascota).data, status=status.HTTP_201_CREATED)
+
+    
+class CitasUsuarioApi(APIView):
+    def get(self, request, id):
+        try:
+            user = User.objects.get(pk=id)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
-        usuario = User.objects.get(pk = id)
-        if usuario != "":
-            mascota = Mascota.objects.create(masNombre = nombre, masRaza= raza,
-                                             masTipoAnimal = tipo,  masUser = usuario)
-            return Response(MascotaSerializer(mascota).data, status= status.HTTP_201_CREATED)
-            
-        return Response(status = status.HTTP_404_NOT_FOUND)
+        citas = Cita.objects.filter(ciUsuario=user)
+        listaCitas = []
+
+        for ci in citas:
+            cita = {
+                "cita":{
+                    "id": ci.id,
+                    "Descripcion": ci.ciDescripcion, 
+                    "Estado": ci.ciEstado,
+                    "sintonamas": ci.ciSintomas,
+                    "fechaHora": f"{ci.ciFecha} {ci.ciHora}",
+                    "mascota": {
+                        "imagen": str(ci.ciMascota.masFoto),
+                        "nombre": ci.ciMascota.masNombre,
+                        "raza": ci.ciMascota.masRaza, 
+                        "tipo": ci.ciMascota.masTipoAnimal
+                    },
+                    "servicio": {
+                        "id": ci.ciServicio.id,
+                        "nombre": ci.ciServicio.serNombre,
+                        "Tipo": ci.ciServicio.serTipo, 
+                        "Precio": ci.ciServicio.serPrecio, 
+                        "Empleado": f"{ci.ciServicio.serEmpleado.emNombre} {ci.ciServicio.serEmpleado.emApellido}"
+                    },
+                    "usuario": {
+                        "id": user.id,
+                        "nombre": user.first_name,
+                        "apellido": user.last_name,
+                        "telefono": user.userTelefono,
+                        "tipoIde": user.userTipoDoc,
+                        "nuDoc": user.userNoDoc, 
+                        "email": user.email
+                    }
+                }
+            }
+            listaCitas.append(cita)  
+
+        if listaCitas:  
+            return JsonResponse(listaCitas, safe=False)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+        
+class mascotaBuscar(APIView):
+    def get(self, request, id):
+        user = User.objects.get(pk=id)
+        mascota = Mascota.objects.filter(masUser=user)  
+        if mascota.exists():
+            return Response(MascotaSerializer(mascota, many=True).data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class productosTodos(APIView):
+    def get(self, request):
+        productos = Producto.objects.all()
+        if productos.exists():
+            return Response(ProductoSerializer(productos, many=True).data, status=status.HTTP_200_OK)
+        else:
+             return Response(status=status.HTTP_404_NOT_FOUND)
 
 class LogoutView(APIView):
     def post(self, request):
@@ -160,3 +250,93 @@ class ProductoImagen(APIView):
             serializer_response = ProductoSerializer(producto)
             return Response(serializer_response.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class MascotaFoto(APIView):
+    def post(self,request):
+        serializer = MascotaSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            archivo = validated_data['masFoto']
+            archivo.name = 'mascota.png'
+            validated_data['masFoto'] = archivo
+            mascota = Mascota(**validated_data)
+            mascota.save()
+            serializer_response = MascotaSerializer(mascota)
+            return Response(serializer_response.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class userFoto(APIView):
+    def post(self,request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            archivo = validated_data['userFoto']
+            archivo.name = 'fotoUsuario.png'
+            validated_data['userFoto'] = archivo
+            user = User(**validated_data)
+            user.save()
+            serializer_response = user(user)
+            return Response(serializer_response.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @method_decorator(csrf_exempt, name='dispatch')
+# class editarUsuarioView(APIView):
+#     def post(self ,request):
+#         ide = request.data.get("id", None)
+#         nombre = request.data.get("first_name", None)
+#         apellido  = request.data.get("last_name", None)
+#         email = request.data.get("email", None)
+#         doc = request.data.get("userNoDoc", None)
+#         telefono = request.data.get("userTelefono", None)
+#         foto = request.data.get("userFoto", None)        
+#         serializer = UserSerializer(data=request.data)      
+#         try:
+#             user = User.objects.get(pk=ide)         
+#             user.first_name = nombre
+#             user.last_name = apellido
+#             user.email = email
+#             user.userNoDoc = doc
+#             user.userTelefono = telefono
+#             user.save()           
+#             if serializer.is_valid():
+#                 validated_data = serializer.validated_data
+#                 archivo = validated_data['userFoto']
+#                 print(archivo)
+#                 if archivo:
+#                     archivo.name = 'fotoUsuario.png'
+#                     validated_data['userFoto'] = archivo
+#                     user.userFoto = User(**validated_data)
+#                 user.save()
+#             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+#         except User.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class editarUsuarioView(APIView):
+    def post(self, request):
+        ide = request.data.get("id", None)
+        nombre = request.data.get("first_name", None)
+        apellido = request.data.get("last_name", None)
+        email = request.data.get("email", None)
+        doc = request.data.get("userNoDoc", None)
+        telefono = request.data.get("userTelefono", None)
+        foto = request.data.get("userFoto", None)
+
+        try:
+            user = User.objects.get(pk=ide)
+
+            user.first_name = nombre
+            user.last_name = apellido
+            user.email = email
+            user.userNoDoc = doc
+            user.userTelefono = telefono
+
+            if foto:
+                image_data = base64.b64decode(foto)
+                user.userFoto.save('fotoUsuario.png', ContentFile(image_data), save=True)
+
+            user.save()
+
+            return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

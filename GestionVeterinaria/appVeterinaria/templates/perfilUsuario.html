@@ -14,7 +14,7 @@
     {%load static%}
     <link rel="stylesheet" href="{% static 'css/styleProfile.css'%}">
     <link href="Administrador/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -30,6 +30,7 @@
 
   <!-- Template Main CSS File -->
   
+
   <link href="{% static '../static/css/styleProfileUser.css' %}" rel="stylesheet"> 
 </head>
 <body>
@@ -37,6 +38,7 @@
 <!-- header section starts  -->
 
 <header class="header">
+  
 
     <a href="" class=""> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
 
@@ -77,7 +79,7 @@
       <br>
       <br>
       <br>
-      <section class="section profile container">
+      <section class="section profile container-fluid">
         <div class="row">
           <div class="col-xl-3">
             <div class="card">
@@ -92,19 +94,67 @@
                 <h2 class ="text-center">Tus Mascotas</h2>
                 <br>
                 <div class=""> 
-                  <img src="../media/{{user.userFoto}}" alt="Profile"  style="clip-path: circle(31.1% at 50% 50%);  width: auto;">
-                  <img src="../media/{{user.userFoto}}" alt="Profile"  style="clip-path: circle(31.1% at 50% 50%);  width: auto;">
+                  {% for lista in mas %}
+                    <img src="../media/{{lista.masFoto}}" alt="{{lista.masNombre}}"  style="clip-path: circle(31.1% at 50% 50%);  width: auto;">
+                  {% endfor %}
                 </div>
                 <br>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Agregar Mascota</button>
-                </div>
+                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ggMascota" data-bs-backdrop="static" style="color: rgb(255, 255, 255);">Agregar Mascota</button>
               </div>
+
+                      {% comment %}  {% endcomment %}
+                      <div class="modal fade" id="ggMascota" tabindex="-1" aria-labelledby="aggLabel" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-center" id="aggLabel">Agregar Mascota</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                
+                                <div class="modal-body">
+                                  <form class="was-validated" enctype="multipart/form-data" id="formAgregarMascota">
+                                    <div class="mb-3">
+                                      <label for="nombreMas" class="form-label">Nombre de la mascota</label>
+                                      <input type="text" class="form-control" id="nombreMas" name="nombreMas" required>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                      <label for="editFoto" class="form-label">Foto de la mascota</label>
+                                      <input type="file" class="form-control" id="editFotoInput" name="editFotoInput" accept="image/*" required>
+                                      <img id="editFotoPreview" src="" alt=""
+                                        style="max-width: 200px; max-height: 200px; margin-top: 10px;">
+                                    </div>
+                
+                                    <div class="mb-3">
+                                      <label for="razaMas" class="form-label">Raza de la mascota</label>
+                                      <input type="text" class="form-control" id="razaMas" name="razaMas" required>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                      <label for="tipoMas" class="form-label">Tipo mascota (perro,gato, etc)</label>
+                                      <input type="text" class="form-control" id="tipoMas" name="tipoMas" required>
+                                    </div>
+                                  </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-success" style="color: rgb(255, 255, 255);" onclick="agregarMascota()">Agregar Mascota</button>
+                                </div>
+                             
+                            </div>
+                        </div>
+                    </div>
+                    
+                      {% comment %}  {% endcomment %}
               
+              </div>
             </div>
           </div>
-  
-          <div class="col-xl-8">
+          {% comment %}  {% endcomment %}
+              
+          {% comment %}  {% endcomment %}
+          <div class="col-xl-9">
             
             <div class="card">
               
@@ -124,11 +174,35 @@
                   <li class="nav-item">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password"><h4>Pedidos</h4></button>
                   </li>
-  
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Mascotas"><h4>Mascotas</h4></button>
+                  </li>
                 </ul>
                 
                 <div class="tab-content pt-2">
-  
+
+                  <div class="tab-pane fade Mascotas pt-3" id="Mascotas">
+
+                       <div class="container">
+                          <div class="row">
+                            {% for m in mascota %}
+                              <div class="col-3">
+                                <div class="card text-white mb-3 text-center" style="max-width: 18rem;">
+                                  <div class="card-header">{{ m.masNombre }}</div>
+                                  <div class="card-body" style>
+                                    <img src="../media/{{m.masFoto}}" alt="Profile"  width="150" height="150">
+                                  </div>
+                                </div>
+                              </div>
+                            {% endfor %}
+
+
+                          </div>
+                        </div> 
+                        
+                        
+                  </div>
+
                   <div class="tab-pane fade show active profile-overview" id="profile-overview">
   
                     <h5 class="card-title">detalles del perfil</h5>
@@ -154,56 +228,81 @@
                     </div>
   
                   </div>
-  
+                  
                   <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
   
                     <!-- Profile Edit Form -->
-                    <form>
+                    
                       <div class="row mb-3">
                         <label for="profileImage" class="col-lg-3 col-md-4  col-form-label text-lg-start fs-5">Imagen De Perfil</label>
                         <div class="col-md-8 col-lg-9">
                           <img src="../media/{{user.userFoto}}" alt="Profile">
-                          <div class="pt-2">
-                            <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                          <div class="pt-2 ">
+                            <form enctype="multipart/form-data" id="imagenPerfil">
+                              <label class="btn btn-primary btn-sm" title="Subir nueva imagen de perfil" style="color: rgb(255, 255, 255);" >
+                                <input type="file" style="display: none;" id="FilefotoPerfil"  name="FilefotoPerfil">
+                                <i class="bi bi-upload"></i> Cargar Foto
+                              </label>
+                              <button type="button" class="btn btn-warning btn-sm" style="color: rgb(255, 255, 255);" onclick="subirImagenPerfil({{user.id}})" >Actualizar Imagen</button>
+                            </form>
                           </div>
                         </div>
                       </div>
-  
-                      <div class="row mb-3">
-                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Nombre Completo</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="fullName" type="text" class="form-control" id="fullName" value="{{user.first_name}} {{user.last_name}}">
-                        </div>
-                      </div>
 
-   
-                      <div class="row mb-3">
-                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Telefonon</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="phone" type="text" class="form-control" id="Phone" value="{{user.userTelefono}}">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Email" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Correo Electronico</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="email" type="email" class="form-control" id="Email" value="{{user.email}}">
-                        </div>
-                      </div>
-  
-                      <div class="row mb-3">
-                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Twitter Profile</label>
-                        <div class="col-md-8 col-lg-9">
-                          <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                        </div>
-                      </div>
-  
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                      </div>
+                      <form class="was-validated" enctype="multipart/form-data" id="editarperfil">
+                          <div class="row mb-3">
+                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Nombres</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="nombreEdit" type="text" class="form-control" id="nombreEdit" value="{{user.first_name}} " required>
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Apellidos</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="apellidoEdit" type="text" class="form-control" id="apellidoEdit" value="{{user.last_name}}" required>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="Phone" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Telefono</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="telefonoEdit" type="text" class="form-control" id="telefonoEdit" value="{{user.userTelefono}}" required>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="Email" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Correo Electronico</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="emailEdit" type="email" class="form-control" id="emailEdit" value="{{user.email}}" required>
+                            </div>
+                          </div>
+      
+                          <div class="row mb-3">
+                            <label for="Twitter" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">No Documento</label>
+                            <div class="col-md-8 col-lg-9">
+                              <input name="noDocEdit" type="text" class="form-control" id="noDocEdit" value="{{user.userNoDoc}}" required>
+                            </div>
+                          </div>
+
+                          <div class="row mb-3">
+                            <label for="Twitter" class="col-md-4 col-lg-3 col-form-label text-lg-start fs-5">Tipo Documento</label>
+                            <div class="col-md-8 col-lg-9">
+                              <select class="form-select" name="cbTipoEdit" id="cbTipoEdit"  required>
+                                  {% for l in listaTipo %}
+                                      {% if l.0 == user.userTipoDoc %}
+                                          <option value="{{user.userTipoDoc}}" selected>{{l.1}}</option>
+                                      {%else%}
+                                          <option value="{{l.0}}">{{l.1}}</option>
+                                      {% endif %}                
+                                  {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="text-center">
+                            <button type="button" class="btn btn-success btn-lg" onclick="actualizarperfil({{user.id}})">Actualizar</button>
+                          </div>
                     </form><!-- End Profile Edit Form -->
-  
                   </div>
   
                   
@@ -212,27 +311,60 @@
                       <form  class="was-validated" >
                         <table class="table table-striped table-bordered datatable table-hover text-center">
                           <thead>
-                            <tr>
-                              <th scope="col">Nombre</th>
-                              <th scope="col">Total</th>
-                              <th scope="col">codigo</th>
-                              <th scope="col">Estado</th>
-                              <th scope="col">Opciones</th>
+                            <tr class="text-center">
+                              <th class="text-center"scope="col">Nombre</th>
+                              <th class="text-center" scope="col">Total</th>
+                              <th class="text-center" scope="col">codigo</th>
+                              <th class="text-center" scope="col">Fecha</th>
+                              <th class="text-center" scope="col">Estado</th>
+                              <th class="text-center" scope="col">Opciones</th>
                             </tr>
                           </thead>
                           <tbody >
                             {% for lista in pedido %}
                                   <tr>
                                       <td>{{lista.peUsuario.first_name}} {{lista.peUsuario.last_name}}</td>
-                                      <td>$ {{lista.peTotalPedido}}</td>
-                                      <td>{{lista.peCodigo}} </td>
+                                      <td>$ {{lista.peTotalPedido}} COP</td>
+                                      <td>{{lista.peCodigoPedido}} </td>
+                                      <td>{{lista.peFecha}} {{lista.peHora}}</td>
                                       <td>{{lista.peEstado}}</td>
-                                      <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
+                                      <td><button type="button" class="btn btn-success" onclick="detallepedido({{lista.id}})" data-bs-toggle="modal" data-bs-target="#miModal" data-bs-backdrop="static"><i class="bi bi-eye-fill"></i></button>
+                                      </td>
                                   </tr>
                             {% endfor %} 
                           </tbody>
                         </table>
                       </form>
+                      {% comment %}  {% endcomment %}
+                      <div class="modal fade" id="miModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="miModalLabel">Detalle del pedido</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-striped table-bordered  table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Precio Unidad</th>
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="detalle">
+                                            <!-- Detalles del pedido aquí -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer" id="botonesId">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      {% comment %}  {% endcomment %}
                   </div>
                 </div><!-- End Bordered Tabs -->
               </div>
@@ -262,5 +394,6 @@
 
 <!-- Template Main JS File -->
 <script src=" {% static '../static/js/main.js' %}"></script>
+<script src=" {% static '../static/js/GestionUser.js' %}"></script>
 </body>
 </html>

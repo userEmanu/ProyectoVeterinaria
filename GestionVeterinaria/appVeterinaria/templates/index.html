@@ -25,13 +25,31 @@
 
     <a href="#" class=""> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
 
-    <nav class="navbar">
+    {% comment %} <nav class="navbar">
         <a href="/inicio/">Inicio</a>
         <a href="#about">Promociones</a>
         <a href="/vistaProductos/">Productos</a>
         <a href="#services">Servicios</a>
         <a href="#contact">Contacto</a>
+    </nav> {% endcomment %}
+    {% comment %} <nav class="navbar">
+        <a href="/inicio/" >Inicio</a>
+        <a href="/vistaProductos/">Productos</a>
+        <a href="#services">Servicios</a>
+        <a href="#contact">Contacto</a>
+        <div class="sub-menu">
+            <a href="#about">Promociones</a>
+        </div>
+    </nav> {% endcomment %}
+    
+    <nav class="navbar">
+        <a href="/inicio/">Inicio</a>
+        <a href="/vistaProductos/">Productos</a>
+        <a href="#services">Servicios</a>
+        <a href="#about" >Contacto</a>
+        <a href="#about">Promociones</a>
     </nav>
+
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
         <div class="fas fa-user" id="login-btn"></div>
