@@ -93,7 +93,7 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'veterinaria',
+        'NAME': 'veterinariaanimalagro',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -163,6 +163,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = os.path.join(BASE_DIR,'/static/')
 MEDIA_URL = '/media/'
 # STATIC_ROOT = '/home/veterinariaAnimalagro/GestionVeterinaria/GestionVeterinaria/appVeterinaria/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
 AUTH_USER_MODEL = 'appVeterinaria.User'
 

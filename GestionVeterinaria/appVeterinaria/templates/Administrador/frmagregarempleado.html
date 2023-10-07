@@ -84,8 +84,8 @@
                             <div class="row mb-2">
                                     <label for="txtTipoDocEm" class="form-label col-md-4 col-lg-3 col-form-label">Tipo de Documento     </label>
                                     <div class="col-md-8 col-lg-7">
-                                        <select class="form-select" id="txtTipoDocEm" name="txtTipoDocEm">
-                                            <option value="">Seleccionar</option>
+                                        <select class="form-select" id="txtTipoDocEm" name="txtTipoDocEm" required>
+                                            <option value="" required >Seleccionar</option>
                                             <option value="TI">Tarjeta Identidad</option>
                                             <option value="CC">Cedula Ciudadania</option>
                                             <option value="CCE">Cedula Extranjera</option>
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Agregar empleado</button>
+                                <button type="submit" class="btn btn-success">Agregar empleado</button>
                             </div> 
                         </form>
                     </div>
@@ -143,22 +143,38 @@
                       </thead>
                       <tbody>
                           {% for lista in listarEmpleados %}
-                              <tr>
-                                  <td>{{lista.emNombre}} {{lista.emApellido}}</td>
-                                  <td>{{lista.emTelefono}}</td>
-                                  <td>{{lista.emDireccion}}</td>
-                                  <td>{{lista.emNumeroDoc}}</td>
-                                  <td>{{lista.emCargo}}</td>
-                                  <td>{{lista.emCorreo}}</td>
-                                  <td><a href="/vistaEmpleadoUsuario/{{lista.id}}"> <button type="button" class="btn btn-warning text-white">Crear </button></a></td>
-                              </tr>
+                              {% if  lista.emUsuario == "Creado"%}
+                                  <tr>
+                                    <td>{{lista.emNombre}} {{lista.emApellido}}</td>
+                                    <td>{{lista.emTelefono}}</td>
+                                    <td>{{lista.emDireccion}}</td>
+                                    <td>{{lista.emNumeroDoc}}</td>
+                                    <td>{{lista.emCargo}}</td>
+                                    <td>{{lista.emCorreo}}</td>
+                                    <td>Ya Tiene Usuario</td>
+                                </tr>
+                              {% else %}
+                                  <tr>
+                                    <td>{{lista.emNombre}} {{lista.emApellido}}</td>
+                                    <td>{{lista.emTelefono}}</td>
+                                    <td>{{lista.emDireccion}}</td>
+                                    <td>{{lista.emNumeroDoc}}</td>
+                                    <td>{{lista.emCargo}}</td>
+                                    <td>{{lista.emCorreo}}</td>
+                                    <td><a href="/vistaEmpleadoUsuario/{{lista.id}}"> <button type="button" class="btn btn-warning text-white">Crear </button></a></td>
+                                </tr>
+                              {% endif %}
+                              
                         {% endfor %} 
                         </tbody>
                         </table>
                     </form>
                     </div>
                   </div> 
-            
+                  {% comment %}  {% endcomment %}
+
+
+                  {% comment %}  {% endcomment %}
                 </div>
               </div>
             </div>

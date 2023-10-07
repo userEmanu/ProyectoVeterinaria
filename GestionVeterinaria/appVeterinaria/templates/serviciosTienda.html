@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Etiquetas meta requeridas -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animalagro</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% load static %}
+    <!-- Favicon Icon Css -->
+    
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Css -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css"
+        rel="stylesheet">
+  
+    <link href="{% static '../static/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+
+    <link href="{% static '../static/css/styleTienda.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static '../static/css/responsive.css' %}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '../static/css/styleProductos.css' %}">
+  
+   
+
+</head>
+
+<body class="theme-4">
+    <!-- Inicio sección cargador de inicio -->
+    
+    <header class="header-4">
+        <div class="header-mdl">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="hm-inner d-sm-flex align-items-center justify-content-between">
+                            <div class="header-logo">
+                                <a href="/"><img src="{% static '../static/image/Logo.png' %}" alt="logo"></a>
+                                
+                            </div>
+                            <form class="header-form" method="get" action="{% url 'buscar_productos' %}">
+                                <input class="search-box" placeholder="Buscar producto..." required name="txtNombre"
+                                    value="{{ consulta }}" type="search">
+                                <button type="submit" value="">Buscar</button>
+
+                            </form>
+                            
+                            <div class="header-right">
+                                <div class="header-cart">
+                                    
+                                    <a href="#">
+                                        <div class="cart-icon">
+                                            
+                                            <div class="fas fa-shopping-cart" id="cart-icon"></div>
+                                        </div>
+                                        $ {{total.0}}<i class="fa fa-angle-down"></i>
+
+                                        
+                                    </a>
+                                    
+                                    <div class="cart-box">
+                                        {% if request.session.carrito.items %}
+                                        {% for key, value in request.session.carrito.items %}
+                                            {% if forloop.counter <= 2 %}
+                                                <div class="cart-info">
+                                                    <div class="cart-prodect d-flex">
+                                                        <div class="cart-img">
+                                                            <img src="../../../media/{{value.imagen}}" alt="cart-img">
+                                                        </div>
+                                                        <div class="cart-product">
+                                                            <a href="#">{{ value.nombre }}</a>
+                                                            <p>{{ value.acumulado }}</p>
+                                                        </div>
+                                                        <a href="" onclick="EliminarProducto({{value.producto_id}})"class="close-icon d-flex align-items-center">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% else %}
+                                        <div class="alert alert-danger text-center"> Sin Productos </div>
+                                        {% endif %}
+                                        <div class="price-prodect d-flex align-items-center justify-content-between">
+                                            <p class="total">total</p>
+                                            <p class="total-price">$ {{total.0}}</p>
+                                        </div>
+                                        <div class="cart-btn">
+                                            <a href="/vistaCarrito/" class="btn btn-primary" style="border-color: #130f40;">Ver carrito</a>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                
+
+                                <div class="d-lg-none mm_icon">
+                                    <div class="form-captions" id="search">
+                                        <button type="submit" class="submit-btn-2"><i class="fa fa-search"></i></button>
+                                    </div>
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation"><i
+                                            class="fa fa-bars"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-btm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav">
+                                    
+                                    <li class="nav-item">
+                                        {% if request.user.is_authenticated %}
+                                            <a class="nav-link" href="/vistaIndexUsuario/">Inicio</a>
+                                        {% else %}
+                                            <a class="nav-link" href="/inicio/">Inicio</a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/vistaTienda/">Productos</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">Categorias<i class="fa fa-angle-down"></i><i
+                                                class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                {% for c in categoria %}
+                                                    <li><a class="dropdown-toggler" href="#" role="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">{{c.catNombre}}
+                                                            <i class="fa fa-angle-down"></i><i
+                                                                class="fa fa-angle-right"></i></a>
+                                                        <div class="sub-menu dropdown-menu">
+                                                            <ul class="all-menu">
+                                                                <li><a href="/vistaTiendaCategoria/{{c.id}}/">Ver mas</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/vistaTiendaPromociones/">Promociones</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Marcas<i
+                                                class="fa fa-angle-down"></i><i class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                {% for p in proveedores %}
+                                                    <li><a href="/buscarProveedor/{{p.id}}/">{{p.proNombre}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+
+                                    <li class="dropdown">
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Servicios
+                                            de veterinaria<i class="fa fa-angle-down"></i><i
+                                                class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                <li><a class="dropdown-toggler" href="/vistaServiciosTienda/" role="button"
+                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">Todos
+                                                    <i class="fa fa-angle-down"></i><i
+                                                        class="fa fa-angle-right"></i></a>
+                                                <div class="sub-menu dropdown-menu">
+                                                    <ul class="all-menu">
+                                                        <li><a href="/vistaServiciosTienda/">Ver todos</a></li>
+                                                    </ul>
+                                                </div>
+                                                </li>
+                                                {% for s in servicios %}
+                                                    <li><a class="dropdown-toggler" href="#" role="button"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">{{s.serNombre}}
+                                                        <i class="fa fa-angle-down"></i><i
+                                                            class="fa fa-angle-right"></i></a>
+                                                    <div class="sub-menu dropdown-menu">
+                                                        <ul class="all-menu">
+                                                            <li><a href="/detalleDerServicio/{{s.id}}/">Mas
+                                                                informacion</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    </li>
+                                                {% endfor %}
+                                                
+                                            </ul>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                             <div class="icons">
+                                {% if request.user.is_authenticated %}
+                                    <a href="/vistaPerfilusuario/"><i class="fas fa-user"  style="color: rgb(255, 255, 255);"></i></a> 
+                                {% else %}
+                                    <a href="/inicio/Debes Iniciar Sesión"><i class="fas fa-user"  style="color: rgb(255, 255, 255);"></i></a> 
+                                {% endif %}
+                            </div> 
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+   
+    <section class="shop" id="shop">
+        
+                    <h1 class="title">Servicios</h1>
+                    <br>
+                    <div class="box-container">
+                        {% for servicio in serviciosMostrar %}
+                        <div class="box">
+                            <div class="icons">
+                                 <a href="/detalleDerServicio/{{servicio.id}}/" class="fas fa-eye"></a>
+                            </div>
+                            <div class="image">
+                                <img src="{{servicio.serFoto.url}}" alt="">
+                            </div>
+                            <div class="content">
+                                <h3>{{servicio.serNombre}}</h3>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+    </section>
+
+    <section class="footer">
+
+        <img src="{% static '../static/image/top_wave.png' %}" alt="">
+
+        <div class="share">
+            <a href="#" class="btn"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#" class="btn"> <i class="fab fa-twitter"></i> twitter </a>
+            <a href="#" class="btn"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#" class="btn"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#" class="btn"> <i class="fab fa-pinterest"></i> pinterest </a>
+        </div>
+    </section>
+
+    <a href="#" class="scrollup" style="display: none;"><i class="fa fa-angle-up"></i></a>
+
+    <script>
+        
+        
+        function EliminarProducto(id) {
+            const ide = id
+            url = '/eliminar/'+ide+'/'
+            console.log(url)
+                try {
+                    fetch(url)
+                       .then((response) => response.json())
+                       .then(data => {
+                                estado = data.estado 
+                                if(estado = true) {
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire({
+                                        title: 'Sistema veterinaria animalgro',
+                                        text: 'Algo salio mal, intenta mas tarde',
+                                        icon: 'error',                          
+                                        confirmButtonText: 'Aceptar'
+                                    })
+                                }
+                            }
+                        )                
+                }
+                catch (error) {
+                    console.log(error)
+                }
+        }
+    </script>
+
+    <!-- Jquery js -->
+    <script src="{% static '../static/js/jquery.min.js' %}" type="text/javascript"></script>
+   
+    <script src="{% static '../static/js/jquery.magnific-popup.min.js' %}" type="text/javascript"></script>
+   
+    <script src="{% static '../static/js/owl.carousel.min.js' %}" type="text/javascript"></script>
+
+    <script src="{% static '../static/js/jquery.countup.js' %}" type="text/javascript"></script>
+    
+    <script src="{% static '../static/js/jquery-price-slider.js' %}" type="text/javascript"></script>
+
+    <script src="{% static '../static/js/jquery.elevatezoom.js' %}" type="text/javascript"></script>
+    
+    <script src="{% static '../static/js/imagesloaded.pkgd.min.js' %}" type="text/javascript"></script>
+    
+    <script src="{% static '../static/js/jquery.fitvids.js' %}" type="text/javascript"></script>
+  
+    <script src="{% static '../static/js/custom.js' %}" type="text/javascript"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html> 
+

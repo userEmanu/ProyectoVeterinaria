@@ -16,14 +16,14 @@
 
 <header class="header">
 
-    <a href="#" class=""> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="115" height="auto"></i></a>
+    <a href="" class=""> <i class=""><img src=" {% static '../static/image/Logo.png' %}" alt="" width="120" height="auto"></i></a>
 
     <nav class="navbar">
         <a href="/vistaIndexUsuario/">Inicio</a>
-        <a href="#about">Promociones</a>
-        <a href="/vistaProductos/">Productos</a>
-        <a href="#services">Servicios</a>
-        <a href="#contact">Contacto</a>
+        <a href="/vistaTienda/">Tienda</a>
+        <a href="/vistaServiciosTienda/">Servicios</a>
+        <a href="#contact" >Contacto</a>
+        <a href="/vistaTiendaPromociones/">Promociones</a>
     </nav>
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
@@ -57,7 +57,7 @@
 
         <div class="content">
             <h3> <span>Bienvenido</span> a nuestra veterinaria Animalagro</h3>
-            <a href="#" class="btn">Ver mas</a>
+            <a href="/nosotros/" class="btn">Conocenos</a>
         </div>
         <img src="{% static '../static/image/bottom_wave.png' %}" class="wave" alt="">
     
@@ -70,7 +70,7 @@
     <section class="about" id="about">
     
         <div class="image">
-            <img src="{% static '../static/image/about_img.jpg' %}" alt="" srcset="">
+            <img src="{% static '../static/image/about_img.jpg' %}" alt="" >
         </div>
     
         <div class="content">
@@ -81,115 +81,61 @@
     
     </section>
     
-    <!-- about section ends -->
     
-    <!-- dog and cat food banner section starts -->
-    
-    <div class="dog-food">
-    
-        <div class="image">
-            <img src="{% static '../static/image/dog_food.png' %}" alt="" srcset="">
-        </div>
-    
-        <div class="content">
-            <h3> <span>Purina Seca</span> Beef food </h3>
-            <p>Un alimento 100% nutritivo para tu perro, bajo en grasas saturadas y muy nutritivo, valido hasta agotar existencia, ¡Compralo Ya!</p>
-            <div class="amount">$ 15.000 - $ 30.000</div>
-            <a href="#" class="btn"> Comprar ya</a>
-        </div>
-    
-    </div>
-    
-    <div class="cat-food">
-    
-        <div class="content">
-            <h3> <span>Purina Seca</span> Norweigan food </h3>
-            <p>Purina bajo en grasas, muy nutritivo, con un precio increible, ¡Compralo ya!</p>
-            <div class="amount">$1.500 - $3.000</div>
-            <a href="#" class="btn"> Comprar ya</a>
-        </div>
-    
-        <div class="image">
-            <img src="{% static '../static/image/cat_food.png' %}" alt="" srcset="">
-        </div>
-    
-    </div>
-    
-    <!-- dog and cat food banner section ends -->
-    
-    <!-- shop section starts  -->
     
     <section class="shop" id="shop">
     
-        <h1 class="heading">Productos<span> Disponibles</span> </h1>
+        <h1 class="heading">Productos<span> Disponibles Mas Vendidos</span> </h1>
     
         <div class="box-container">
-    
+            {% for producto in productos %}
             <div class="box">
                 <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a
-                    <a href="#" class="fas fa-eye"></a>
+                    <a href="" onclick="AgregarAlCarrito({{producto.id }})"class="fas fa-shopping-cart"></a>
+                    <a href="/detalle/{{producto.id}}" class="fas fa-eye"></a>
                 </div>
+                <script>
+                    function AgregarAlCarrito(id) {
+                        const ide = id
+                        url = '/agregar/'+ide+'/'
+                        console.log(url)
+                            try {
+                                fetch(url)
+                                   .then((response) => response.json())
+                                   .then(data => {
+                                            estado = data.estado 
+                                            if(estado = true) {
+                                                window.location.reload();
+                                            } else {
+                                                Swal.fire({
+                                                    title: 'Sistema veterinaria animalgro',
+                                                    text: 'Algo salio mal, intenta mas tarde',
+                                                    icon: 'error',                          
+                                                    confirmButtonText: 'Aceptar'
+                                                })
+                                            }
+                                        }
+                                    )                
+                            }
+                            catch (error) {
+                                console.log(error)
+                            }
+                    }
+                </script>
                 <div class="image">
-                    <img src="{% static '../static/image/product_01.jpg' %}" alt=""  >
+                    <img src="{{producto.proFoto.url}}" alt=""  >
                 </div>
                 <div class="content">
-                    <h3>Purina Seca-food</h3>
-                    <div class="amount"> $1500 - $30.000 </div>
+                    <h3>{{producto.proNombre}}</h3>
+                    <div class="amount">  Precio: $ {{producto.proPrecio}} COP.</div>
                 </div>
             </div>
-    
-            <div class="box">
-                <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a>
-                    <a href="#" class="fas fa-eye"></a>
-                </div>
-                <div class="image">
-                    <img src="{% static '../static/image/product_02.jpg' %}" alt="">
-                </div>
-                <div class="content">
-                    <h3>Beff-food</h3>
-                    <div class="amount"> $1.500 - $3.000 </div>
-                </div>
-            </div>
-    
-            <div class="box">
-                <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart"></a>
-                    <a href="#" class="fas fa-eye"></a>
-                </div>
-                <div class="image">
-                    <img src="{% static '../static/image/product_03.jpg' %}" alt="">
-                </div>
-                <div class="content">
-                    <h3>Lmab-food</h3>
-                    <div class="amount"> $1.500 - $3.000 </div>
-                </div>
-            </div>
-    
-    
+            {% endfor %}
         </div>
     
     </section>
     
-    <!-- shop section ends -->
-    
-    <!-- services section starts  -->
-    <section class="services" id="services" >
-    
-        <h1 class="heading"> Servicios <span> Disponibles, Para Agendar Cita</span> </h1>
 
-            <div class="box-container">
-                {% for ser in servicio %}
-                <div class="box">
-                    <i class="fas fa-dog"></i>
-                        <h3 value="{{ser.id}}">{{ ser.serNombre}}</h3>
-                    <a href="/vistaAgregarCita/{{ser.id}}" class="btn">Agendar</a>
-                </div>
-                {% endfor %}
-            </div>
-    </section>
-    
     
     
     <section class="contact" id="contact">
@@ -198,12 +144,13 @@
             <img src="{% static '../static/image/contact_img.png' %}" alt="">
         </div>
     
-        <form action="">
+        <form action="/registrarContactos/". method="post">
+            {% csrf_token%}
             <h3>Contactanos</h3>
-            <input type="text" placeholder="Nombre" class="box">
-            <input type="email" placeholder="Email" class="box">
-            <input type="tumber" placeholder="Numero Telefonico" class="box">
-            <textarea name="" placeholder="Mensaje" id="" cols="30" rows="10"></textarea>
+            <input type="text" placeholder="Nombre" id="txtNombreCon" name="txtNombreCon" class="box" required="">
+            <input type="email" placeholder="Email" id="txtEmailCon" name="txtEmailCon" class="box" required="">
+            <input type="number" placeholder="Numero Telefonico" id="txtNumeroCon" name="txtNumeroCon" class="box" required="">
+            <input type="text" placeholder="Mensaje" id="txtMensajeCon" name="txtMensajeCon" class="box" required="">
             <input type="submit" value="Enviar Mensaje" class="btn">
         </form>
     
@@ -223,15 +170,6 @@
     
     </section>
 </main>
-
-
-
-
-
-
-
 <script src=" {% static '../static/js/script.js' %}"></script>
-
-
 </body>
 </html>

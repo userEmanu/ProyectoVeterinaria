@@ -34,7 +34,7 @@
 
                 <li class="nav-item">
                   <button class="nav-link active" data-bs-toggle="tab"
-                    data-bs-target="#profile-overview">Agregar Servicio</button>
+                    data-bs-target="#inicio">Agregar Servicio</button>
                 </li>
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" >Listar Servicio</button>
@@ -45,62 +45,80 @@
 
               </ul>
               {% comment %} Bloque De Codigo Para Agregar Servico {% endcomment %}
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-overview" id="profile-overview" >
-                    <form  class="was-validated" >
+              
+            
+            <div class="tab-content pt-2">
+              <div class="tab-pane fade show active " id="inicio" >
+                  <form  class="was-validated" id="idAgregarServicio" enctype="multipart/form-data">
 
-                        <!-- Nombre Del Servicio -->
-                        <div class="row mb-1">
-                            <label for="txtNombreser" class="col-md-4 col-lg-3 col-form-label">Nombre Del Servicio</label>
-                            <div class="col-md-1 col-lg-7">
-                                <input name="txtNombreser" type="text" class="form-control" id="txtNombreser" required placeholder="Digite el nombre del servicio">
-                            </div>
+                      <!-- Nombre Del Servicio -->
+                      <div class="row mb-1">
+                          <label for="txtNombreServicio" class="col-md-4 col-lg-3 col-form-label">Nombre Del Servicio</label>
+                          <div class="col-md-1 col-lg-7">
+                              <input name="txtNombreServicio" type="text" class="form-control" id="txtNombreServicio" required placeholder="Digite el nombre del servicio">
+                          </div>
+                      </div>
+          
+                      <!-- Tipo Servicio -->
+                      <div class="row mb-1">
+                          <label for="txtTiposer" class="col-md-4 col-lg-3 col-form-label">Tipo De Servicio</label>
+                          <div class="col-md-1 col-lg-7">
+                              <input name="txtTiposer" type="text" class="form-control" id="txtTiposer" required placeholder="Digite el tipo de serivicio (Cirugia, Seguimiento) ">
+                          </div>
+                      </div>
+          
+                      <!-- Descripcion -->
+                      <div class="row mb-1">
+                          <label for="txtDescripcionser" class="col-md-4 col-lg-3 col-form-label">Descripcion</label>
+                          <div class="col-md-1 col-lg-7">
+                            <textarea id="txtDescripcionser" name="txtDescripcionser" class="form-control" aria-label="With textarea" required placeholder="Descripcion del Servicio"></textarea>
+                          </div>
+                      </div>
+          
+                      <!-- Precio -->
+                      <div class="row mb-1">
+                          <label for="txtPrecioSer" class="col-md-4 col-lg-3 col-form-label">Precio</label>
+                          <div class="col-md-1 col-lg-7">
+                              <input name="txtPrecioSer" type="number" class="form-control" id="txtPrecioSer" required placeholder="Precio Del Servicio">
+                          </div>
+                      </div>
+                      
+                      <!-- Empleado -->
+                      <div class="row mb-1">
+                          <label for="cbEmpleado" class="col-md-1 col-lg-3 col-form-label">Empleado Asignado (Opcional)</label>
+                          <div class="col-md-1 col-lg-7">
+                            <select name="cbEmpleado" id="cbEmpleado" class="form-control" required >
+                              <option value ="0" required >Seleccione  Empleado</option>
+                              {% for em in empleado %} 
+                                  <option value="{{em.id}}">{{em.emNombre}} {{em.emApellido}} - {{em.emCargo}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                      </div>
+                      
+                      <div class="row mb-1">
+                        <label for="fileFotoSer" class="col-md-4 col-lg-3 col-form-label">Foto</label>
+                        <div class="col-md-1 col-lg-7">
+                              <input type="file" name="fileFotoSer" id="fileFotoSer" class="form-control" required accept=".jpg" accept=".jpg" placeholder="Cargar foto">
                         </div>
-            
-                        <!-- Tipo Servicio -->
-                        <div class="row mb-1">
-                            <label for="txtTiposer" class="col-md-4 col-lg-3 col-form-label">Tipo De Servicio</label>
-                            <div class="col-md-1 col-lg-7">
-                                <input name="txtTiposer" type="text" class="form-control" id="txtTiposer" required placeholder="Digite el tipo de serivicio (Cirugia, Seguimiento) ">
-                            </div>
+                      </div>
+                      <div class="row mb-1">
+                        <label for="cbTipoAnimalDirigido" class="col-md-1 col-lg-3 col-form-label">Servicio especializado en </label>
+                        <div class="col-md-1 col-lg-7">
+                          <select name="cbTipoAnimalDirigido" id="cbTipoAnimalDirigido" class="form-control" required >
+                            <option  value="" required>Seleccione al tipo de animal dirigido</option>
+                            {% for an in animalDirigido %} 
+                                <option value="{{an.0}}">{{an.1}}</option>
+                            {% endfor %}
+                          </select>
                         </div>
-            
-                        <!-- Descripcion -->
-                        <div class="row mb-1">
-                            <label for="txtDescripcionser" class="col-md-4 col-lg-3 col-form-label">Descripcion</label>
-                            <div class="col-md-1 col-lg-7">
-                              <textarea id="txtDescripcionser" name="txtDescripcionser" class="form-control" aria-label="With textarea" required placeholder="Descripcion del Servicio"></textarea>
-                            </div>
-                        </div>
-            
-                        <!-- Precio -->
-                        <div class="row mb-1">
-                            <label for="txtPrecioSer" class="col-md-4 col-lg-3 col-form-label">Precio</label>
-                            <div class="col-md-1 col-lg-7">
-                                <input name="txtPrecioSer" type="number" class="form-control" id="txtPrecioSer" required placeholder="Precio Del Servicio">
-                            </div>
-                        </div>
-            
-                        <!-- Empleado -->
-                        <div class="row mb-1">
-                            <label for="cbEmpleado" class="col-md-1 col-lg-3 col-form-label">Empleado Asignado (Opcional)</label>
-                            <div class="col-md-1 col-lg-7">
-                              <select name="cbEmpleado" id="cbEmpleado" class="form-control" required >
-                                <option value="0">Seleccione  Empleado</option>
-                                {% for em in empleado %} 
-                                    <option value="{{em.id}}">{{em.emNombre}} {{em.emApellido}} - {{em.emCargo}}</option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                        </div>
-                        <br>
-                        <!-- Botón -->
-                        <div class="text-center">
-                            <button type="button" class="btn btn-success" onclick="agregarServicio()">Agregar Servicio</button>
-                        </div>
-                    </form>
-                </div>
-            </div>            
+                    </div>
+                      <div class="text-center">
+                        <button type="button" class="btn btn-success" onclick="agregarServicio()">Agregar Servicio</button>
+                    </div>
+                  </form>
+              </div>
+            </div> 
               {% comment %}  Final De form servico{% endcomment %}
 
               {% comment %} Bloque De Codigo Para listar  {% endcomment %}
@@ -112,8 +130,10 @@
                       <tr>
                         <th scope="col">Nombre</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Precio</th>
                         <th scope="col">Empleado</th>
+                        <th scope="col">Acción</th>
                       </tr>
                     </thead>
                     <tbody >
@@ -121,12 +141,14 @@
                             <tr>
                                 <td>{{lista.serNombre}}</td>
                                 <td>{{lista.serTipo}}</td>
+                                <td>{{lista.serEstado}}</td>
                                 <td>{{lista.serPrecio}}</td>
                                 {% if lista.serEmpleado != null %}
-                                  <td>{{lista.serEmpleado.emNombre}}</td>
+                                  <td>{{lista.serEmpleado.emNombre}} {{lista.serEmpleado.emApellido}}</td>
                                 {% else %} 
                                   <td class="text-danger">No hay Empleado Asignado</td>
                                 {% endif %}
+                                <td><button type="button" class="btn btn-success" onclick="preparareditarServicio({{lista.id}})" data-bs-toggle="modal" data-bs-target="#miModal" data-bs-backdrop="static"><i class="bi bi-pencil"></i></button></td>
                             </tr>
                       {% endfor %} 
                     </tbody>
@@ -134,8 +156,30 @@
 
                 </div>
               </div> 
+
+              {% comment %}  {% endcomment %}
+                    <div class="modal fade" id="miModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                      <div class="modal-dialog modal-md">
+                          <div class="modal-content">
+
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="miModalLabel">Editar Servicio</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body" id="bodyEditarServicio">
+                                
+                              </div>
+                              <div class="modal-footer" id="botonesIdServicio">
+                                
+                              </div>
+                              
+                          </div>
+                      </div>
+                  </div>
+              {% comment %}  {% endcomment %}
+
               <div class="tab-content pt-2" >
-                <div class="tab-pane fade pt-3" id="asignarEmpleado" >
+                <div class="tab-pane fade asignarEmpleado pt-3" id="asignarEmpleado" >
                   <form class="was-validated">
                                     
                       <div class="section register min-vh-50 d-flex flex-column align-items-center justify-content-center py-2">
@@ -202,7 +246,7 @@
   </main><!-- End #main -->
 
 <!-- custom js file link  -->
-<script src=" {% static '../static/js/script.js' %}"></script>
+
 <script>
     {% if mensaje %}
     Swal.fire({
@@ -215,7 +259,7 @@
   
     {% endif %}
   </script>
-
+ 
   
   <!-- Vendor JS Files -->
   <script src=" {% static '../static/js/GestionServicios.js' %}"></script>

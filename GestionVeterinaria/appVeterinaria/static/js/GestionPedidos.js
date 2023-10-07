@@ -13,7 +13,8 @@ function detallepedido(id) {
                             document.getElementById("detalle").innerHTML = ""
                             document.getElementById("botonesId").innerHTML = ""
                             document.getElementById("ImagenComprobante").innerHTML = ""
-                            mostrarDet(data.detalle, data.ped, data.estado)
+                            document.getElementById("detalleEnvioUser").innerHTML = ""
+                            mostrarDet(data.detalle, data.ped, data.estado, data.envio)
                         } else {
                             Swal.fire({
                                 title: 'Sistema veterinaria animalgro',
@@ -30,14 +31,26 @@ function detallepedido(id) {
         }
 }
 
-function mostrarDet(detalle, pedido, estado) {
+function mostrarDet(detalle, pedido, estado, envio) {
     detalle.forEach(det => {
         document.getElementById("detalle").innerHTML += `
         <tr>
             <td>${det.Nombre}</td>
             <td>${det.precioUni}</td>
+            <td>${det.descuento}</td>
+            <td>${det.porcentaje} %</td>
             <td>${det.cantidad}</td>
             <td>${det.precio}</td>
+        </tr>`;
+    });
+    envio.forEach(en => {
+        document.getElementById("detalleEnvioUser").innerHTML += `
+        <tr>
+            <td>${en.detNombre}</td>
+            <td>${en.detTelefono}</td>
+            <td>${en.detCorreo}</td>
+            <td>${en.detDireccion} %</td>
+            <td>${en.detUbicacion}</td>
         </tr>`;
     });
     document.getElementById("botonesId").innerHTML = `

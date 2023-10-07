@@ -39,7 +39,9 @@
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" >Listado Usuarios</button>
                 </li>
-
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-contactanos" >Mensaje De Contactanos</button>
+                </li>
               </ul>
               {% comment %} Bloque De Codigo Para Agregar Servico {% endcomment %}
               {% if rol == "Administrador" %}
@@ -50,7 +52,7 @@
                                     <thead>
                                       <tr>
                                         <th scope="col">Nombre</th>
-                                        <th scope="col">User</th>
+                                        <th scope="col">Usuario</th>
                                         <th scope="col">email</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Empleado</th>
@@ -65,7 +67,11 @@
                                                 <td>{{lista.email}}</td>
                                                 <td>{{lista.userEstado}}</td>
                                                 <td>{{lista.empleado.emNombre}} {{lista.empleado.emApellido}}</td>
-                                                <td></td>
+                                                <td> 
+                                                  <div class="form-check form-switch">
+                                                    <input class="form-check-input switch-checkbox" type="checkbox" id="flexSwitchCheck" {% if lista.userEstado == "Activo"  %} checked {% endif %} data-user-id="{{lista.id}}">
+                                                  </div>
+                                                </td>
                                             </tr>
                                       {% endfor %} 
                                     </tbody>
@@ -86,37 +92,168 @@
                     <thead>
                       <tr>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Servicio</th>
-                        <th scope="col">Fecha</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">email</th>
                         <th scope="col">Estado</th>
-                        <th scope="col">Opciones</th>
+                        <th scope="col">Acciones</th>
                       </tr>
                     </thead>
                     <tbody >
-                      {% comment %} {% for lista in cita %}
-                            <tr>
-                              {% if lista.ciEstado == 'Solicitada' %}
-                                <td>{{lista.ciUsuario.first_name}} {{lista.ciUsuario.last_name}}</td>
-                                <td>{{lista.ciServicio.serNombre}}</td>
-                                <td>{{lista.ciFecha}} {{lista.ciHora}}</td>
-                                <td>{{lista.ciEstado}}</td>
-                                <td><a href="/descripcionCita/{{lista.id}}"> <button type="button" class="btn btn-success" ><i class="bi bi-eye-fill"></i></button></a> <button type="button" class="btn btn-danger" onclick="cancelar({{lista.id}})" ><i class="bi bi-trash-fill"></i> </button></td>
-                              {% endif %}
-                            </tr>
-                      {% endfor %}  {% endcomment %}
+                      {% for lista in users %}
+                        <tr>
+                            <td>{{lista.first_name}} {{lista.last_name}}</td>
+                            <td>{{lista.username}}</td>
+                            <td>{{lista.email}}</td>
+                            <td>{{lista.userEstado}}</td>
+                            <td class="text-center">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input switch-checkbox" type="checkbox" id="flexSwitchCheck" {% if lista.userEstado == "Activo"  %} checked {% endif %} data-user-id="{{lista.id}}">
+                                </div>
+                              
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                   </table>
                 </form>
                 </div>
               </div> 
-        
+              {% comment %}  {% endcomment %}
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade profile-edit pt-3" id="profile-contactanos">
+                  <input type="text" class="form-control" id="buscarFecha" placeholder="Buscar Contactanos fecha">
+                  <div id="resultadosBusqueda">
+                      
+                  </div>
+                    {% for c in contacto %}
+                    <br>
+                    <div class="accordion" id="accordionExample{{c.id}}">
+                      <div class="accordion-item">
+                        
+                        <h2 class="accordion-header" id="headingOne">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{c.id}}" aria-expanded="true" aria-controls="collapseOne{{c.id}}">
+                            Fecha: {{c.conFecha}} Hora: {{c.conHora}}
+                        </button>
+                        
+                        </h2>
+      
+                        <div id="collapseOne{{c.id}}" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample{{c.id}}">
+                          <div class="accordion-body">
+                            <form class="row g-3 was-validated" enctype="multipart/form-data" action="/responderContact/{{c.id}}/" method="post">
+                              {% csrf_token%}
+                              <div class="col-md-12">
+                                <div class="form-floating">
+                                  <input type="text" class="form-control" id="nombreEdit" name="nombreEdit" placeholder="Nombre" value="{{c.conNombre}}" required readonly>
+                                  <label for="nombreEdit">Nombre</label>
+                                </div>
+                              </div>
+              
+                              <div class="col-md-6">
+                                <div class="form-floating">
+                                  <input type="email" class="form-control" id="tipoEdit" name="tipoEdit" placeholder="Correo Electronico" value="{{c.conEmail}}"readonly required>
+                                  <label for="tipoEdit">Correo Electronico</label>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="col-md-12">
+                                  <div class="form-floating">
+                                    <input type="number" class="form-control" required id="precioEdit" name="precioEdit" placeholder="Telefono" readonly value="{{c.conNumeroTe}}">
+                                    <label for="precioEdit">Telefono</label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-12">
+                                <div class="form-floating">
+                                  <textarea class="form-control" required placeholder="Motivo De Mensaje" id="descripcionEdit" readonly name="descripcionEdit"style="height: 100px;">{{c.conMensaje}}</textarea>
+                                  <label for="descripcionEdit">Motivo De Mensaje</label>
+                                </div>
+                              </div>
+                              {% if c.conResponder != None %}
+                              <div class="col-12">
+                                <div class="form-floating">
+                                  <textarea class="form-control" required placeholder="Responder" id="Responder" disabled name="Responder"style="height: 100px;">{{c.conResponder}}</textarea>
+                                  <label for="Responder">Responder</label>
+                                </div>
+                              </div>
+                              {% else %}
+                              <div class="col-12">
+                                <div class="form-floating">
+                                  <textarea class="form-control" required placeholder="Responder" id="Responder" name="Responder"style="height: 100px;"></textarea>
+                                  <label for="Responder" >Responder</label>
+                                </div>
+                              </div>
+                              {% endif %}
+                              {% if c.conResponder != None %}
+                              <button type="submit" class="form-control btn btn-success" disabled> Responder</button>
+                              {% else %}
+                              <button type="submit" class="form-control btn btn-success" > Responder</button>
+                              {% endif %}
+                            </form>
+                          </div>
+                        </div>
+      
+                      </div>
+                    </div>
+                    
+                    {% endfor %}
+                    
+                    <script>
+                      document.addEventListener("DOMContentLoaded", function() {
+                        const campoBusqueda = document.getElementById("buscarFecha");
+                        const resultados = document.getElementById("resultadosBusqueda");
+                        const acordeones = document.querySelectorAll('.accordion'); // Obtén todos los acordeones
+                    
+                        campoBusqueda.addEventListener("input", function() {
+                          const textoBusqueda = campoBusqueda.value.toLowerCase();
+                          const acordeonesCoincidentes = [];
+                    
+                          // Itera sobre todos los acordeones
+                          acordeones.forEach(function(acordeon) {
+                            const fechaHoraTexto = acordeon.querySelector('.accordion-button').textContent.toLowerCase();
+                    
+                            if (fechaHoraTexto.includes(textoBusqueda)) {
+                              acordeon.style.display = 'block'; // Muestra el acordeon si coincide
+                              acordeonesCoincidentes.push(acordeon);
+                            } else {
+                              acordeon.style.display = 'none'; // Oculta el acordeon si no coincide
+                            }
+                          });
+                    
+                          // Mostrar los resultados filtrados
+                          mostrarResultados(acordeonesCoincidentes);
+                        });
+                    
+                        function mostrarResultados(acordeones) {
+                          resultados.innerHTML = ""; // Borra los resultados anteriores
+                    
+                          // Itera sobre los acordeones coincidentes y crea elementos para mostrarlos
+                          acordeones.forEach(function(acordeon) {
+                           
+                            elemento.textContent = acordeon.querySelector('.accordion-button').textContent;
+
+                          });
+                        }
+                    
+                        // Mostrar todos los acordeones inicialmente
+                        mostrarResultados(Array.from(acordeones));
+                      });
+                    </script>
+                    
+                      
+                </div>
+              </div> 
+
+              {% comment %}  {% endcomment %}
             </div>
           </div>
         </div>
       </div>    
     </section>
 
-  </main><!-- End #main -->
+  </main>
+  <script src=" {% static '../static/js/adminUsuario.js' %}"></script>
+
+
 
 <!-- custom js file link  -->
   {% endblock %}

@@ -339,7 +339,8 @@ section {
           align-items: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
+
 }
 
 .about .image {
@@ -350,6 +351,7 @@ section {
 
 .about .image img {
   width: 100%;
+
 }
 
 .about .content {

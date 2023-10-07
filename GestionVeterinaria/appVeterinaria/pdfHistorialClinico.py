@@ -54,9 +54,14 @@ class PDF(FPDF):
         self.cell(40, 10, 'Raza', 1, 0, 'C', 1)
         self.cell(50, 10, 'Tipo de Animal', 1, 1, 'C', 1)
         self.set_font("Arial", '', 12)
-        self.cell(50, 10, f'{cita.ciMascota.masNombre}', 1)
-        self.cell(40, 10, f'{cita.ciMascota.masRaza}', 1)
-        self.cell(50, 10, f'{cita.ciMascota.masTipoAnimal}', 1)
+        if cita.ciMascota != None:
+            self.cell(50, 10, f'{cita.ciMascota.masNombre}', 1)
+            self.cell(40, 10, f'{cita.ciMascota.masRaza}', 1)
+            self.cell(50, 10, f'{cita.ciMascota.masTipoAnimal}', 1)
+        else:
+            self.cell(50, 10, f'Animales De Granja', 1)
+            self.cell(40, 10, f'Animales De Granja', 1)
+            self.cell(50, 10, f'Animales De Granja', 1)
         self.ln()
 
 
@@ -72,7 +77,10 @@ class PDF(FPDF):
         self.cell(50, 10, f'{cita.ciServicio.serNombre}', 1)
         self.cell(40, 10, f'{cita.ciServicio.serTipo}', 1)
         self.cell(40, 10, f'{cita.ciServicio.serPrecio}', 1)
-        self.cell(60, 10, f'{cita.ciServicio.serEmpleado.emNombre} {cita.ciServicio.serEmpleado.emApellido}', 1)
+        if cita.ciServicio.serEmpleado != None:
+            self.cell(60, 10, f'{cita.ciServicio.serEmpleado.emNombre} {cita.ciServicio.serEmpleado.emApellido}', 1)
+        else: 
+            self.cell(60, 10, f'Sin Empleado Asignado', 1)
         self.ln()
 
         # Tabla 4: Descripción de la Cita

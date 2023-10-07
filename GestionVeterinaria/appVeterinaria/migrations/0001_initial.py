@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('userTipoDoc', models.CharField(choices=[('TI', 'Tarjeta Identidad'), ('CC', 'Cedula Ciudadania'), ('CCE', 'Cedula Extranjera')], db_comment='Tipo de Documento', max_length=8)),
                 ('userNoDoc', models.IntegerField(db_comment='Numero de documento', null=True, unique=True)),
-                ('userTelefono', models.IntegerField(db_comment='Telefono del usuario', null=True)),
+                ('userTelefono', models.IntegerField(db_comment='Telefono del usuario', null=False)),
                 ('userFoto', models.FileField(blank=True, db_comment='Foto del Usuario', null=True, upload_to='fotos/')),
                 ('userTipo', models.CharField(choices=[('Usuario', 'Usuario'), ('Empleado', 'Empleado'), ('Administrador', 'Administrador')], db_comment='Nombre Tipo de usuario', max_length=15)),
                 ('userCodigo', models.IntegerField(db_comment='Codigo Recuperacion', null=True, unique=True)),

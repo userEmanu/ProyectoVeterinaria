@@ -12,17 +12,28 @@ class Carrito:
 
     def agregar(self, producto):
         id = str(producto.id)
+        descuento = 0
+        if producto.proEstado == "Promocion":
+            descuento = producto.proDescuento
+            precio = producto.proPrecio
+            deci = descuento / 100
+            descuentoPorUnidad = precio * deci
+        else: 
+            descuentoPorUnidad = 0
         if id not in self.carrito.keys():
             self.carrito[id]={
                 "producto_id": producto.id,
                 "nombre": producto.proNombre,
-                "acumulado": producto.proPrecio,
+                "precioUnidad": producto.proPrecio,
+                "porcentajeDescuento": int(descuento),
+                "descuento": int(descuentoPorUnidad),
+                "acumulado": int(producto.proPrecio - descuentoPorUnidad),
                 "imagen": str(producto.proFoto),
                 "cantidad": 1
             }
         else:
             self.carrito[id]["cantidad"] += 1
-            self.carrito[id]["acumulado"] += producto.proPrecio
+            self.carrito[id]["acumulado"] += producto.proPrecio - descuentoPorUnidad
             
         self.guardar_carrito()
 
@@ -50,7 +61,12 @@ class Carrito:
         
     def total_carrito(request):
         total = 0
+        descuentos = 0 
         if "carrito" in request.session.keys():
                 for key, value in request.session["carrito"].items():
-                    total += int(value["acumulado"])                                 
-        return total
+                    cantidad = value["cantidad"]
+                    descuentoUnidad = value["descuento"]
+                    totalDescuentos = cantidad * descuentoUnidad
+                    total += int(value["acumulado"])
+                    descuentos += totalDescuentos        
+        return total, descuentos

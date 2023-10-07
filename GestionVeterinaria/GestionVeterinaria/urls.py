@@ -1,23 +1,11 @@
-"""
-URL configuration for GestionVeterinaria project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from appVeterinaria import views
 from django.conf.urls.static import static
+from django.conf.urls import handler404 
+
+
 from django.conf import settings
 
 urlpatterns = [
@@ -25,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.vistaInicio),
     path('inicio/',views.vistaInicio),
+    path('nosotros/',views.vistaNosotrosInformacion),
     path('inicio/<str:mensaje>',views.vistaInicio),
     path('cerrarSesion/', views.CerrarSesion),
     path('vistaCodigo/', views.vistaCodigo),
@@ -42,6 +31,7 @@ urlpatterns = [
     #----------------------------------------- 
     path('vistaIndexUsuario/',views.vistaUsuario),
     path('vistaCitas/', views.vistaCitas),
+    path('vistaServiciosTienda/', views.vistaServiciosTienda),
     path('vistaPerfilusuario/',views.vistaPerfilUsuario),
     path('vistaAgregarCita/<int:id>/', views.vistaAgregarCita),
     path('vistaAgregarCita/<int:id>/<str:mensaje>/', views.vistaAgregarCita),
@@ -55,13 +45,20 @@ urlpatterns = [
     #----------------------------------------- 
     #urls sobre Tienda de los productos para comprar
     #----------------------------------------- 
-    path('vistaProductos/', views.vistaproductos, name="productos"),
-    path('agregar/<int:id>/', views.agregar_producto, name="Add"),
-    path('eliminar/<int:id>/', views.eliminar_producto, name="Del"),
-    path('restar/<int:id>/', views.restar_producto, name="Sub"),
-    path('limpiar/', views.limpiar_carrito, name="CLS"),
+    path('buscar/', views.buscar_productos, name='buscar_productos'),
+    path('vistaTienda/', views.vistaTienda, name="tienda"),
+    path('vistaTiendaPromociones/', views.vistaTiendaPromociones),
+    path('vistaTiendaCategoria/<int:id>/', views.vistaTiendaCategoria),
+    path('detalleDerServicio/<int:id>/', views.vistaServiciosTiendaDescripcion),
+    path('buscarProveedor/<int:id>/', views.vistaTiendaMarcas),
+    path('vistaCarrito/', views.vistaCarrito, name="carrito"),
+    path('detalle/<int:id>/', views.vistaDetalleProducto, name='detalle_producto'),
     path('finalizarCompra/', views.finalizar_compra),
     path('procesarPedido/', views.procesar_pedido),
+    path('agregar/<int:id>/', views.agregar_producto, name="Agregar"),
+    path('eliminar/<int:id>/', views.eliminar_producto, name="Eliminar"),
+    path('restar/<int:id>/', views.restar_producto, name="Restar"),
+    path('limpiar/', views.limpiar_carrito, name="Limpiar"),
     #----------------------------------------- 
     #Funciones del administrado y vistas
     #----------------------------------------- 
@@ -70,6 +67,8 @@ urlpatterns = [
     path('AgregarEmpleado/',views.vistaAgregarEmpleado),
     path('VistaAgregarEmpleado/',views.VistaAgregarEmpleado),
     path('VistaProductos/', views.VistaProductos),
+    path('editar_producto/<int:id>/', views.editar_producto, name='editar_producto'),
+    path('elimina/<int:id>/', views.eliminar_product, name='eliminar'),  
     path('RegistrarProducto/', views.RegistrarProducto),
     path('vistaEmpleadoUsuario/<int:id>',views.vistaEmpleadoUsuario), 
     path("listarUsuarios/", views.vistasListarUsuarios),
@@ -86,12 +85,20 @@ urlpatterns = [
     path('generarPDFHistorialEnviar/<int:id>/', views.descargarPDFhistorial),
     path('cambiarEstadoPedido/<int:id>/', views.cambiarestadoPedido),
     path('gestionPedidos/', views.vistaGestionPedidos),
+    path('suspenderUser/<int:id>/<str:mensaje>/', views.Suspende_Activar_Usuario),
+    path('editarServicioAdminInfo/<int:id>/', views.mostrarEditarServicio),
+    path('editarServicioAdmin/<int:id>/', views.editaSersvicioAdministradro),
+    path('ventasPorBimestral/', views.datosBimestralesAnuales),
+    path('recordatoriosDeLasCitasTodas/', views.enviarCorreosDeRecordatorioAtodas),
+    path('recordatoriosDeLasCitasPersonalizada/<int:id>/', views.recordatorioDeCitaPersonalizado),
+    path('responderContact/<int:id>/', views.responderMensajeCOntactanos),
+    path('detalleCitaMascota/<int:id>/', views.detalleDeLaCitaMascota),
     #----------------------------------------- 
     #API todo sobre api
-    path('', include('appVeterinaria.urlsApi')),
+    path('', include('appVeterinaria.urlsApi'))
 ]
-
-
 
 if settings.DEBUG:
     urlpatterns += static (settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    
+

@@ -41,6 +41,10 @@
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Agregar Producto</button>
                 </li>
 
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#listarProductos">Listar Productos</button>
+                </li>
+
               </ul>
               {% comment %} Bloque De Codigo Para Agregar El Proveedor {% endcomment %}
               <div class="tab-content pt-2">
@@ -50,7 +54,7 @@
             
                         <!-- Nombre Del Proveedor -->
                         <div class="row mb-1">
-                            <label for="txtNombrePro" class="col-md-4 col-lg-3 col-form-label">Nombre Del Proveedor</label>
+                            <label for="txtNombrePro" class="col-md-4 col-lg-3 col-form-label">Nombre Del Proveedor o Marca</label>
                             <div class="col-md-2 col-lg-9">
                                 <input name="txtNombrePro" type="text" class="form-control" id="txtNombrePro" required placeholder="Digite El Nombre Del Proveedor">
                             </div>
@@ -153,7 +157,28 @@
                                       placeholder="Digite El Precio Del Producto">
                               </div>
                           </div>
-
+                          <div class="row mb-1">
+                              <label for="txtDescuentoP" class="col-md-4 col-lg-3 col-form-label">Descuento (Opcional)</label>
+                              <div class="col-md-2 col-lg-9">
+                                  <input name="txtDescuentoP" type="number" class="form-control" id="txtDescuentoP" value="0"
+                                      placeholder="Digite El Descuento Del Producto, Del 1 a 100" >
+                              </div>
+                              <script>
+                                document.getElementById("txtDescuentoP").addEventListener("input", function() {
+                                    const descuento = parseInt(this.value);
+                                    if (descuento < 0 || descuento > 100) {
+                                        this.value = ''; 
+                                    }
+                                });
+                                document.getElementById("txtPrecioP").addEventListener("input", function() {
+                                    const descuento = parseInt(this.value);
+                                    if (descuento < 0 ) {
+                                        this.value = ''; 
+                                    }
+                                });
+                                
+                            </script>
+                          </div>
                           {% comment %}  Proveedor {% endcomment %}
                           <div class="row mb-1">
                             <label for="cbProvedor" class="col-md-4 col-lg-3 col-form-label">Proveedor:</label>
@@ -185,8 +210,8 @@
                           <div class="row mb-1">
                               <label for="txtDescripcionP" class="col-md-4 col-lg-3 col-form-label">Descripcion</label>
                               <div class="col-md-2 col-lg-9">
-                                  <input name="txtDescripcionP" type="text" class="form-control" id="txtDescripcionP" required
-                                      placeholder="Digite El Precio Del Producto">
+                                  
+                                    <textarea class="form-control" aria-label="With textarea" required name="txtDescripcionP" id="txtDescripcionP" cols="20" rows="5" placeholder="Digite La Descripcion Del Producto"></textarea>
                               </div>
                           </div>
 
@@ -207,6 +232,154 @@
                   </div>  
                     {% comment %} Final Del form  de producto{% endcomment %}
 
+                    {% comment %}  {% endcomment %}
+                    <div class="tab-content pt-1">
+                      <div class="tab-pane fade pt-1" id="listarProductos">
+                        <div class="container-sm p-3 my-3">
+                        
+                          <table class="table table-striped datatable table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Posicion</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Precio</th>
+                                    <th>Foto</th>
+                                    <th>Descripcion</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for lista in listarProductos %}
+                                <tr>
+                                    <td>{{ lista.id }}</td>
+                                    <td>{{ lista.proNombre }}</td>
+                                    <td>{{ lista.proEstado }}</td>
+                                    <td>{{ lista.proPrecio }}</td>
+                                    <td><img src="{{ lista.proFoto.url }}" alt="{{ lista.proFoto.url }}" width="100"
+                                            height="100"></td>
+                                    <td>{{ lista.proDescripcion }}</td>
+                                    <td>
+                                        <!-- Formulario para eliminar el producto -->
+                                        <form method="post" action="{% url 'eliminar' lista.id %}">
+                                            {% csrf_token %}
+                                            <!-- Botón para eliminar con alerta de advertencia -->
+                                            <button type="button" class="btn btn-danger btnEliminar"
+                                                data-nombre="{{ lista.proNombre }}" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModaldelete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-success btn-editar" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModalEdit" data-id="{{ lista.id }}"
+                                            data-nombre="{{ lista.proNombre }}" data-estado="{{ lista.proEstado }}"
+                                            data-precio="{{ lista.proPrecio }}" data-foto="{{ lista.proFoto.url }}"
+                                            data-descripcion="{{ lista.proDescripcion }}" data-descuento="{{lista.proDescuento}}">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                      </div>
+                      </div>
+                    </div>
+
+                          <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                    
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel" style="text-align: center;">Editar producto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" id="formEditarProducto" action="/editar_producto/{{ producto.id }}/" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="editId" name="editId">
+                                            <div class="mb-3">
+                                                <label for="editNombre" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="editNombre" name="editNombre" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editEstado" class="form-label">Estado</label>
+                                                <select name="editEstado" id="editEstado" class="form-control" required>
+                                                  <option value="" required>Seleccione Estado</option>
+                                                  {% for estados in estados %} 
+                                                      <option value="{{estados.0}}">{{estados.1}}</option>
+                                                  {% endfor %}
+                                              </select>
+                                                
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editPrecio" class="form-label">Precio</label>
+                                                <input type="number" class="form-control" id="editPrecio" name="editPrecio" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editDescuento" class="form-label">Descuento</label>
+                                                <input type="number" class="form-control" id="editDescuento" name="editDescuento" required>
+                                            </div>
+                                            <script>
+                                                document.getElementById("editDescuento").addEventListener("input", function() {
+                                                    const descuento = parseInt(this.value);
+                                                    if (descuento < 0 || descuento > 100) {
+                                                        this.value = ''; 
+                                                    }
+                                                });
+                                                document.getElementById("editPrecio").addEventListener("input", function() {
+                                                    const descuento = parseInt(this.value);
+                                                    if (descuento < 0 ) {
+                                                        this.value = ''; 
+                                                    }
+                                                });
+                                            </script>
+                                            <div class="mb-3">
+                                                <label for="editFoto" class="form-label">Foto</label>
+                                                <input type="file" class="form-control" id="editFotoInput" name="editFoto" accept="image/*">
+                                                <img id="editFotoPreview" src="" alt="Preview" style="max-width: 200px; max-height: 200px; margin-top: 10px;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editDescripcion" class="form-label">Descripción</label>
+                                                <textarea class="form-control" id="editDescripcion" name="editDescripcion"
+                                                    rows="4"></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-success">Guardar cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="exampleModaldelete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                              aria-hidden="true">
+                              <div class="modal-dialog">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel" style="text-align: center;">Eliminar producto
+                                          </h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                          ¿Estás seguro de que desea eliminar el producto "<span id="nombreProductoEliminar"></span>"?
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                                          <form method="post" id="formEliminarProducto" action="">
+                                              {% csrf_token %}
+                                              <button type="submit" class="btn btn-danger">Eliminar</button>
+                                          </form>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                    {% comment %} fin listar  {% endcomment %}
                 </div>
           </div>
       </div>    
@@ -214,8 +387,147 @@
 
   </main><!-- End #main -->
 
+
+
+
+{% comment %} Comienzo escripts de listar productos {% endcomment %}
+
+
+<script>
+  // Obtener todos los botones "Eliminar"
+  document.addEventListener('DOMContentLoaded', function () {
+  const btnEliminar = document.querySelectorAll('.btnEliminar');
+
+  // Agregar un evento click a cada botón "Eliminar"
+  btnEliminar.forEach((btn) => {
+      btn.addEventListener('click', function () {
+          // Obtener el nombre del producto del atributo "data-nombre"
+          const nombreProducto = btn.getAttribute('data-nombre');
+
+          // Mostrar el nombre del producto en la ventana modal
+          const nombreProductoEliminar = document.getElementById('nombreProductoEliminar');
+          nombreProductoEliminar.textContent = nombreProducto;
+
+          // Obtener el formulario de eliminación
+          const formEliminarProducto = document.getElementById('formEliminarProducto');
+
+          // Asignar el atributo "action" del formulario con la URL adecuada
+          formEliminarProducto.action = btn.closest('form').action;
+      });
+  });
+
+  // Agregar un evento submit al formulario de eliminación
+  const formEliminarProducto = document.getElementById('formEliminarProducto');
+  formEliminarProducto.addEventListener('submit', function (event) {
+      event.preventDefault(); // Evitar la acción predeterminada del formulario
+
+      // Mostrar la Sweet Alert de éxito después de enviar el formulario
+      Swal.fire({
+          title: 'Producto eliminado',
+          text: 'El producto ha sido eliminado con éxito.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar',
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Si el usuario confirma, enviar el formulario de eliminación
+              formEliminarProducto.submit();
+          }
+      });
+  });
+});
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  const btnEditar = document.querySelectorAll('.btn-editar');
+
+  btnEditar.forEach((btn) => {
+      btn.addEventListener('click', function () {
+          const id = btn.getAttribute('data-id');
+          const nombre = btn.getAttribute('data-nombre');
+          const estado = btn.getAttribute('data-estado');
+          const precio = btn.getAttribute('data-precio');
+          const foto = btn.getAttribute('data-foto');
+          const descripcion = btn.getAttribute('data-descripcion');
+          const descuento = btn.getAttribute('data-descuento');
+
+          // Rellenar el formulario con los datos del producto a editar
+          document.getElementById('editId').value = id;
+          document.getElementById('editNombre').value = nombre;
+          document.getElementById('editEstado').value = estado;
+          document.getElementById('editPrecio').value = precio;
+          document.getElementById('editDescuento').value = descuento;
+          document.getElementById('editDescripcion').value = descripcion;
+
+          // Mostrar la imagen actual del producto en la vista previa
+          editFotoPreview.src = foto;
+
+          // Obtener el formulario de edición
+          const formEditarProducto = document.getElementById('formEditarProducto');
+
+          // Asignar el atributo "action" del formulario con la URL adecuada
+          formEditarProducto.action = `/editar_producto/${id}/`; // Reemplaza "/editar_producto/" con la URL adecuada para editar el producto
+      });
+  });
+
+  // Agregar un evento submit al formulario de edición
+  const formEditarProducto = document.getElementById('formEditarProducto');
+  formEditarProducto.addEventListener('submit', function (event) {
+      event.preventDefault(); // Evitar la acción predeterminada del formulario
+
+      // Mostrar la Sweet Alert de éxito después de enviar el formulario
+      Swal.fire({
+          title: 'Cambios guardados',
+          text: 'Los cambios se han guardado con éxito.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Aceptar',
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Si el usuario confirma, enviar el formulario de edición
+              formEditarProducto.submit();
+          }
+      });
+  });
+});
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const editFotoInput = document.getElementById('editFotoInput');
+      const editFotoPreview = document.getElementById('editFotoPreview');
+      const productoFoto = "{{ producto.proFoto.url }}"; // Obtener la URL de la imagen actual del producto desde el contexto de la plantilla
+   
+     
+
+      editFotoInput.addEventListener('change', function () {
+          const file = editFotoInput.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function () {
+                  editFotoPreview.src = reader.result;
+              };
+              reader.readAsDataURL(file);
+          } else {
+              editFotoPreview.src = productoFoto; // Mostrar la imagen actual del producto en la vista previa
+          }
+      });
+
+      // Mostrar la imagen actual del producto en la vista previa al cargar la página de edición
+      editFotoPreview.src = productoFoto;
+  });
+
+</script>
+
+
+
+
+{% comment %} fin de escripts {% endcomment %}
 <!-- custom js file link  -->
-<script src=" {% static '../static/js/script.js' %}"></script>
+
 <script>
     {% if mensaje %}
     Swal.fire({
@@ -228,4 +540,6 @@
   
     {% endif %}
   </script>
-  {% endblock %}
+
+
+{% endblock %}

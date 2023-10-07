@@ -1,110 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <!-- Etiquetas meta requeridas -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <title>Agropecuaria Animalagro</title>
+    <title>Animalagro</title>
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
- 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% load static %}
-    <link rel="stylesheet" href="{% static '../static/css/estilo.css' %}">
+    <!-- Favicon Icon Css -->
+    
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Css -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css"
+        rel="stylesheet">
+  
+    <link href="{% static '../static/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+
+    <link href="{% static '../static/css/styleTienda.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static '../static/css/responsive.css' %}" type="text/css" rel="stylesheet">
+         <link rel="stylesheet" href="{% static '../static/css/styleProductos.css' %}">
+
 </head>
 
-<body>
-
-    {% comment %} <div class="" role="alert">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="row" colspan="3" class="text-center">CARRITO</th>
-            </tr>
-            <tr>
-              <th scope="col">NOMBRE</th>
-              <th scope="col">PRECIO</th>
-              <th scope="col">CANTIDAD</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% if request.session.carrito.items %}
-          {% for key, value in request.session.carrito.items %}
-            <tr>
-              <td>{{value.nombre}}</td>
-              <td>{{value.acumulado}}</td>
-              <td>
-                {{value.cantidad}}
-                <a href="{% url 'Add' value.producto_id %}" class="badge btn btn-success ">+</a>
-                <a href="{% url 'Sub' value.producto_id %}" class="badge btn btn-danger ">-</a>
-              </td>
-            </tr>
-          {% endfor %}
-          {% else %}
-          <tr>
-              <td colspan="3">
-                  <div class="alert alert-danger text-center"> Sin Productos </div>
-              </td>
-          </tr>
-          {% endif %}
-            <tr>
-              <th scope="row">Total:</th>
-              <td colspan="2" class="text-dark">$ {{total}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
-        <div class="row text-center">
-          <div class="col-6"><a href="{% url 'CLS' %}" class="btn btn-warning text-white">Limpiar</a></div>
-          <div class="col-6"><a href="/finalizarCompra/" class="btn btn-success">Finalizar compra</a></div>
-        </div>
-      
-        </div> {% endcomment %}
-        <div class="carrito" id="carrito">
-          <div class="header-carrito">
-              <h2>Carrito de compra</h2>
-          </div>
-
-          <div class="carrito-items">
-            {% if request.session.carrito.items %}
-            {% for key, value in request.session.carrito.items %}
-            <center>
-              <div class="carrito-item">
-                  <img src="../media/{{value.imagen}}" width="80px" alt="">
-                  <div class="carrito-item-detalles">
-                      <span class="carrito-item-titulo">{{value.nombre}}</span>
-                      <div class="selector-cantidad">
-                          <a href="{% url 'Sub' value.producto_id %}"><i class="btn-danger fas fa-minus restar-cantidad" style="color: rgb(255, 255, 255); background-color: rgb(189, 36, 36); border: 1px solid rgb(189, 36, 36);"></i></a>
-                          <input type="text" value="{{value.cantidad}}" class="carrito-item-cantidad" disabled>
-                          <a href="{% url 'Add' value.producto_id %}"><i class="btn-info 	fas fa-plus sumar-cantidad" style="color: rgb(255, 255, 255);  background-color: rgb(36, 125, 189); border: 1px solid rgb(36, 125, 189);"></i></a>
-                      </div>
-                      <span class="carrito-item-precio">{{value.acumulado}}</span>
-                  </div>
-                  <button class="btn-eliminar" style="color: rgb(255, 255, 255); background-color: rgb(189, 36, 36); border: 1px solid rgb(189, 36, 36);">
-                    <a href="{% url 'Del' value.producto_id %}"><i class="fas fa-trash-alt" style="color: #ffffff;"></i></a>
-                  </button>
-              </div>
-            </center>
-              {% endfor %}
-              {% else %}
-                
-              {% endif %}
-          </div>
-          <div class="carrito-total">
-              <div class="fila">
-                  <strong>Tu Total</strong>
-                  <span class="carrito-precio-total">
-                    {{total}}
-                  </span>
-              </div>
-              <a href="/finalizarCompra/"><button class="btn-pagar"><i class="	fas fa-shopping-cart"></i>Finalizar compra</button></a> 
-          </div>
-      </div>
-    <!-- custom js file link  -->
-    <script>
-      
+<body class="theme-4">
+    <!-- Inicio sección cargador de inicio -->
     
-    </script>
+    <!-- Fin sección cargador de inicio -->
+
+    <!-- Inicio sección encabezado -->
+    <header class="header-4">
+        <div class="header-mdl">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="hm-inner d-sm-flex align-items-center justify-content-between">
+                            <div class="header-logo">
+                                <a href="/vistaTienda/"><img src="{% static '../static/image/Logo.png' %}" alt="logo"></a>
+                            </div>
+                            <form class="header-form" method="get" action="{% url 'buscar_productos' %}">
+                                <input class="search-box" placeholder="Buscar producto..." required name="txtNombre"
+                                    value="{{ consulta }}" type="search">
+                                <button type="submit" value="">Buscar</button>
+
+                            </form>
+
+                            <div class="header-right">
+                                <div class="header-cart">
+                                    <a href="#">
+                                        <div class="cart-icon">
+                                            <div class="fas fa-shopping-cart" id="cart-icon"></div>
+                                        </div>
+                                        $ {{total.0}}<i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="cart-box">
+                                        {% if request.session.carrito.items %}
+                                        {% for key, value in request.session.carrito.items %}
+                                            {% if forloop.counter <= 2 %}
+                                                <div class="cart-info">
+                                                    <div class="cart-prodect d-flex">
+                                                        <div class="cart-img">
+                                                            <img src="../../../media/{{value.imagen}}" alt="cart-img">
+                                                        </div>
+                                                        <div class="cart-product">
+                                                            <a href="#">{{ value.nombre }}</a>
+                                                            <p>{{ value.acumulado }}</p>
+                                                        </div>
+                                                        <a href="" onclick="EliminarProducto({{value.producto_id}})"class="close-icon d-flex align-items-center">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% else %}
+                                        <div class="alert alert-danger text-center"> Sin Productos </div>
+                                        {% endif %}
+                                        <div class="price-prodect d-flex align-items-center justify-content-between">
+                                            <p class="total">total</p>
+                                            <p class="total-price">$ {{total.0}}</p>
+                                        </div>
+                                        <div class="cart-btn">
+                                            <a href="/vistaCarrito/" class="btn btn-primary" style="border-color: #130f40;">Ver carrito</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-lg-none mm_icon">
+                                    <div class="form-captions" id="search">
+                                        <button type="submit" class="submit-btn-2"><i class="fa fa-search"></i></button>
+                                    </div>
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation"><i
+                                            class="fa fa-bars"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-btm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav">
+
+                                    <li class="nav-item">
+                                        {% if request.user.is_authenticated %}
+                                            <a class="nav-link" href="/vistaIndexUsuario/">Inicio</a>
+                                        {% else %}
+                                            <a class="nav-link" href="/inicio/">Inicio</a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/vistaTienda/">Productos</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">Categorias<i class="fa fa-angle-down"></i><i
+                                                class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                {% for c in categoria %}
+                                                    <li><a class="dropdown-toggler" href="#" role="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">{{c.catNombre}}
+                                                            <i class="fa fa-angle-down"></i><i
+                                                                class="fa fa-angle-right"></i></a>
+                                                        <div class="sub-menu dropdown-menu">
+                                                            <ul class="all-menu">
+                                                                <li><a href="/vistaTiendaCategoria/{{c.id}}/">Ver mas</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/vistaTiendaPromociones/">Promociones</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Marcas<i
+                                                class="fa fa-angle-down"></i><i class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                {% for p in proveedores %}
+                                                    <li><a href="/buscarProveedor/{{p.id}}/">{{p.proNombre}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+
+                                    <li class="dropdown">
+                                        <a class="nav-link dropdown-toggler" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Servicios
+                                            de veterinaria<i class="fa fa-angle-down"></i><i
+                                                class="fa fa-angle-right"></i></a>
+                                        <div class="sub-menu dropdown-menu">
+                                            <ul class="all-menu">
+                                                <li><a class="dropdown-toggler" href="/vistaServiciosTienda/" role="button"
+                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">Todos
+                                                    <i class="fa fa-angle-down"></i><i
+                                                        class="fa fa-angle-right"></i></a>
+                                                <div class="sub-menu dropdown-menu">
+                                                    <ul class="all-menu">
+                                                        <li><a href="/vistaServiciosTienda/">Ver todos</a></li>
+                                                    </ul>
+                                                </div>
+                                                </li>
+                                                {% for s in servicios %}
+                                                    <li><a class="dropdown-toggler" href="#" role="button"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">{{s.serNombre}}
+                                                        <i class="fa fa-angle-down"></i><i
+                                                            class="fa fa-angle-right"></i></a>
+                                                    <div class="sub-menu dropdown-menu">
+                                                        <ul class="all-menu">
+                                                            <li><a href="/detalleDerServicio/{{s.id}}/">Mas
+                                                                informacion</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    </li>
+                                                {% endfor %}
+                                                
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="icons">
+                                {% if request.user.is_authenticated %}
+                                    <a href="/vistaPerfilusuario/"><i class="fas fa-user"  style="color: rgb(255, 255, 255);"></i></a> 
+                                {% else %}
+                                    <a href="/inicio/Debes Iniciar Sesión"><i class="fas fa-user"  style="color: rgb(255, 255, 255);"></i></a> 
+                                {% endif %}
+                            </div> 
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Fin sección encabezado -->
+
+
+
+    <!-- Inicio sección contenido -->
+    <section class="breadcrumbs-section background_bg" data-img-src="{% static '../static/image/header.jpg' %}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="page_title text-center">
+                        <h1>Mi carrito</h1>
+                        <ul class="breadcrumb justify-content-center">
+                            <li><a href="/vistaTienda/">Tienda</a></li>
+                            <li><span>Los Descuentos aplican al registrar el pedido</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- fin seccion contenido -->
+
+
+
+    <!-- Inicio seccion tabla carrito  -->
+    <section class="cart-section pt_large">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cart-table table-responsive">
+                        <table class="table text-center">
+                            <thead class="table-bordered">
+                                <tr class="row-1">
+                                    <th class="row-title">
+                                        <p>Item</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Nombre del producto</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Precio</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Porcentaje Descuento</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Descuento Por Unidad</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Cantidad</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Subtotal</p>
+                                    </th>
+                                    <th class="row-title">
+                                        <p>Eliminar</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if request.session.carrito.items %}
+                                {% for key, value in request.session.carrito.items %}
+                                <tr class="row-2">
+                                    <td class="row-close close-1" data-title="product-remove"><a href="#"><i
+                                                class="ion-close-circled"></i></a>
+                                    </td>
+
+                                    <td class="row-img">
+                                        <img src="../../../media/{{value.imagen}}" alt="cart-img" width="80px">
+                                    </td>
+
+                                    <td class="product-name" data-title="Product">
+                                        <a href="#">{{value.nombre}}</a>
+                                    </td>
+                                    <td class="product-price" data-title="Price">
+                                        <p>$ {{value.precioUnidad}}</p>
+                                    </td>
+                                    <td class="product-price" data-title="Price">
+                                        <p>{{value.porcentajeDescuento}} %</p>
+                                    </td>
+                                    <td class="product-price" data-title="Price">
+                                        <p>$ {{value.descuento}}</p>
+                                    </td>
+                                    <td class="product-quantity" data-title="Quantity">
+                                        <div class="input-group">
+                                            <a href="" onclick="RestarAlCarrito({{value.producto_id}})"><input type="button"
+                                                    value="-" class="minus"></a>
+                                            <input type="button" value="{{value.cantidad}} ">
+                                            <a href="" onclick="AgregarAlCarrito({{value.producto_id}})"><input type="button"
+                                                    value="+" class="plus"></a>
+
+                                        </div>
+                                    </td>
+                                    <td class="product-total" data-title="Subprice">
+                                        <p>$ {{value.acumulado}}</p>
+                                    </td>
+                                    <td class="row-close close-2" data-title="product-remove"><a
+                                            href="" onclick="EliminarProducto({{value.producto_id}})"><i
+                                                class="fa fa-times-circle"></i></a></td>
+                                </tr>
+
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="alert alert-danger text-center"> Sin Productos </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <td class="text-left" colspan="6">Total orden</td>
+                                    <td class="product-subtotal">$ {{total.0}}</td>
+                                </tr>
+                              
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <ul class="table-btn">
+                                            <li><a href="/vistaTienda/" class="btn btn-secondary" style="border-color: #130f40;"><i
+                                                        class="fa fa-chevron-left"></i>Continuar comprando</a></li>
+                                            {% if total.0 != 0 %}<li><a href="/finalizarCompra/" class="btn btn-primary" style="border-color: #130f40;">Finalizar compra <i
+                                                class="fa fa-chevron-right"></i></a></li>{% else %}
+                                               
+                                                {% endif %}
+                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Fin seccion tabla carrito -->
+
+
+    <!-- Inicio seccion pie de pagina -->
+    <section class="footer">
+
+        <img src="{% static '../static/image/top_wave.png' %}" alt="">
+
+        <div class="share">
+            <a href="#" class="btn"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#" class="btn"> <i class="fab fa-twitter"></i> twitter </a>
+            <a href="#" class="btn"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#" class="btn"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#" class="btn"> <i class="fab fa-pinterest"></i> pinterest </a>
+        </div>
+</section>
+<script>
+    function AgregarAlCarrito(id) {
+        const ide = id
+        url = '/agregar/'+ide+'/'
+        console.log(url)
+            try {
+                fetch(url)
+                   .then((response) => response.json())
+                   .then(data => {
+                            estado = data.estado 
+                            if(estado = true) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    title: 'Sistema veterinaria animalgro',
+                                    text: 'Algo salio mal, intenta mas tarde',
+                                    icon: 'error',                          
+                                    confirmButtonText: 'Aceptar'
+                                })
+                            }
+                        }
+                    )                
+            }
+            catch (error) {
+                console.log(error)
+            }
+    }
+
+
+    function RestarAlCarrito(id) {
+        const ide = id
+        url = '/restar/'+ide+'/'
+        console.log(url)
+            try {
+                fetch(url)
+                   .then((response) => response.json())
+                   .then(data => {
+                            estado = data.estado 
+                            if(estado = true) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    title: 'Sistema veterinaria animalgro',
+                                    text: 'Algo salio mal, intenta mas tarde',
+                                    icon: 'error',                          
+                                    confirmButtonText: 'Aceptar'
+                                })
+                            }
+                        }
+                    )                
+            }
+            catch (error) {
+                console.log(error)
+            }
+    }
+
+    
+    function EliminarProducto(id) {
+        const ide = id
+        url = '/eliminar/'+ide+'/'
+        console.log(url)
+            try {
+                fetch(url)
+                   .then((response) => response.json())
+                   .then(data => {
+                            estado = data.estado 
+                            if(estado = true) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    title: 'Sistema veterinaria animalgro',
+                                    text: 'Algo salio mal, intenta mas tarde',
+                                    icon: 'error',                          
+                                    confirmButtonText: 'Aceptar'
+                                })
+                            }
+                        }
+                    )                
+            }
+            catch (error) {
+                console.log(error)
+            }
+    }
+</script>
+
+
+   
+
+    <a href="#" class="scrollup" style="display: none;"><i class="fa fa-angle-up"></i></a>
+
+
+    <!-- Jquery js -->
+    <script src="{% static '../static/js/jquery.min.js' %}" type="text/javascript"></script>
+    <!-- popper.min js -->
+    <script src="{% static '../static/js/popper.min.js' %}" type="text/javascript"></script>
+    <!-- Bootstrap js -->
+    
+
+    <!-- Jquery js -->
+    <script src="{% static '../static/js/jquery.min.js' %}" type="text/javascript"></script>
+    <!-- popper.min js -->
+    <!-- Bootstrap js -->
+    <!-- Magnific Popup js -->
+    <script src="{% static '../static/js/jquery.magnific-popup.min.js' %}" type="text/javascript"></script>
+    <!-- Map js -->
+    <!-- Owl js -->
+    <script src="{% static '../static/js/owl.carousel.min.js' %}" type="text/javascript"></script>
+    <!-- Countdown js -->
+    <!-- Counter js -->
+    <script src="{% static '../static/js/jquery.countup.js' %}" type="text/javascript"></script>
+    <!-- waypoint js -->
+    <!-- Price Slider js -->
+    <script src="{% static '../static/js/jquery-price-slider.js' %}" type="text/javascript"></script>
+    <!-- jquery.elevatezoom js -->
+    <script src="{% static '../static/js/jquery.elevatezoom.js' %}" type="text/javascript"></script>
+    <!-- imagesloaded.pkgd.min js -->
+    <script src="{% static '../static/js/imagesloaded.pkgd.min.js' %}" type="text/javascript"></script>
+    <!-- isotope.min js -->
+    <!-- jquery.fitvids js -->
+    <script src="{% static '../static/js/jquery.fitvids.js' %}" type="text/javascript"></script>
+    <!-- mCustomScrollbar.concat.min js -->
+    <!-- Custom css -->
+    <script src="{% static '../static/js/custom.js' %}" type="text/javascript"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -1,6 +1,8 @@
 
 
 
+
+
 function getCookie(name) {
     let cookieValue = null
     if (document.cookie && document.cookie !== '') {
@@ -26,8 +28,10 @@ function detallepedido(id) {
                         estado = data.estado 
                         if(estado = true) {
                             document.getElementById("detalle").innerHTML = ""
+                            document.getElementById("detalleEnvioUser").innerHTML = ""
                             document.getElementById("botonesId").innerHTML = ""
-                            mostrarDet(data.detalle, data.ped)
+
+                            mostrarDet(data.detalle, data.ped, data.envio)
                         } else {
                             Swal.fire({
                                 title: 'Sistema veterinaria animalgro',
@@ -44,17 +48,36 @@ function detallepedido(id) {
         }
 }
 
-function mostrarDet(detalle, pedido) {
+
+
+function mostrarDet(detalle, pedido, envio) {
+
+    
+
     detalle.forEach(det => {
         document.getElementById("detalle").innerHTML += `
         <tr>
             <td>${det.Nombre}</td>
             <td>${det.precioUni}</td>
+            <td>${det.descuento}</td>
+            <td>${det.porcentaje} %</td>
             <td>${det.cantidad}</td>
             <td>${det.precio}</td>
         </tr>`;
     });
-    console.log(pedido.estado)
+
+    envio.forEach(en => {
+        document.getElementById("detalleEnvioUser").innerHTML += `
+        <tr>
+            <td>${en.detNombre}</td>
+            <td>${en.detTelefono}</td>
+            <td>${en.detCorreo}</td>
+            <td>${en.detDireccion} %</td>
+            <td>${en.detUbicacion}</td>
+        </tr>`;
+    });
+
+
     const estado = "Solicitado"
     if (pedido.estado === estado ) {
         document.getElementById("botonesId").innerHTML = `
@@ -88,6 +111,7 @@ function cancelarPedido(id) {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
+
                 url = "/cancelarPedidoUser/"+id+"/"
                 fetch(url)
                .then((response) => response.json())
@@ -113,6 +137,7 @@ function cancelarPedido(id) {
                         }
                     }
                 )  
+
             }
         });
     } catch (error) {
@@ -140,6 +165,7 @@ function cargarImagenComprobante(id) {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    
                     let formData = new FormData(document.getElementById('formComprobante'));
 
                     let options = {
@@ -177,6 +203,7 @@ function cargarImagenComprobante(id) {
                         .catch(error => {
                             console.log(error);
                         });
+
                 }
             });   
         } else {
@@ -195,6 +222,7 @@ function cargarImagenComprobante(id) {
 
 function agregarMascota() {
     try {
+
         let formData = new FormData(document.getElementById('formAgregarMascota'));
 
         let options = {
@@ -233,10 +261,58 @@ function agregarMascota() {
             .catch(error => {
                 console.log(error);
             });
+
     } catch (error) {
         console.log(error)
     }
 }
+
+function registrarseComoUsuario() {
+    try {
+        
+        let formData = new FormData(document.getElementById('idFormRegistrarse'));
+
+        let options = {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        };
+
+        let url = "/registrarseUser/";
+        fetch(url, options)
+            .then(res => res.json())
+            .then(data => {
+                if(data.estado) {
+                    Swal.fire({
+                        title: 'Sistema Veterinaria Animalagro',
+                        text: data.mensaje,
+                        icon: 'success',               
+                        confirmButtonColor: '#3085d6',             
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {           
+                            window.location.href="/inicio/"
+                        }});
+                } else {
+                    Swal.fire({
+                        title: 'Sistema veterinaria animalgro',
+                        text: data.mensaje,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    });                    
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 function subirImagenPerfil(id) {
     try {
@@ -382,6 +458,61 @@ function actualizarperfil(id) {
     }
 }
 
+
+
+function mascotaDetalleCita(id) {
+    const ide = id
+    url = '/detalleCitaMascota/'+ide+'/'
+    console.log(url)
+        try {
+            fetch(url)
+               .then((response) => response.json())
+               .then(data => {
+                        estado = data.estado 
+                        if(estado === true) {
+                            document.getElementById("citasMascota").innerHTML = ""
+                            mostarDetCita(data.cita)
+                        } else {
+                            Swal.fire({
+                                title: 'Sistema veterinaria animalgro',
+                                text: 'Algo salio mal, intenta mas tarde',
+                                icon: 'error',                          
+                                confirmButtonText: 'Aceptar'
+                            })
+                        }
+                    }
+                )                
+        }
+        catch (error) {
+            console.log(error)
+        }
+}
+
+function mostarDetCita(cita) {
+    cita.forEach(ci => {
+        if (ci.ciPdf === true) {
+            document.getElementById("citasMascota").innerHTML += `
+                <tr>
+                    <td>${ci.ciServicio}</td>
+                    <td>${ci.ciPrecio}</td>
+                    <td>${ci.ciFecha}</td>
+                    <td>${ci.ciEstado} </td>
+                    <td>${ci.ciVeterinario}</td>
+                    <td>No hay Pdf</td>
+                </tr>`;
+        } else {
+            document.getElementById("citasMascota").innerHTML += `
+                <tr>
+                    <td>${ci.ciServicio}</td>
+                    <td>${ci.ciPrecio}</td>
+                    <td>${ci.ciFecha}</td>
+                    <td>${ci.ciEstado} </td>
+                    <td>${ci.ciVeterinario}</td>
+                    <td><a href="https://veterinariaanimalagro.pythonanywhere.com/${ci.ciPdf}">Ver Historial</a></td>
+                </tr>`;
+        }
+    });
+}
 
 // 
 // Perfil

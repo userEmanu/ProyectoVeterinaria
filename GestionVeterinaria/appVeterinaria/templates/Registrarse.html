@@ -38,11 +38,10 @@
 
                   <div class="pt-4 pb-2">
                     <h3 class="card-title text-center pb-0 fs-4">Crear Cuenta</h3>
-                    <p class="text-center small">Crea tu cuenta para una mejor navegacion</p>
+                    <p class="text-center small">Crea tu cuenta para una mejor experiencia</p>
                   </div>
 
-                  <form class="row g-3 was-validated" action="/registrarseUser/" method="post" >
-                    {% csrf_token %}
+                  <form class="row g-3 was-validated" enctype="multipart/form-data" id="idFormRegistrarse">
                     <div class="">
                       <label for="txtNombre" class="form-label">Nombres</label>
                       <input type="text" name="txtNombre" class="form-control" id="txtNombre" required>
@@ -66,7 +65,23 @@
                     <div class="">
                       <label for="txtContraseña" class="form-label">Contraseña</label>
                       <input type="password" name="txtContraseña" class="form-control" id="txtContraseña" required>
-                      <div class="invalid-feedback">Ingrese Contraseña</div>
+                      <script>
+                        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-={}|:;"'<>?,./]).{8,}$/;
+
+                        const txtContraseña = document.getElementById("txtContraseña");
+                        
+                        txtContraseña.addEventListener("input", function() {
+                            if (!regex.test(this.value)) {
+                                this.setCustomValidity("La contraseña debe tener al menos una letra minúscula, una mayúscula, un número y un carácter especial.");
+                            } else {
+                                this.setCustomValidity("");
+                            }
+                        });
+
+
+                     </script>
+                      <div class="invalid-feedback">La contraseña debe tener al menos una letra minúscula, una mayúscula, un número y un carácter especial.</div>
+
                     </div>
                     <div>
                       <label for="cbIdentificacioon" class="form-label">Tipo de Documento y Numero</label>
@@ -78,6 +93,14 @@
                         <option value= "CCE">Cedula Extranjera</option>
                       </select>
                       <input type="number" class="form-control" placeholder="Numero De Documento" name="txtIdentificacion" id="txtIdentificacion" required>
+                      <script>
+                        document.getElementById("txtIdentificacion").addEventListener("input", function() {
+                            const ide = parseInt(this.value);
+                            if (ide < 0 || ide > 9999999999) {
+                                this.value = ''; 
+                            }
+                        });
+                     </script>
                       <div class="invalid-feedback">Ingrese Documento</div>
                     </div>
                     </div>
@@ -85,15 +108,9 @@
                       <input type="number" name="txtTelefono" class="form-control" id="txtTelefono" required placeholder="Numero Telefonico">
                       <div class="invalid-feedback">Ingrese Numero Telefonico</div>
                     </div>
-                    <div class="">
-                      <div class="form-check">
-                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                        <label class="form-check-label" for="acceptTerms">Yo como usuario acepto los <a href="#">Terminos y Condiciones</a></label>
-                        <div class="invalid-feedback">Acepte los terminos y Condiciones</div>
-                      </div>
-                    </div>
+                   
                     <div class="text-center">
-                      <button class="btn btn-primary w-80" type="submit">Crear Cuenta</button>
+                      <button class="btn btn-success w-80" type="button" onclick="registrarseComoUsuario()">Crear Cuenta</button>
                     </div>
                     <div class="">
                       <p class="small mb-0">Ya tienes cuenta? <a href="/inicio/">Iniciar Sesion</a></p>
@@ -113,36 +130,11 @@
   </main><!-- End #main -->
 
   
-  <script>
-    {% if mensaje == True and mensaje != None %}
-    Swal.fire({
-        title: 'Bienvenido, Eres Nuevo usuario',
-        text: '{{mensaje}}',
-        icon: 'success',               
-        confirmButtonColor: '#3085d6',             
-        confirmButtonText: 'Aceptar'
-    }).then((result) => {
-        if (result.isConfirmed) {           
-            location.href="/inicio/"
-        }
-    });
-    {% else %}
-      {% if mensaje != None %}
-            Swal.fire({
-              title: 'error',
-              text: '{{mensaje}}',
-              icon: 'error',               
-              confirmButtonColor: '#3085d6',             
-              confirmButtonText: 'Aceptar'
-          }).then((result) => {    
-        });
-      {% endif %}
-    {% endif %}
-</script>
+
   <!-- Vendor JS Files -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src=" {% static '../static/js/registrarUser.js' %}"></script>
+  <script src=" {% static '../static/js/GestionUser.js' %}"></script>
 
   
 

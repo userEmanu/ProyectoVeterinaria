@@ -66,8 +66,7 @@
                       <i class="bi bi-currency-dollar"></i>
                     </div>
                     <div class="ps-2">
-
-                      <h6>${{ingresosEstemes.ingresosMes}}</h6>
+                      {% if ingresosEstemes.ingresosMes != None %}<h6>${{ingresosEstemes.ingresosMes}}</h6>{% else %} <h6>$ 0</h6>{% endif %}
                       {% if ingresosEstemes.porcentaje > 0 %}
                       <span class="text-success small pt-1 fw-bold">{{ingresosEstemes.porcentaje}}%</span> <span
                         class="text-muted small pt-2 ps-1">Aumentar</span>
@@ -93,9 +92,7 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>312</h6>
-                      <span class="text-danger small pt-1 fw-bold">21%</span> <span
-                        class="text-muted small pt-2 ps-1">disminuir</span>
+                      <h6>{{clientesAnual}}</h6>
                     </div>
                   </div>
 
@@ -103,7 +100,7 @@
               </div>
 
             </div>
-            <div class="col-12">
+            <div class="col-15">
               <div class="card">
 
                 <div class="card-body">
@@ -112,58 +109,7 @@
                   <!-- Line Chart -->
                   <div id="reportsChart"></div>
 
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Ventas',
-                          data: [31, 40, 28, 51, 42, 90, 56],
-                        }, {
-                          name: 'Ganancia',
-                          data: [90, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Clientes',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2023-05-19T00:00:00.000Z", "2023-05-19T01:30:00.000Z", "2023-05-19T02:30:00.000Z", "2023-05-19T03:30:00.000Z", "2023-05-19T04:30:00.000Z", "2023-05-19T05:30:00.000Z", "2023-05-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script>
+                </div>
                   
 
                 </div>
@@ -178,20 +124,22 @@
               <table class="table table-borderless datatable">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Clientes</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
                     <th scope="col">Estado</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row"><a href="">#1</a></th>
-                    <td>Emanuel Juan Jesus Guevara vique</td>
-                    <td><a href="" class="text-primary">Comida Gallina</a></td>
-                    <td>$250.000</td>
-                    <td><span class="badge bg-success">Aprobado</span></td>
+                    {% for c in clientes %}
+                      <td>{{c.userNombre}}</td>
+                      <td><a href="" class="text-primary">{{c.proNombre}}</a></td>
+                      <td>$ {{c.proPrecio}}</td>
+                      <td>{{c.proCantidad}}</td>
+                      <td><span class="badge bg-success">{{c.proEstado}}</span></td>
+                    {% endfor %}
                   </tr>
                 </tbody>
               </table>
@@ -199,9 +147,7 @@
             </div>
 
           </div>
-        </div><!-- End Recent Sales -->
-
-        <!-- Top Selling -->
+        </div>
         <div class="col-10">
           <div class="card top-selling overflow-auto">
             <div class="card-body">
@@ -238,5 +184,7 @@
       </div><!-- End Left side columns -->
 
   </main><!-- End #main -->
+
+  <script src=" {% static '../static/js/graficasJsAdmin.js' %}"></script>
 {% endblock %}
 

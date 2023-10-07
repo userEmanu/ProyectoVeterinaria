@@ -34,12 +34,12 @@ class PDFPedido(FPDF):
         self.cell(50, 10, 'Codigo de pedido', 1, 0, 'C', 1)
         self.cell(50, 10, 'Estado', 1, 0, 'C', 1)
         self.cell(50, 10, 'Fecha', 1, 0, 'C', 1)
-        self.cell(40, 10, 'Impuesto', 1, 1, 'C', 1)
+        self.cell(40, 10, 'Descuento', 1, 1, 'C', 1)
         self.set_font("Arial", '', 12)
         self.cell(50, 10, f"{pe.peCodigoPedido}", 1)
         self.cell(50, 10, f"{pe.peEstado}", 1)
         self.cell(50, 10, f"{pe.peFecha}", 1)
-        self.cell(40, 10, f"{pe.peImpuestoPedido}", 1)
+        self.cell(40, 10, f"{pe.peDescuento}", 1)
 
         self.ln()
 
