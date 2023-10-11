@@ -132,15 +132,18 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for c in clientes %}
                   <tr>
-                    {% for c in clientes %}
+                    
+
                       <td>{{c.userNombre}}</td>
                       <td><a href="" class="text-primary">{{c.proNombre}}</a></td>
                       <td>$ {{c.proPrecio}}</td>
                       <td>{{c.proCantidad}}</td>
                       <td><span class="badge bg-success">{{c.proEstado}}</span></td>
-                    {% endfor %}
+                    
                   </tr>
+                  {% endfor %}
                 </tbody>
               </table>
 

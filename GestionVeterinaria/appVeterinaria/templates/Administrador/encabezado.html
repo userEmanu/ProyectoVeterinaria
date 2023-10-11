@@ -16,7 +16,7 @@
 
 
       <li class="nav-item dropdown">
-
+        {% if rol == "Administrador" or rol == "Asistente" %}
         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-bell"></i>
           <span class="badge bg-primary badge-number">{{ventashoy.countPedido}}</span>
@@ -28,12 +28,12 @@
             Tienes {{ventashoy.countPedido}} pedidos el dia de hoy
             <a href="/gestionPedidos/"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver Pedidos</span></a>
           </li>
-
         </ul>
+        {% endif %}
       </li><!-- End Notification Nav -->
 
       <li class="nav-item dropdown">
-
+        {% if rol == "Administrador" %}
         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-chat-left-text"></i>
           <span class="badge bg-success badge-number">{{contactanos}}</span>
@@ -43,9 +43,8 @@
             Tienes {{contactanos}} mensajes sin contestar
             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Visualizar</span></a>
           </li>
-
         </ul><!-- End Messages Dropdown Items -->
-        
+        {% endif %}
       </li><!-- End Messages Nav -->
 
       <li class="nav-item dropdown pe-3">

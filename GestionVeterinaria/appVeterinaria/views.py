@@ -501,6 +501,7 @@ def datosBimestralesAnuales(request):
             nombre_bimestre = f"{inicio_bimestre.strftime('%B')} - {datetime(hoy.year, mes_fin, 1).strftime('%B')}"
         if porcentaje_crecimiento < 0: 
             porcentaje_crecimiento = 0
+            
         resultados.append({
             "nombre_bimestre": nombre_bimestre,
             "ventas": ganancias_bimestre,
