@@ -623,6 +623,13 @@ class AgregarPedidoApiRest(APIView):
                 idProducto = int(producto['id'])
                 cantidadDelProducto = producto['cantidad']
                 productoCreado = Producto.objects.get(pk = idProducto)
+                
+                productoCreado.proCantidad -= cantidadDelProducto
+                productoCreado.proCantidadVendida += cantidadDelProducto
+                if productoCreado.proCantidad <= 0: 
+                    productoCreado.proEstado = "Agotado"
+                producto.save()
+                    
                 precioDelProducto = productoCreado.proPrecio
                 total = cantidadDelProducto * precioDelProducto
                 DetallePe =DetallePedido.objects.create(detCantida = cantidadDelProducto,  

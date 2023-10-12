@@ -139,7 +139,7 @@
                           </div>
                           {% comment %} Estado Del Producto {% endcomment %}
                           <div class="row mb-1">
-                              <label for="cbEstado" class="col-md-4 col-lg-3 col-form-label">Estado Del Producto:</label>
+                              <label for="cbEstado" class="col-md-4 col-lg-3 col-form-label">Estado Del Producto</label>
                               <div class="col-md-2 col-lg-9">
                                   <select name="cbEstado" id="cbEstado" class="form-control" required>
                                       <option value="" required>Seleccione Estado</option>
@@ -158,7 +158,14 @@
                               </div>
                           </div>
                           <div class="row mb-1">
-                              <label for="txtDescuentoP" class="col-md-4 col-lg-3 col-form-label">Descuento (Opcional)</label>
+                            <label for="txtDisponibleCantidadP" class="col-md-4 col-lg-3 col-form-label">Cantidad Disponible Por Unidad</label>
+                            <div class="col-md-2 col-lg-9">
+                                <input name="txtDisponibleCantidadP" type="number" class="form-control" id="txtDisponibleCantidadP" required
+                                    placeholder="Digite la cantidad disponible" value="">
+                            </div>
+                          </div>
+                          <div class="row mb-1">
+                              <label for="txtDescuentoP" class="col-md-4 col-lg-3 col-form-label">Porcentaje De Descuento</label>
                               <div class="col-md-2 col-lg-9">
                                   <input name="txtDescuentoP" type="number" class="form-control" id="txtDescuentoP" value="0"
                                       placeholder="Digite El Descuento Del Producto, Del 1 a 100" >
@@ -176,12 +183,17 @@
                                         this.value = ''; 
                                     }
                                 });
-                                
+                                document.getElementById("txtDisponibleCantidadP").addEventListener("input", function() {
+                                    const disponible = parseInt(this.value);
+                                    if (disponible < 1) {
+                                        this.value = ''; 
+                                    }
+                                });
                             </script>
                           </div>
                           {% comment %}  Proveedor {% endcomment %}
                           <div class="row mb-1">
-                            <label for="cbProvedor" class="col-md-4 col-lg-3 col-form-label">Proveedor:</label>
+                            <label for="cbProvedor" class="col-md-4 col-lg-3 col-form-label">Proveedor</label>
                             <div class="col-md-2 col-lg-9">
                                 <select name="cbProvedor" id="cbProvedor" class="form-control" required>
                                     <option value="" required>Seleccione Proveedor</option>
@@ -194,7 +206,7 @@
                         
                         {% comment %} Categoria {% endcomment %}
                         <div class="row mb-1">
-                          <label for="cbCategoria" class="col-md-4 col-lg-3 col-form-label">Categoria:</label>
+                          <label for="cbCategoria" class="col-md-4 col-lg-3 col-form-label">Categoria</label>
                           <div class="col-md-2 col-lg-9">
                             <select name="cbCategoria" id="cbCategoria" class="form-control" required>
                                 <option value="" required>Seleccione categoria</option>
@@ -245,7 +257,8 @@
                                     <th>Estado</th>
                                     <th>Precio</th>
                                     <th>Foto</th>
-                                    <th>Descripcion</th>
+                                    <th>Unidades Vendidas</th>
+                                    <th>Unidades Disponibles</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -258,7 +271,8 @@
                                     <td>{{ lista.proPrecio }}</td>
                                     <td><img src="{{ lista.proFoto.url }}" alt="{{ lista.proFoto.url }}" width="100"
                                             height="100"></td>
-                                    <td>{{ lista.proDescripcion }}</td>
+                                    <td>{{ lista.proCantidadVendida }}</td>
+                                    <td>{{ lista.proCantidad }}</td>
                                     <td>
                                         <!-- Formulario para eliminar el producto -->
                                         <form method="post" action="{% url 'eliminar' lista.id %}">
@@ -274,7 +288,7 @@
                                             data-bs-target="#exampleModalEdit" data-id="{{ lista.id }}"
                                             data-nombre="{{ lista.proNombre }}" data-estado="{{ lista.proEstado }}"
                                             data-precio="{{ lista.proPrecio }}" data-foto="{{ lista.proFoto.url }}"
-                                            data-descripcion="{{ lista.proDescripcion }}" data-descuento="{{lista.proDescuento}}">
+                                            data-descripcion="{{ lista.proDescripcion }}" data-descuento="{{lista.proDescuento}}" data-cantidadDisponible="{{lista.proCantidad}}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                     </td>
@@ -321,7 +335,17 @@
                                                 <label for="editDescuento" class="form-label">Descuento</label>
                                                 <input type="number" class="form-control" id="editDescuento" name="editDescuento" required>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="editCantidadDisponible" class="form-label">Cantidad Disponible Por Unidad</label>
+                                                <input type="number" class="form-control" id="editCantidadDisponible" name="editCantidadDisponible" required>
+                                            </div>
                                             <script>
+                                                document.getElementById("editCantidadDisponible").addEventListener("input", function() {
+                                                    const descuento = parseInt(this.value);
+                                                    if (descuento < 0 ) {
+                                                        this.value = '0'; 
+                                                    }
+                                                });
                                                 document.getElementById("editDescuento").addEventListener("input", function() {
                                                     const descuento = parseInt(this.value);
                                                     if (descuento < 0 || descuento > 100) {
@@ -452,6 +476,7 @@
           const foto = btn.getAttribute('data-foto');
           const descripcion = btn.getAttribute('data-descripcion');
           const descuento = btn.getAttribute('data-descuento');
+          const cantidad_Disponible = btn.getAttribute('data-cantidadDisponible');
 
           // Rellenar el formulario con los datos del producto a editar
           document.getElementById('editId').value = id;
@@ -459,6 +484,7 @@
           document.getElementById('editEstado').value = estado;
           document.getElementById('editPrecio').value = precio;
           document.getElementById('editDescuento').value = descuento;
+          document.getElementById('editCantidadDisponible').value = cantidad_Disponible;
           document.getElementById('editDescripcion').value = descripcion;
 
           // Mostrar la imagen actual del producto en la vista previa

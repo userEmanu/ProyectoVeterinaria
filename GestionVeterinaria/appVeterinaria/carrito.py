@@ -20,6 +20,7 @@ class Carrito:
             descuentoPorUnidad = precio * deci
         else: 
             descuentoPorUnidad = 0
+        
         if id not in self.carrito.keys():
             self.carrito[id]={
                 "producto_id": producto.id,
@@ -32,8 +33,9 @@ class Carrito:
                 "cantidad": 1
             }
         else:
-            self.carrito[id]["cantidad"] += 1
-            self.carrito[id]["acumulado"] += producto.proPrecio - descuentoPorUnidad
+            if self.carrito[id]["cantidad"] < producto.proCantidad:
+                self.carrito[id]["cantidad"] += 1
+                self.carrito[id]["acumulado"] += producto.proPrecio - descuentoPorUnidad
             
         self.guardar_carrito()
 

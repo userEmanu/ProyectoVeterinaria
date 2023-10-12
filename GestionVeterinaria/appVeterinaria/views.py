@@ -1093,13 +1093,18 @@ def editar_producto(request, id):
         precio = request.POST['editPrecio']
         descripcion = request.POST['editDescripcion']
         descuento = request.POST['editDescuento']
+        cantidad_Disponible = int(request.POST["editCantidadDisponible"])
         # Actualizar los campos del producto
         producto.proNombre = nombre
         producto.proEstado = estado
         producto.proPrecio = precio
         producto.proDescripcion = descripcion
         producto.proDescuento = descuento
-
+        if cantidad_Disponible < 1:
+            producto.proEstado = "Agotado"
+            producto.proCantidad = 0
+        else:
+            producto.proCantidad = cantidad_Disponible
         # Obtener la imagen nueva del formulario
         if 'editFoto' in request.FILES:
             imagen_nueva = request.FILES['editFoto']
@@ -1128,6 +1133,7 @@ def RegistrarProducto(request):
                 descripcion_producto = request.POST.get("txtDescripcionP")
                 id_proveedor = int(request.POST.get('cbProvedor'))
                 id_categoria = int(request.POST.get('cbCategoria'))
+                cantidad_disponible = int(request.POST.get("txtDisponibleCantidadP"))
                 cat_recibe = Categoria.objects.get(pk=id_categoria)
                 pro_recibe = Proveedor.objects.get(pk=id_proveedor)
 
@@ -1145,6 +1151,10 @@ def RegistrarProducto(request):
                     producto.proDescuento = descuento
                 else:
                     producto.proDescuento = 0
+                    
+                if cantidad_disponible != "":
+                    producto.proCantidad = cantidad_disponible
+                
                 producto.save()
                 estado = True
                 titulo = "Agregado Correctamente"
@@ -1621,6 +1631,12 @@ def procesar_pedido(request):
                         totalProductoCantidad = value["acumulado"]
                         cantida = value["cantidad"]
                         precioPorElcualSeVendio = value["precioUnidad"]
+                        producto.proCantidad -= cantida
+                        producto.proCantidadVendida += cantida
+                        if producto.proCantidad <= 0: 
+                            producto.proEstado = "Agotado"
+                        producto.save()
+                        
                         if producto.proEstado == "Promocion":
                             
                             descuentoPorcentaje = value["porcentajeDescuento"]
@@ -1637,7 +1653,6 @@ def procesar_pedido(request):
                                                                     )
                             DetallePe.save()
                         else:
-                            
                             detallePdf.append([str(producto.proNombre), cantida, str(producto.proPrecio), totalProductoCantidad])
                             DetallePe =DetallePedido.objects.create(detCantida = cantida,  
                                                                     detPrecio = totalProductoCantidad, 
