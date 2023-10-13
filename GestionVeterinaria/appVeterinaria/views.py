@@ -1553,7 +1553,7 @@ def generar_codigo_unico_numerico(longitud=8):
 
     return codigo
 
-# Tu función para procesar el pedido
+# función para procesar el pedido
 def procesar_pedido(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
