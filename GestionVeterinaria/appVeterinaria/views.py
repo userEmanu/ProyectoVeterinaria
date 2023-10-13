@@ -39,9 +39,20 @@ from django.db.models import Q
 # Aqui las vistas
 
 def vistaNosotrosInformacion(request):
+    """*args
+        vista de informacion sobre la veterinaria
+    """
     return render(request, 'Nosotros.html')
 
 def vistaServiciosTienda(request):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+
+    Returns:
+        _type_: se carga la informacion requerida de la tienda
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -56,6 +67,15 @@ def vistaServiciosTienda(request):
                                                'proveedores': proveedores, 
                                                'servicios': servicios})
 def vistaServiciosTiendaDescripcion(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        id (_type_): se recibe un id, para cargar la informacion mas detallada del servicio.
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -71,6 +91,14 @@ def vistaServiciosTiendaDescripcion(request, id):
                                                'proveedores': proveedores, 
                                                'servicios': servicios})
 def vistaTienda(request):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        se carga la informacion necesaria para la tienda
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -86,6 +114,15 @@ def vistaTienda(request):
                                                'servicios': servicios})
             
 def vistaTiendaCategoria(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        id (_type_): id de la categoria para filtrar lo productos de acuerdo a esa categoria
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -102,6 +139,15 @@ def vistaTiendaCategoria(request, id):
         
         
 def vistaTiendaMarcas(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        id (_type_): id del proveedor para filtrarlo de acuerdo al proveedor
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -118,6 +164,15 @@ def vistaTiendaMarcas(request, id):
         
         
 def vistaTiendaPromociones(request):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        Se retorna todos los productos en promocion
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -133,6 +188,14 @@ def vistaTiendaPromociones(request):
                                             'servicios': servicios})
 
 def vistaCarrito(request):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        se carga el carro del usuario
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -147,6 +210,14 @@ def vistaCarrito(request):
         return render(request, "carrito.html", retorno)
 
 def vistaDetalleProducto(request,id):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        id (_type_): id del producto, para retornar la informacion del producto
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -166,6 +237,14 @@ def vistaDetalleProducto(request,id):
 
 
 def buscar_productos(request):
+    """_summary_
+
+    Args:
+        request (_type_): Se verifica que los roles admnistrativos no puedan acceder a la tienda
+        Se busca los productos de acuerdo a lo que digito el usuario de forma exacta sin importa si los caracteres esta en mayuscula o miniscula
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated and request.user.groups.filter(name__in=('Administrador', 'Asistente', 'Medico')):
             return redirect('/vistaAdministrador/')
     else:
@@ -183,13 +262,17 @@ def buscar_productos(request):
                                                         'proveedores': proveedores, 
                                                         'servicios': servicios})
 
-def eliminar_producto_carrito(request, id):
-    carrito = Carrito(request)
-    producto = Producto.objects.get(id=id)
-    carrito.eliminar(producto)
-    return redirect("tienda")
 
 def vistaInicio(request, mensaje = ""):
+    """_summary_
+
+    Args:
+        request (_type_): se cierra la sesion de todos los usuario, solamente si regresa a la pagina principal, sino se cierra lo redirige
+        mensaje (str, optional): Si hay algun mensaje para mostrar se retorno el mensaje
+
+    Returns:
+        _type_: _description_
+    """
     auth.logout(request)
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):
@@ -206,6 +289,14 @@ def vistaInicio(request, mensaje = ""):
         return render(request, "index.html", retorno)
 
 def vistaGestionCitas(request):
+    """_summary_
+
+    Args:
+        request (_type_): el usuario debe estar autenticado y debe ser rol admnistrativos para acceder al html
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):
             return render(request, 'Error/403.html')
@@ -228,6 +319,14 @@ def vistaGestionCitas(request):
         return render(request, 'Error/403.html')
     
 def vistaGestionPedidos(request):
+    """_summary_
+
+    Args:
+        request (_type_): el usuario debe estar autenticado y debe ser rol admnistrativos para acceder al html
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):
             return render(request, 'Error/403.html')
@@ -253,6 +352,15 @@ def vistaGestionPedidos(request):
         return render(request, 'Error/403.html')
         
 def vistaCitaHTML(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): el usuario debe estar autenticado y debe ser rol admnistrativos para acceder al html
+        id (_type_): id de la cita para retornarla con su respectiva informacion
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):
             return render(request, 'Error/403.html')
@@ -266,6 +374,14 @@ def vistaCitaHTML(request, id):
     
 
 def vistaCitas(request):
+    """_summary_
+
+    Args:
+        request (_type_): para agendar la cita el usuario debe iniciar sesion y debe tener el rol usuario
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):      
             return render(request, "CITAS.html")
@@ -279,12 +395,28 @@ def vistaCitas(request):
         return render(request,"index.html", retorno)
 
 def vistaCodigo(request):
+    """_summary_
+
+    Args:
+        request (_type_): esto solo lo puede usar el usuario no autenticado para recuperar su contraseña
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         return render(request, 'Error/403.html')
     else:
         return render(request, "codigoRecuperar.html")
 
 def vistaGestionServicio(request):
+    """_summary_
+
+    Args:
+        request (_type_): el usuario debe estar autenticado y debe ser rol admnistrativos para acceder al html
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):      
             return render(request, 'Error/403.html')
@@ -313,6 +445,14 @@ def vistaGestionServicio(request):
 
 
 def verificarRol(request):
+    """_summary_
+
+    Args:
+        request (_type_): verifica los roles del admnistrador y retorna el rol
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         rol = None
         if request.user.groups.filter(name='Administrador').exists():
@@ -325,6 +465,12 @@ def verificarRol(request):
         return rol
 
 def clientesEnElaño():
+    """_summary_
+
+    Returns:
+        _type_: _consultar sobre lo clientes que han registrado pedidos en el año, retorna la cantidad de usuario que han hecho
+        un pedido sin importar su estado
+    """
     año_actual = datetime.now().year #Se saca el año actua
 
     # Realizamos una consulta donde tomamos todos lo meses del año y la comparamos con el actual
@@ -336,7 +482,12 @@ def clientesEnElaño():
     return cantidad_De_Usuarios 
 
 def consultarClienteQmasCompra():
-    usuarios_mas_compradores = User.objects.annotate(total_compras=Count('pedido')).order_by('-total_compras')[:5]
+    """_summary_
+
+    Returns:
+        _type_: Verificar los 5 usuarios que mas han comprado, y el producto que mas compraron
+    """
+    usuarios_mas_compradores = User.objects.annotate(total_compras=Count('pedido')).order_by('-total_compras')[:5] #Sacar los usuarios que mas compran, solamente 5 usuarios
 
     resultados_json = []
 
@@ -346,7 +497,7 @@ def consultarClienteQmasCompra():
             .annotate(cantidad_total_comprada=Sum('detCantida'), 
                       precio_total=Sum(F('detCantida') * F('detPrecio'))) \
             .order_by('-cantidad_total_comprada') \
-            .first()
+            .first() #Consultar para sacar la cantidad y total del producto que mas han comprado
 
         if productos_mas_comprados_usuario:
             user_nombre = usuario.username
@@ -361,7 +512,7 @@ def consultarClienteQmasCompra():
                 "proPrecio": precio_total,  
                 "proCantidad": cantidad_total_comprada,  
                 "proEstado": pro_estado
-            }
+            } #formar diccionario de datos para mostrar el usuario con su producto mas comprado
 
             resultados_json.append(resultado)
 
@@ -369,6 +520,14 @@ def consultarClienteQmasCompra():
 
 
 def vistaAdministrador(request):
+    """_summary_
+
+    Args:
+        request (_type_): solo pueden acceder los usuarios autenticados con los roles admnistrativos
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):      
             return render(request, 'Error/403.html')
@@ -407,16 +566,22 @@ def vistaAdministrador(request):
         return render(request,"index.html", retorno)
 
 def productosMasVendidos():
+    """_summary_
+
+    Returns:
+        _type_: productos mas vendidos, se organiza de menor a mayor
+    """
     productos_mas_vendidos = Producto.objects.annotate(
         cantidad_vendida=Coalesce(
             Sum(Case(When(detallepedido__detPedido__peEstado='Entregado', then='detallepedido__detCantida'), default=0, output_field=IntegerField())),
             0
         )
-    ).order_by('-cantidad_vendida')[:5]
+    ).order_by('-cantidad_vendida')[:5] #ser verificar los 5 productos mas vendidos, teniendo en cuenta su cantidad y que el pedido haya sido entregado
 
     return productos_mas_vendidos
 
 def ventasYGananciasAumentaron():
+    
     mes_actual = datetime.now().month
     año_actual = datetime.now().year
 
@@ -427,15 +592,16 @@ def ventasYGananciasAumentaron():
     # Consultar las ganancias del mes anterior
     mes_anterior = mes_actual - 1 if mes_actual > 1 else 12
     año_anterior = año_actual if mes_actual > 1 else año_actual - 1
+    #Se verificar el mes anterior y ademas tambien se verifica el año anterior si el mes actual es enero, ya que es mes anterior se diciembre del pasado año
     ganancias_mes_anterior = Pedido.objects.filter(peFecha__year=año_anterior, peFecha__month=mes_anterior, peEstado="Entregado") \
-                                           .aggregate(ganancias_mes=Sum('peTotalPedido'))['ganancias_mes']
+                                           .aggregate(ganancias_mes=Sum('peTotalPedido'))['ganancias_mes'] #Se calcula las ganancias del mes anterior
     
     cambio_porcentual = 0  # Inicializar el cambio porcentual con 0
     ganacias = 0
     
     # Calcular el porcentaje de aumento o disminución
     if ganancias_mes_actual is not None and ganancias_mes_anterior is not None and ganancias_mes_anterior != 0:
-        cambio_porcentual = ((ganancias_mes_actual - ganancias_mes_anterior) / ganancias_mes_anterior) * 100
+        cambio_porcentual = ((ganancias_mes_actual - ganancias_mes_anterior) / ganancias_mes_anterior) * 100 #sacar porcentaje de crecimiento respecto a las ganancias del mes anterior
         
 
     return ganancias_mes_actual, round(cambio_porcentual, 1)
@@ -443,6 +609,11 @@ def ventasYGananciasAumentaron():
 
     
 def gananciasPorMes():
+    """_summary_
+
+    Returns:
+        _type_: se saca todos los meses enumerados del 1 al 12, y saca las ganancias de todos los meses
+    """
     año_actual = datetime.now().year
     
     ganancias_por_mes = Pedido.objects.filter(peFecha__year=año_actual) \
@@ -463,12 +634,18 @@ def gananciasPorMes():
 
 
 def datosBimestralesAnuales(request):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        _type_: se calcula la ganacias, ventas, y porcentaje, cliente de crecimiento por cada dos meses
+    """
     hoy = datetime.now()
-   
 
     resultados = []
     ganancias_mes_anterior = 0
-    
 
     for mes_inicio in range(1, 13, 2):
         mes_fin = mes_inicio + 1 if mes_inicio + 1 <= 12 else 1
@@ -517,6 +694,12 @@ def datosBimestralesAnuales(request):
         
  
 def consultarPromedioDeVentasPorDia():
+    """_summary_
+
+    Returns:
+        _type_: consultar el porcentaje de crecimiento por los dias anteriores
+        
+    """
     fecha_actual = datetime.now().date()
     fecha_hace_una_semana = fecha_actual - timedelta(days=7)
     pedidos_por_dia = Pedido.objects.filter(peFecha__range=[fecha_hace_una_semana, fecha_actual]) \
@@ -536,6 +719,14 @@ def consultarPromedioDeVentasPorDia():
     
     
 def vistaUsuario(request):
+    """_summary_
+
+    Args:
+        request (_type_): solo puede acceder el usuario aunteticado con su rol usuario
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):      
             user= {"user": request.user,
@@ -554,6 +745,14 @@ def vistaUsuario(request):
     
 
 def vistaPerfilUsuario(request):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'): 
             use = request.user      
@@ -576,12 +775,28 @@ def vistaPerfilUsuario(request):
         return render(request,"index.html", retorno)
 
 def vistaRecuperarContra(request):
+    """_summary_
+
+    Args:
+        request (_type_): solo pueden recuperar la contraseña lo que no estan autenticados, es decir acceder al html
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:      
         return render(request, 'Error/403.html')
     else:     
         return render(request, "RecuperarContraseña.html")
 
 def vistaRegistrarse(request):
+    """_summary_
+
+    Args:
+        request (_type_): si el usuario ya esta auteticado no puede acceder 
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         return render(request, 'Error/403.html')
     else:
@@ -589,6 +804,14 @@ def vistaRegistrarse(request):
         return render(request, "Registrarse.html", retorno)
 
 def vistConNueva(request):
+    """_summary_
+
+    Args:
+        request (_type_): Registrar la nueva contraseña
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         return render(request, 'Error/403.html')
     else:
@@ -596,6 +819,14 @@ def vistConNueva(request):
 
 
 def perfiladmin(request):
+    """_summary_
+
+    Args:
+        request (_type_): solo pueden acceder los usuarios autenticados con roles administrativos
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):    
             return render(request, 'Error/403.html')
@@ -617,6 +848,14 @@ def perfiladmin(request):
         return render(request, 'Error/403.html')
 
 def VistaAgregarEmpleado(request):
+    """_summary_
+
+    Args:
+        request (_type_): solo pueden acceder los usuarios autenticados con roles administrativos
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):    
             return render(request, 'Error/403.html')
@@ -653,6 +892,14 @@ def error_404(request, exception):
 #     return render(request, 'Error/403.html', status=404)
 
 def CerrarSesion(request):
+    """_summary_
+
+    Args:
+        request (_type_): Cerrar sesión
+
+    Returns:
+        _type_: _description_
+    """
     auth.logout(request)
     mensaje = "Sesión Cerrada Con Exito"
     return redirect( f"/inicio/{mensaje}")
@@ -661,6 +908,16 @@ def CerrarSesion(request):
 # Aqui los metodos o funciones que no retornan JSON
 
 def enviarCorreo(asunto=None, mensaje=None, destinatario=None,archivo=None):
+    """_summary_
+
+    Args:
+        asunto (_type_, optional): asunto del correo.
+        mensaje (_type_, optional): Mensaje del correo.
+        destinatario (_type_, optional): destinatario del correo.
+        archivo (_type_, optional): archivo por enviar.
+        
+        enviar correo aun solo remitente
+    """
     remitente = settings.EMAIL_HOST_USER
     template = get_template('enviarCorreo.html')
     contenido = template.render({
@@ -680,6 +937,15 @@ def enviarCorreo(asunto=None, mensaje=None, destinatario=None,archivo=None):
         print(error)
 
 def enviarCorreoDosDestinatarios(asunto=None, mensaje=None, destinatarios=None, archivo=None):
+    """_summary_
+
+    Args:
+        asunto (_type_, optional): asunto del correo
+        mensaje (_type_, optional): mensjae del correo.
+        destinatarios (_type_, optional): destinatarios.
+        archivo (_type_, optional): archivos para enviar.
+        enviar a correo a dos destinatario
+    """
     remitente = settings.EMAIL_HOST_USER
     template = get_template('enviarCorreo.html')
     contenido = template.render({
@@ -700,6 +966,16 @@ def enviarCorreoDosDestinatarios(asunto=None, mensaje=None, destinatarios=None, 
         print(error)
 
 def verificarExitenciasDeUsuarios(email, doc= None):
+    """_summary_
+
+    Args:
+        email (_type_): _description_
+        doc (_type_, optional): _description_. Defaults to None.
+        
+        verificar si el usuario existe 
+    Returns:
+        _type_: _description_
+    """
     estado = False
     try:
             user = User.objects.get(username = email, email = email)
@@ -710,6 +986,11 @@ def verificarExitenciasDeUsuarios(email, doc= None):
     return estado
 
 def VerificarCOntraseña(con):
+    """_summary_
+
+    Returns:
+        _type_: Verifcar contraseña, que tenga caracteres espciales
+    """
     estado = False
     patron = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=])'
     estado = bool(re.match(patron, con))
@@ -718,6 +999,14 @@ def VerificarCOntraseña(con):
 
 
 def registrarseUsuario(request):
+    """_summary_
+
+    Args:
+        request (_type_): Metodo POST para registrarse como rol Usuario
+
+    Returns:
+        _type_: _description_
+    """
     try: 
         estado = False
         mensajes = ""
@@ -787,6 +1076,14 @@ def registrarseUsuario(request):
 
 
 def IniciarSesion(request):
+    """_summary_
+
+    Args:
+        request (_type_): Metodo post para inciar sesión
+
+    Returns:
+        _type_: _description_
+    """
     try:
         with transaction.atomic():
             usernamee= request.POST["txtUsuario"] 
@@ -818,6 +1115,14 @@ def IniciarSesion(request):
     
 
 def VerificarCorreo(request):
+    """_summary_
+
+    Args:
+        request (_type_): Verificar correo para recuperar contraseña
+
+    Returns:
+        _type_: _description_
+    """
     try:
         correo =  request.POST['txtCorreo']
         Usuario = None
@@ -851,6 +1156,15 @@ def VerificarCorreo(request):
     return render(request, "RecuperarContraseña.html",{"mensaje":mensaje},{"error":error} )
         
 def verificarCodigo(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): verficar codigo que se envio por correo
+        id (_type_): id del usuario solo si se encontro o no
+
+    Returns:
+        _type_: _description_
+    """
     try:
         with transaction.atomic():            
             Usuario = None
@@ -883,6 +1197,11 @@ def verificarCodigo(request, id):
         print(erro)
 
 def RegistrarNuevaContraseña(request, id):
+    """_summary_
+
+    Returns:
+        _type_: registrar nueva contraseña 
+    """
     try:
         with transaction.atomic():
             usuario = None
@@ -917,9 +1236,7 @@ def RegistrarNuevaContraseña(request, id):
     except Error as erro:
          transaction.rollback()
     
-# Aqui las funciones que retornan JSON
 
-# --------------
 ################################################################
 #Bloque De Codigo para El Apartado De Contactos
 
@@ -1045,6 +1362,14 @@ def VistaRegistrarCategoria(request):
 
 
 def VistaProductos(request):
+    """_summary_
+
+    Args:
+        request (_type_): vista para registrar los productos
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):    
             return render(request, 'Error/403.html')
@@ -1074,6 +1399,16 @@ def VistaProductos(request):
         return render(request, 'Error/403.html')
 
 def eliminar_product(request, id): 
+    """_summary_
+
+    Args:
+
+        request (_type_): al elimnar solo se cambia el estado
+        id (_type_): id del producto a elimnar
+
+    Returns:
+        _type_: _description_
+    """
     producto = get_object_or_404(Producto, pk=id)
 
     if request.method == 'POST':
@@ -1084,6 +1419,15 @@ def eliminar_product(request, id):
 
 
 def editar_producto(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): editar el producto
+        id (_type_): id del producto a editar
+
+    Returns:
+        _type_: _description_
+    """
     producto = get_object_or_404(Producto, id=id)
 
     if request.method == 'POST':
@@ -1114,12 +1458,21 @@ def editar_producto(request, id):
         producto.save()
 
         # Redireccionar a la lista de productos
-        return redirect('/VistaProductos/')  # Ajusta la URL según tu configuración
+        return redirect('/VistaProductos/')  
 
     return redirect("/VistaProductos/")
 
 
 def RegistrarProducto(request):
+    """_summary_
+
+    Args:
+        request (_type_): registrar producto
+        se extrae los datos necesario del html para registrar el producto
+
+    Returns:
+        _type_: _description_
+    """
     if request.method == 'POST':
         estado = False
         try:
@@ -1171,30 +1524,74 @@ def RegistrarProducto(request):
 
 
 def agregar_producto(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): Agregar el producto a la clase Carrito
+        id (_type_): id del producto
+
+    Returns:
+        _type_: _description_
+    """
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id)
     carrito.agregar(producto)
-    # return redirect("tienda")
     return JsonResponse({"estado": True})
 
 def eliminar_producto(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): Eliminar el producto a la clase Carrito
+        id (_type_): id del producto
+
+    Returns:
+        _type_: _description_
+    """
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id)
     carrito.eliminar(producto)
     return JsonResponse({"estado": True})
 
 def restar_producto(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): restar cantidad el producto a la clase Carrito
+        id (_type_): id del producto
+
+    Returns:
+        _type_: _description_
+    """
     carrito = Carrito(request)
     producto = Producto.objects.get(id=id)
     carrito.restar(producto)
     return JsonResponse({"estado": True})
 
 def limpiar_carrito(request):
+    """_summary_
+
+    Args:
+        request (_type_): limpiar el carro
+        id (_type_): id del producto
+
+    Returns:
+        _type_: _description_
+    """
     carrito = Carrito(request)
     carrito.limpiar()
     return redirect("tienda")
 
 def vistaEmpleadoUsuario(request, id):
+    """_summary_
+
+    Args:
+        request (_type_): redirige a la pagina de elegir la contraseña
+        id (_type_): id del empleado al que se va crear el usuario
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         if request.user.groups.filter(name='Usuario'):    
             return render(request, 'Error/403.html')

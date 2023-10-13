@@ -2,6 +2,11 @@ from rest_framework import serializers
 from appVeterinaria.models import *
 from drf_extra_fields.fields import Base64ImageField
 
+
+"""_summary_
+Serializadores de los modelos, lo que hace convertir los modelos en json o diccionario Json
+"""
+
 class UserSerializer(serializers.ModelSerializer):
     userFoto = Base64ImageField(required = False)
     class Meta: 

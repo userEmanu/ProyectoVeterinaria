@@ -96,12 +96,7 @@ class PDF(FPDF):
         self.cell(90, 10, f'{cita.ciSintomas}', 1)
         self.ln()
 
-        # self.set_font("Arial", 'B', 12)
-        # self.cell(0, 10, 'Descripción de la Cita', 0, 1)
-        # self.set_fill_color(200, 220, 255)
-        # self.cell(50, 10, 'Fecha y Hora', 1, 0, 'C', 1)
-        # self.set_font("Arial", '', 12)
-        # self.multi_cell(0, 10, 'Mucho texto que ocupa varias líneas jasjdjkasjkdjksadsadsahdsajdasjdjashdhashdha', 1, 'C', 1)
+       
         self.set_font("Arial", 'B', 12)
         self.cell(0, 10, 'Descripción de la Cita', 0, 1)
         self.set_fill_color(200, 220, 255)
