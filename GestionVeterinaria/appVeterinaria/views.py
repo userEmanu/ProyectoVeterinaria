@@ -1892,7 +1892,7 @@ def citaRealizada(request, id):
 
 ##############################################################################
 #Metodo De Compra
-def finalizar_compra(request):
+def finalizar_compra(request, mensaje= ""):
     if request.user.is_authenticated:
     # Obtener el carrito del usuario a través de la sesión
         if request.user.groups.filter(name='Usuario'):
@@ -1932,7 +1932,8 @@ def finalizar_compra(request):
                                                           'cantidad_total_productos': cantidad_total_productos,
                                                         'categoria': categorias, 
                                                         'proveedores': proveedores, 
-                                                        'servicios': servicios})
+                                                        'servicios': servicios, 
+                                                        'mensaje': mensaje})
         else: 
             return render(request, "Error/403.html")
     else:
@@ -2001,8 +2002,6 @@ def procesar_pedido(request):
                     hora_colombiana = datetime.now(colombia_timezone).strftime("%H:%M:%S")
                     carro = Carrito(request)
                     
-                    
-                    descuentos_Detodos_____Pro = descuentos_DeTodosLos_productos
                     pedido = Pedido.objects.create(
                         peUsuario=usuario,
                         peEstado=estado_pedido,
@@ -2024,7 +2023,7 @@ def procesar_pedido(request):
                     
                     for key, value in carrito.carrito.items():
                         producto_id = value["producto_id"]
-                        producto = Producto.objects.get(pk = producto_id)
+                        producto = Producto.objects.get(pk = producto_id, proEstado__in = ('Disponible', 'Promocion'))
                         totalProductoCantidad = value["acumulado"]
                         cantida = value["cantidad"]
                         precioPorElcualSeVendio = value["precioUnidad"]
@@ -2091,8 +2090,8 @@ def procesar_pedido(request):
                 
             except Exception as error:
                 transaction.rollback()
-                print(error)
-            return redirect('/vistaIndexUsuario/')
+                mensaje = 'Error al agregar tu pedido, hay un producto que ya no esta disponible'
+            return redirect(f'/finalizarCompra/{mensaje}/')
 
 def descargarPDFhistorial(request, id):
     try:
