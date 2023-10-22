@@ -93,7 +93,7 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'animalagroFinal',
+        'NAME': 'veterinariaanimalagro',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
