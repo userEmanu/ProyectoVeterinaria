@@ -278,16 +278,13 @@ function agregarServicio() {
 }
 
 function asignarEmpleado() {
-    console.log('holaaaaaaaaaaaaa')
     let servicio = document.getElementById('cbservicio').value
     let empleado= document.getElementById('cbempleado').value
-    console.log('holaaaaaaaaaaaaa')
     if ((servicio != 0) && (empleado != 0)) {
         let data ={
             "servicio": servicio,
             "empleado": empleado,
         }
-        console.log('holaaaaaaaaaaaaa')
         let options = {
             method: 'POST',
             body: JSON.stringify(data),
